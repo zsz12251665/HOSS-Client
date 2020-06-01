@@ -18,7 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     airplanner.cpp \
     choice.cpp \
-    main.cpp
+    main.cpp \
+    network.cpp
 
 HEADERS += \
     airplanner.h \
