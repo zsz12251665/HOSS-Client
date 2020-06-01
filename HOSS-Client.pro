@@ -1,4 +1,5 @@
 QT       += core gui
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,16 +19,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     airplanner.cpp \
     choice.cpp \
+    homework.cpp \
     main.cpp \
     network.cpp
 
 HEADERS += \
     airplanner.h \
-    choice.h
+    choice.h \
+    homework.h \
+    network.h
 
 FORMS += \
     airplanner.ui \
-    choice.ui
+    choice.ui \
+    homework.ui
 
 TRANSLATIONS += \
     Airplanner_en_US.ts

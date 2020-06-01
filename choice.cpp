@@ -1,5 +1,6 @@
 #include "choice.h"
 #include "ui_choice.h"
+#include "network.h"
 
 Choice::Choice(QWidget *parent) :
     QDialog(parent),
@@ -16,4 +17,9 @@ Choice::~Choice()
 void Choice::on_pushButton_clicked()
 {
     accept();
+}
+
+void Choice::on_pushButton_2_clicked()
+{
+    reject();
 }
