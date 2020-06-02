@@ -7,6 +7,7 @@
 #include "ui_checkitem.h"
 #include "network.h"
 #include <QJsonArray>
+#include <QFileDialog>
 
 namespace Ui {
 class Homework;
@@ -30,6 +31,8 @@ private slots:
     void on_input_task_returnPressed();
 
     void on_update_clicked();
+
+    void on_upload_clicked();
 
 private:
     Ui::Homework *ui;

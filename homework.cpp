@@ -68,9 +68,26 @@ void Homework::removeTask(CheckItem *item)
 
 void Homework::on_update_clicked()
 {
-    QUrl url("http://47.112.198.206/");
+    QUrl url("http://47.112.198.206/homework.php");
     QJsonArray json = fetchRemoteToDos(url);
     qDebug() << json.size();
 
+
+}
+
+void Homework::on_upload_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+            tr("Open the file"), "C:/", tr("All files(*.*)"));
+
+    if (!fileName.isNull())
+    {
+           // qDebug() << fileName; // "C:/Users/翁浩瀚/Desktop/QQ截图20200601091029.png"
+        QUrl url("http://47.112.198.206");
+        QFile file(fileName);
+        QString reply = uploadHomework(url, QString("翁浩瀚"), QString("201930251436"),
+                               QString("第十四次大物作业"), &file);
+        qDebug() << reply;
+    }
 
 }
