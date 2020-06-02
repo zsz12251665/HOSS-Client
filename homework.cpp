@@ -68,8 +68,8 @@ void Homework::removeTask(CheckItem *item)
 
 void Homework::on_update_clicked()
 {
-    QUrl url("http://47.112.198.206/");
-    QJsonArray json = fetchRemoteToDos(url);
+	QUrl url("http://47.112.198.206/homework.php");
+	QJsonArray json = QJsonArray(fetchRemoteToDos(url));
     qDebug() << json.size();
 
 
