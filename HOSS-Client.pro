@@ -26,20 +26,14 @@ SOURCES += \
 
 HEADERS += \
     airplanner.h \
-<<<<<<< HEAD
     checkitem.h \
-=======
->>>>>>> 1dfc476f1df8bd2e60ccdfaea90b86a4e6d1c4a7
     choice.h \
     homework.h \
     network.h
 
 FORMS += \
     airplanner.ui \
-<<<<<<< HEAD
     checkitem.ui \
-=======
->>>>>>> 1dfc476f1df8bd2e60ccdfaea90b86a4e6d1c4a7
     choice.ui \
     homework.ui
 

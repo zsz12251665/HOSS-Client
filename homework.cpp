@@ -31,10 +31,10 @@ void Homework::on_Add_button_clicked()
         this->homework_list.append(item);
         ui->task_layout->addWidget(item);
 
+        connect(item, &CheckItem::check_click, this, &Homework::removeTask);
+
         qDebug() << name << ddl <<  this->homework_list.isEmpty();
 
-
-        // ui->listWidget->addItem("\n" + ui->input_CheckItem->text() + "\n\n\t\t" + ui->dateEdit->date().toString("dd.MM.yyyy"));
         ui->input_task->clear();
     }
 
@@ -55,8 +55,6 @@ void Homework::on_input_task_returnPressed()
 
         qDebug() << name << ddl <<  this->homework_list.isEmpty();
 
-
-        // ui->listWidget->addItem("\n" + ui->input_CheckItem->text() + "\n\n\t\t" + ui->dateEdit->date().toString("dd.MM.yyyy"));
         ui->input_task->clear();
     }
 }
