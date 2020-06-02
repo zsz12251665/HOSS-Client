@@ -12,12 +12,15 @@ QJsonArray fetchRemoteToDos(QUrl remoteURL)
 {
 	QNetworkAccessManager *manager = new QNetworkAccessManager;
 	QNetworkRequest request = QNetworkRequest(remoteURL);
+	// Send the request & wait for the reply
 	QEventLoop waitUntilFinished;
 	QObject::connect(manager, &QNetworkAccessManager::finished,
 					 &waitUntilFinished, &QEventLoop::quit);
-	waitUntilFinished.exec();
 	QNetworkReply *reply = manager->get(request);
+	waitUntilFinished.exec();
+	// Transfer the response to an array
 	QJsonDocument responseJSON = QJsonDocument::fromJson(reply->readAll());
+	qDebug() << responseJSON.isArray() << endl;
 	return responseJSON.array();
 }
 
@@ -27,7 +30,7 @@ QString uploadHomework(QUrl remoteURL, QString name, QString number,
 	QNetworkAccessManager *manager = new QNetworkAccessManager;
 	QNetworkRequest request = QNetworkRequest(remoteURL);
 	request.setRawHeader("Content-Type", "multipart/form-data");
-	// Fulfill the form Start
+	// Fulfill the form
 	QHttpMultiPart *form = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 	QHttpPart dataPart;
 	// Append the information
@@ -54,11 +57,11 @@ QString uploadHomework(QUrl remoteURL, QString name, QString number,
 								+ homework->fileName() + "\""));
 	dataPart.setBodyDevice(homework);
 	form->append(dataPart);
-	// Fulfill the form End
+	// Send the request & wait for the reply
 	QEventLoop waitUntilFinished;
 	QObject::connect(manager, &QNetworkAccessManager::finished,
 					 &waitUntilFinished, &QEventLoop::quit);
-	waitUntilFinished.exec();
 	QNetworkReply *reply = manager->post(request, form);
+	waitUntilFinished.exec();
 	return reply->readAll();
 }
