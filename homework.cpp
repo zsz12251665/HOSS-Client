@@ -4,13 +4,14 @@
 #include <QDebug>
 #include <QMainWindow>
 
+RemoteAPI remoteAPI(QString("http://47.112.198.206:8000/"));
+
 Homework::Homework(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Homework),
     homework_list()
 {
     ui->setupUi(this);
-
     ui->dateEdit->setDate(QDateTime::currentDateTime().date());
 }
 
@@ -25,18 +26,13 @@ void Homework::on_Add_button_clicked()
     {
         QString name = ui->input_task->text();
         QDate ddl = ui->dateEdit->date();
-
         CheckItem *item = new CheckItem(name, ddl);
         this->homework_list.append(item);
         ui->task_layout->addWidget(item);
-
         connect(item, &CheckItem::check_click, this, &Homework::removeTask);
-
         // qDebug() << name << ddl <<  this->homework_list.isEmpty();
-
         ui->input_task->clear();
     }
-
 }
 
 void Homework::on_input_task_returnPressed()
@@ -45,15 +41,11 @@ void Homework::on_input_task_returnPressed()
     {
         QString name = ui->input_task->text();
         QDate ddl = ui->dateEdit->date();
-
         CheckItem *item = new CheckItem(name, ddl);
         this->homework_list.append(item);
         ui->task_layout->addWidget(item);
-
         connect(item, &CheckItem::check_click, this, &Homework::removeTask);
-
         // qDebug() << name << ddl <<  this->homework_list.isEmpty();
-
         ui->input_task->clear();
     }
 }
@@ -68,11 +60,8 @@ void Homework::removeTask(CheckItem *item)
 
 void Homework::on_update_clicked()
 {
-	QUrl url("http://47.112.198.206/homework.php");
-	QJsonArray json = QJsonArray(fetchRemoteToDos(url));
+	QJsonArray json = QJsonArray(remoteAPI.fetchRemoteToDos());
     qDebug() << json.size();
-
-
 }
 
 void Homework::on_upload_clicked()
@@ -81,12 +70,9 @@ void Homework::on_upload_clicked()
 			tr("Open the file"), "C:/", tr("All files(*.*)"));
 
     if (!fileName.isNull())
-    {
-           // qDebug() << fileName; // "C:/Users/翁浩瀚/Desktop/QQ截图20200601091029.png"
-		QUrl url("http://47.112.198.206:8000/upload.php");
+	{
         QFile file(fileName);
-		QString reply = uploadHomework(url, QString("翁浩瀚"), QString("201930251436"),
-							   QString("test"), &file);
+		QString reply = remoteAPI.uploadHomework("翁浩瀚", "201930251436", "test", file);
         qDebug() << reply;
     }
 

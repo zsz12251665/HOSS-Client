@@ -22,14 +22,14 @@ SOURCES += \
     choice.cpp \
     homework.cpp \
     main.cpp \
-    network.cpp
+    remoteAPI.cpp
 
 HEADERS += \
     airplanner.h \
     checkitem.h \
     choice.h \
     homework.h \
-    network.h
+    remoteAPI.h
 
 FORMS += \
     airplanner.ui \

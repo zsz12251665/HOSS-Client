@@ -5,7 +5,7 @@
 #include <QVector>
 #include "checkitem.h"
 #include "ui_checkitem.h"
-#include "network.h"
+#include "remoteAPI.h"
 #include <QJsonArray>
 #include <QFileDialog>
 
