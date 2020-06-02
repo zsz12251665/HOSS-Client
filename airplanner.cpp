@@ -11,8 +11,8 @@ Airplanner::Airplanner(QWidget *parent) :
     ui->listWidget->setSpacing(6);
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    QPixmap pixmap(":/assets/logo.ico");
-    ui->MenuBar->setPixmap(pixmap.scaled(35, 35));
+//    QPixmap pixmap(":/assets/logo.ico");
+//    ui->MenuBar->setPixmap(pixmap.scaled(35, 35));
 
     ui->SubmitButton->setIcon(QIcon(":/new/icon/resource/edit.png"));
     ui->SubmitButton->setIconSize(QSize(26, 26));

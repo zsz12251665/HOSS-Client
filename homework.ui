@@ -6,21 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>734</width>
+    <height>633</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>80</y>
+      <x>20</x>
+      <y>40</y>
       <width>691</width>
-      <height>391</height>
+      <height>481</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="task_layout">
@@ -29,11 +29,11 @@
      </property>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>50</y>
+      <x>20</x>
+      <y>10</y>
       <width>690</width>
       <height>31</height>
      </rect>
@@ -41,6 +41,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="pushButton">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="text">
         <string>ALL</string>
        </property>
@@ -67,13 +70,20 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="update">
+       <property name="text">
+        <string>update</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>470</y>
+      <x>20</x>
+      <y>520</y>
       <width>689</width>
       <height>51</height>
      </rect>
@@ -99,17 +109,17 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>734</width>
      <height>26</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

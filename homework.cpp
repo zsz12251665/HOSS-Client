@@ -12,7 +12,6 @@ Homework::Homework(QWidget *parent) :
     ui->setupUi(this);
 
     ui->dateEdit->setDate(QDateTime::currentDateTime().date());
-
 }
 
 Homework::~Homework()
@@ -65,4 +64,13 @@ void Homework::removeTask(CheckItem *item)
     ui->task_layout->removeWidget(item);
     item->setParent(0);
     delete item;
+}
+
+void Homework::on_update_clicked()
+{
+    QUrl url("http://47.112.198.206/");
+    QJsonArray json = fetchRemoteToDos(url);
+    qDebug() << json.size();
+
+
 }
