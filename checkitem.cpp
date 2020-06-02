@@ -31,11 +31,13 @@ void CheckItem::on_Edit_button_clicked()
     QFormLayout form(&dialog);
     form.addRow(new QLabel("Edit the task:"));
     QString value1 = QString("name: ");
-    QSpinBox *spinbox1 = new QSpinBox(&dialog);
-    form.addRow(value1, spinbox1);
+    QLineEdit *name_input = new QLineEdit(&dialog);
+    name_input->setText(this->name);
+    form.addRow(value1, name_input);
     QString value2 = QString("date: ");
-    QSpinBox *spinbox2 = new QSpinBox(&dialog);
-    form.addRow(value2, spinbox2);
+    QDateEdit *date_input = new QDateEdit(&dialog);
+    date_input->setDate(this->ddl);
+    form.addRow(value2, date_input);
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
         Qt::Horizontal, &dialog);
     form.addRow(&buttonBox);
@@ -45,7 +47,11 @@ void CheckItem::on_Edit_button_clicked()
     // Process if OK button is clicked
     if (dialog.exec() == QDialog::Accepted) {
         // Do something here
-
+        qDebug() << date_input->date() << name_input->text();
+        this->name = name_input->text();
+        this->ddl = date_input->date();
+        ui->checkBox->setText(name);
+        ui->label->setText(ddl.toString("dd.MM.yyyy"));
     }
 
 }

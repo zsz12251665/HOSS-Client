@@ -33,7 +33,7 @@ void Homework::on_Add_button_clicked()
 
         connect(item, &CheckItem::check_click, this, &Homework::removeTask);
 
-        qDebug() << name << ddl <<  this->homework_list.isEmpty();
+        // qDebug() << name << ddl <<  this->homework_list.isEmpty();
 
         ui->input_task->clear();
     }
@@ -53,7 +53,7 @@ void Homework::on_input_task_returnPressed()
 
         connect(item, &CheckItem::check_click, this, &Homework::removeTask);
 
-        qDebug() << name << ddl <<  this->homework_list.isEmpty();
+        // qDebug() << name << ddl <<  this->homework_list.isEmpty();
 
         ui->input_task->clear();
     }

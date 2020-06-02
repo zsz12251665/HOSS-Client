@@ -4,10 +4,12 @@
 #include <QWidget>
 #include <QDate>
 #include <QDebug>
-#include <QInputDialog>
+#include <QDialog>
 #include <QFormLayout>
 #include <QSpinBox>
 #include <QDialogButtonBox>
+#include <QLineEdit>
+#include <QDateEdit>
 
 namespace Ui {
 class CheckItem;
@@ -28,7 +30,6 @@ private:
 
 signals:
     void check_click(CheckItem *item);
-    void edit_click(CheckItem *item);
 private slots:
     void on_Edit_button_clicked();
 };
