@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     airplanner.cpp \
+    checkitem.cpp \
     choice.cpp \
     homework.cpp \
     main.cpp \
@@ -25,12 +26,14 @@ SOURCES += \
 
 HEADERS += \
     airplanner.h \
+    checkitem.h \
     choice.h \
     homework.h \
     network.h
 
 FORMS += \
     airplanner.ui \
+    checkitem.ui \
     choice.ui \
     homework.ui
 
@@ -43,3 +46,6 @@ RC_ICONS = assets/logo.ico
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resource.qrc

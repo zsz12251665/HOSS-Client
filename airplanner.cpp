@@ -14,11 +14,11 @@ Airplanner::Airplanner(QWidget *parent) :
     QPixmap pixmap(":/assets/logo.ico");
     ui->MenuBar->setPixmap(pixmap.scaled(35, 35));
 
-    ui->SubmitButton->setIcon(QIcon(":/assets/edit.png"));
+    ui->SubmitButton->setIcon(QIcon(":/new/icon/resource/edit.png"));
     ui->SubmitButton->setIconSize(QSize(26, 26));
-    ui->RemoveButton->setIcon(QIcon(":/assets/delete.png"));
+    ui->RemoveButton->setIcon(QIcon(":/new/icon/resource/delete.png"));
     ui->RemoveButton->setIconSize(QSize(26, 26));
-    ui->ExitButton->setIcon(QIcon(":/assets/exit.png"));
+    ui->ExitButton->setIcon(QIcon(":/new/icon/resource/exit.png"));
     ui->ExitButton->setIconSize(QSize(25, 25));
 
     connect(ui->SubmitButton, SIGNAL (pressed()), this, SLOT (submitButton()));
