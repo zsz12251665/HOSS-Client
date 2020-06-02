@@ -1,0 +1,79 @@
+// This is only presto code!!! It CANNOT be compiled!!!
+
+Window toDoListWindow
+{
+	Section toolBar
+	{
+		IconButton fetchRemoteToDos = 🔄, newToDoEntry = ➕, openSettings = ⚙;
+	}
+	Section filter
+	{
+		/*
+		Checkbox selectAll;
+		Array<Checkbox, Array::VARIANT_LENGTH> labelList;
+		*/
+		RadioInput allToDos, customToDos, homeworkToDos;
+	}
+	Array <ToDoEntry, Array::VARIANT_LENGTH> toDoList; // See the definition of class `ToDoEntry` on Line 36
+}
+
+Window settingsWindow
+{
+	// UI Customization
+	// Authorization Settings
+	// Remote Source Management
+	// Update Check
+}
+
+Window toDoDetailsWindow
+{
+	LineTextInput title;
+	DateInput deadline;
+	AreaTextInput Note; // User customized, might be fetched from server too in future
+	Button saveButton;
+}
+
+class ToDoEntry = Section
+{
+	IconButton finishButton
+	{
+		Image icon; // WAITING ( ), COMPLETED (✅), EXPIRED (❌)
+		Event onClick(ToDoEntry &this)
+		{
+			if (this.finishButton.icon == COMPLETED)
+			{
+				this.finishButton.icon = this.deadline > Date.now() ? WAITING : EXPIRED;
+				return;
+			}
+			if (this.isRemoteHomework && this.deadline > Date.now())
+			{
+				SubmitHomework(this.title, FileExplorer.selectFile()); // Select homework and submit
+			}
+			this.finishButton.icon = COMPLETED;
+		}
+	}
+	IconButton deleteButton
+	{
+		Image icon = 🗑;
+		Event onClick(ToDoEntry &this)
+		{
+			if (!this.isRemoteHomework || this.deadline > Date.now()) // Remote homework cannot be deleted until expired
+			{
+				if (Prompt.confirm("Are you sure to delete? ")) // A dialog box for delete confirmation
+				{
+					this.delete();
+				}
+			}
+			else
+			{
+				Prompt.warning("Remote homework cannot be deleted until expired");
+			}
+		}
+	}
+	LineTextBox title, deadline;
+	Boolean isRemoteHomework; // Hidden element
+	Event onDoubleClick()
+	{
+		toDoDetailsWindow.open(ToDoEntry &this);
+	}
+}
