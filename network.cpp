@@ -8,6 +8,8 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QFile>
+#include <QRandomGenerator>
+
 QJsonArray fetchRemoteToDos(QUrl remoteURL)
 {
 	QNetworkAccessManager *manager = new QNetworkAccessManager;
@@ -20,18 +22,19 @@ QJsonArray fetchRemoteToDos(QUrl remoteURL)
 	waitUntilFinished.exec();
 	// Transfer the response to an array
 	QJsonDocument responseJSON = QJsonDocument::fromJson(reply->readAll());
-	qDebug() << responseJSON.isArray() << endl;
 	return responseJSON.array();
 }
 
 QString uploadHomework(QUrl remoteURL, QString name, QString number,
 					   QString directory, QFile *homework)
 {
+	QString formBoundary = QString("--%1Boundary%1--").arg(QRandomGenerator::global()->generate64(),16,16,QLatin1Char('0'));
 	QNetworkAccessManager *manager = new QNetworkAccessManager;
 	QNetworkRequest request = QNetworkRequest(remoteURL);
-	request.setRawHeader("Content-Type", "multipart/form-data");
+	request.setRawHeader("Content-Type", ("multipart/form-data;boundary=" + formBoundary).toUtf8());
 	// Fulfill the form
 	QHttpMultiPart *form = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+	form->setBoundary(formBoundary.toUtf8());
 	QHttpPart dataPart;
 	// Append the information
 	dataPart.setHeader(QNetworkRequest::ContentTypeHeader,

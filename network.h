@@ -11,6 +11,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QFile>
+#include <QRandomGenerator>
 
 QJsonArray fetchRemoteToDos(QUrl remoteURL);
 QString uploadHomework(QUrl remoteURL, QString name, QString number,

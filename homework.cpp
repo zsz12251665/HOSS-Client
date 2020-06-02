@@ -68,13 +68,8 @@ void Homework::removeTask(CheckItem *item)
 
 void Homework::on_update_clicked()
 {
-<<<<<<< HEAD
-    QUrl url("http://47.112.198.206/homework.php");
-    QJsonArray json = fetchRemoteToDos(url);
-=======
 	QUrl url("http://47.112.198.206/homework.php");
 	QJsonArray json = QJsonArray(fetchRemoteToDos(url));
->>>>>>> f63b8530ff992eab1ad8af61a0cda10c2630a04e
     qDebug() << json.size();
 
 
@@ -83,15 +78,15 @@ void Homework::on_update_clicked()
 void Homework::on_upload_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-            tr("Open the file"), "C:/", tr("All files(*.*)"));
+			tr("Open the file"), "C:/", tr("All files(*.*)"));
 
     if (!fileName.isNull())
     {
            // qDebug() << fileName; // "C:/Users/翁浩瀚/Desktop/QQ截图20200601091029.png"
-        QUrl url("http://47.112.198.206");
+		QUrl url("http://47.112.198.206:8000/upload.php");
         QFile file(fileName);
-        QString reply = uploadHomework(url, QString("翁浩瀚"), QString("201930251436"),
-                               QString("第十四次大物作业"), &file);
+		QString reply = uploadHomework(url, QString("翁浩瀚"), QString("201930251436"),
+							   QString("test"), &file);
         qDebug() << reply;
     }
 
