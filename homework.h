@@ -27,8 +27,6 @@ public slots:
 
 private slots:
 
-    void on_Add_button_clicked();
-
     void on_input_task_returnPressed();
 
     void on_update_clicked();

@@ -20,21 +20,6 @@ Homework::~Homework()
     delete ui;
 }
 
-void Homework::on_Add_button_clicked()
-{
-    if (ui->input_task->text() != "")
-    {
-        QString name = ui->input_task->text();
-        QDate ddl = ui->dateEdit->date();
-        CheckItem *item = new CheckItem(name, ddl);
-        this->homework_list.append(item);
-        ui->task_layout->addWidget(item);
-        connect(item, &CheckItem::check_click, this, &Homework::removeTask);
-        // qDebug() << name << ddl <<  this->homework_list.isEmpty();
-        ui->input_task->clear();
-    }
-}
-
 void Homework::on_input_task_returnPressed()
 {
     if (ui->input_task->text() != "")
@@ -71,8 +56,12 @@ void Homework::on_upload_clicked()
 
     if (!fileName.isNull())
 	{
+        QSettings setting("setting.ini",QSettings::IniFormat);
+        QString StuName = setting.value("config/StuName").toString();
+        QString StuNumber = setting.value("config/StuNumber").toString();
+
         QFile file(fileName);
-		QString reply = remoteAPI.uploadHomework("翁浩瀚", "201930251436", "test", file);
+        QString reply = remoteAPI.uploadHomework(StuName, StuNumber, "test", file);
         qDebug() << reply;
     }
 

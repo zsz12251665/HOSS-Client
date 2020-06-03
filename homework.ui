@@ -103,13 +103,6 @@
       <item>
        <widget class="QDateEdit" name="dateEdit"/>
       </item>
-      <item>
-       <widget class="QPushButton" name="Add_button">
-        <property name="text">
-         <string>Add</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </item>
    </layout>
