@@ -77,3 +77,52 @@ void Homework::on_upload_clicked()
     }
 
 }
+
+void Homework::on_Setting_clicked()
+{
+    // declare the setting
+    QSettings setting("setting.ini",QSettings::IniFormat);
+
+    // generate a multiply input dialog
+    QDialog dialog(this);
+    QFormLayout form(&dialog);
+    form.addRow(new QLabel("Setting:"));
+
+    QString value1 = QString("Server IP: ");
+    QLineEdit *ip_input = new QLineEdit(&dialog);
+    if(setting.contains("config/ip"))
+    {
+        ip_input->setText(setting.value("config/ip").toString());
+    }
+    form.addRow(value1, ip_input);
+
+    QString value2 = QString("Student Name: ");
+    QLineEdit *name_input = new QLineEdit(&dialog);
+    if(setting.contains("config/StuName"))
+    {
+        name_input->setText(setting.value("config/StuName").toString());
+    }
+    form.addRow(value2, name_input);
+
+    QString value3 = QString("Student Number: ");
+    QLineEdit *number_input = new QLineEdit(&dialog);
+    if(setting.contains("config/StuNumber"))
+    {
+        number_input->setText(setting.value("config/StuNumber").toString());
+    }
+    form.addRow(value3, number_input);
+
+    QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+        Qt::Horizontal, &dialog);
+    form.addRow(&buttonBox);
+    QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+    QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+
+    // Process if OK button is clicked
+    if (dialog.exec() == QDialog::Accepted) {
+        setting.setValue("config/ip",ip_input->text());
+        setting.setValue("config/StuName",name_input->text());
+        setting.setValue("config/StuNumber",number_input->text());
+        setting.sync();
+    }
+}

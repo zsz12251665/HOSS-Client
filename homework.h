@@ -8,6 +8,7 @@
 #include "remoteAPI.h"
 #include <QJsonArray>
 #include <QFileDialog>
+#include <QSettings>
 
 namespace Ui {
 class Homework;
@@ -33,6 +34,8 @@ private slots:
     void on_update_clicked();
 
     void on_upload_clicked();
+
+    void on_Setting_clicked();
 
 private:
     Ui::Homework *ui;
