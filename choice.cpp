@@ -1,10 +1,12 @@
 #include "choice.h"
 #include "ui_choice.h"
 #include "remoteAPI.h"
+#include "airplanner.h"
+#include "homework.h"
 
 Choice::Choice(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Choice)
+  QMainWindow(parent),
+	ui(new Ui::Choice)
 {
 	ui->setupUi(this);
 }
@@ -16,10 +18,14 @@ Choice::~Choice()
 
 void Choice::on_pushButton_clicked()
 {
-    accept();
+	Airplanner *airplanner = new Airplanner;
+	airplanner->show();
+	this->close();
 }
 
 void Choice::on_pushButton_2_clicked()
 {
-    reject();
+	Homework *homework = new Homework;
+	homework->show();
+	this->close();
 }

@@ -1,18 +1,18 @@
 #ifndef CHOICE_H
 #define CHOICE_H
 
-#include <QDialog>
+#include <QMainWindow>
 
 namespace Ui {
 class Choice;
 }
 
-class Choice : public QDialog
+class Choice : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit Choice(QWidget *parent = nullptr);
+	explicit Choice(QWidget *parent = nullptr);
     ~Choice();
 
 private slots:
