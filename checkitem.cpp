@@ -55,3 +55,12 @@ void CheckItem::on_Edit_button_clicked()
     }
 
 }
+
+QString CheckItem::getName()
+{
+    return this->name;
+}
+QDate CheckItem::getDdl()
+{
+    return this->ddl;
+}

@@ -23,6 +23,9 @@ public:
     explicit CheckItem(QString name, QDate ddl, QWidget *parent = nullptr);
     ~CheckItem();
 
+    QString getName();
+    QDate getDdl();
+
 private:
     Ui::CheckItem *ui;
     QString name;
@@ -30,6 +33,7 @@ private:
 
 signals:
     void check_click(CheckItem *item);
+    void edit_click();
 private slots:
     void on_Edit_button_clicked();
 };

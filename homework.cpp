@@ -13,11 +13,43 @@ Homework::Homework(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->dateEdit->setDate(QDateTime::currentDateTime().date());
+
+    // use a loop to set the exitst todos in setting
+    QSettings setting("setting.ini",QSettings::IniFormat);
+    int len = setting.beginReadArray("todos");
+    for(int i=0;i<len;i++)
+    {
+        setting.setArrayIndex(i);
+        QString name = setting.value("name").toString();
+        QDate ddl;
+        ddl.fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
+        CheckItem *item = new CheckItem(name, ddl);
+        this->homework_list.append(item);
+        ui->task_layout->addWidget(item);
+        connect(item, &CheckItem::check_click, this, &Homework::removeTask);
+    }
+    setting.endArray();
 }
 
 Homework::~Homework()
 {
     delete ui;
+}
+
+void Homework::update_setting()
+{
+    QSettings setting("setting.ini",QSettings::IniFormat);
+    int len = homework_list.size();
+    setting.beginWriteArray("todos");
+    for(int i=0;i<len;i++)
+    {
+        QString name = homework_list.at(i)->getName();
+        QDate ddl = homework_list.at(i)->getDdl();
+        setting.setArrayIndex(i);
+        setting.setValue("name", name);
+        setting.setValue("ddl", ddl.toString("dd.MM.yyyy"));
+    }
+    setting.endArray();
 }
 
 void Homework::on_input_task_returnPressed()
@@ -32,6 +64,9 @@ void Homework::on_input_task_returnPressed()
         connect(item, &CheckItem::check_click, this, &Homework::removeTask);
         // qDebug() << name << ddl <<  this->homework_list.isEmpty();
         ui->input_task->clear();
+
+        // add it into setting.ini
+        update_setting();
     }
 }
 
@@ -41,6 +76,8 @@ void Homework::removeTask(CheckItem *item)
     ui->task_layout->removeWidget(item);
     item->setParent(0);
     delete item;
+
+    update_setting();
 }
 
 void Homework::on_update_clicked()
