@@ -26,7 +26,7 @@ void Homework::on_input_task_returnPressed()
     {
         QString name = ui->input_task->text();
         QDate ddl = ui->dateEdit->date();
-        CheckItem *item = new CheckItem(name, ddl);
+		CheckItem *item = new CheckItem(name, ddl, false);
         this->homework_list.append(item);
         ui->task_layout->addWidget(item);
         connect(item, &CheckItem::check_click, this, &Homework::removeTask);
@@ -59,12 +59,10 @@ void Homework::on_upload_clicked()
         QSettings setting("setting.ini",QSettings::IniFormat);
         QString StuName = setting.value("config/StuName").toString();
         QString StuNumber = setting.value("config/StuNumber").toString();
-
         QFile file(fileName);
         QString reply = remoteAPI.uploadHomework(StuName, StuNumber, "test", file);
         qDebug() << reply;
     }
-
 }
 
 void Homework::on_Setting_clicked()

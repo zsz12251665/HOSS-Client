@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     airplanner.cpp \
     checkitem.cpp \
+    checkitem_editdialog.cpp \
     choice.cpp \
     homework.cpp \
     main.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 HEADERS += \
     airplanner.h \
     checkitem.h \
+    checkitem_editdialog.h \
     choice.h \
     homework.h \
     remoteAPI.h
@@ -34,6 +36,7 @@ HEADERS += \
 FORMS += \
     airplanner.ui \
     checkitem.ui \
+    checkitem_editdialog.ui \
     choice.ui \
     homework.ui
 

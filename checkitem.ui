@@ -21,25 +21,42 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
+    <widget class="QCheckBox" name="checkBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QLabel" name="label_title">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 20pt &quot;黑体&quot;;</string>
+        <string notr="true">font-family: &quot;Calibri&quot;, &quot;DengXian&quot;, &quot;Tahoma&quot;, &quot;Arial&quot;, &quot;黑体&quot;;
+font-size: 20pt;</string>
        </property>
        <property name="text">
-        <string>untitle task</string>
+        <string>TextLabel</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="label_deadline">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
          <horstretch>0</horstretch>
@@ -54,7 +71,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QPushButton" name="Edit_button">
+    <widget class="QPushButton" name="button_delete">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -74,7 +91,7 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">border-image: url(:/new/icon/assets/edit.png);
+      <string notr="true">border-image: url(:/new/icon/assets/delete.png);
 
 </string>
      </property>
