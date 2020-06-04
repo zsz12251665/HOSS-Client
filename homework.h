@@ -23,6 +23,7 @@ public:
 
 public slots:
     void removeTask(CheckItem *item);
+    void update_setting();
 
 private slots:
 
