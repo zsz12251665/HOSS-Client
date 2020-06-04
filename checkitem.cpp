@@ -52,6 +52,7 @@ void CheckItem::on_Edit_button_clicked()
         this->ddl = date_input->date();
         ui->checkBox->setText(name);
         ui->label->setText(ddl.toString("dd.MM.yyyy"));
+        emit edit_click();
     }
 
 }

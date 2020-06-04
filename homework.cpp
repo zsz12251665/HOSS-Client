@@ -26,6 +26,7 @@ Homework::Homework(QWidget *parent) :
         this->homework_list.append(item);
         ui->task_layout->addWidget(item);
         connect(item, &CheckItem::check_click, this, &Homework::removeTask);
+        connect(item, &CheckItem::edit_click, this, &Homework::update_setting);
     }
     setting.endArray();
 }
