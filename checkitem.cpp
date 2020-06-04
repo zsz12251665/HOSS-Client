@@ -36,7 +36,7 @@ QString CheckItem::getName()
 }
 QDate CheckItem::getDdl()
 {
-    return this->ddl;
+	return this->deadline;
 }
 bool CheckItem::getIsRemote()
 {

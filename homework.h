@@ -8,6 +8,7 @@
 #include <QSettings>
 #include <QDate>
 #include <QDebug>
+#include "checkitem.h"
 
 namespace Ui {
 class Homework;

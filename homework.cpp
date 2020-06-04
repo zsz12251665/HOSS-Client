@@ -1,7 +1,5 @@
 #include "homework.h"
 #include "ui_homework.h"
-#include "checkitem.h"
-#include "ui_checkitem.h"
 #include "RemoteAPI.h"
 
 RemoteAPI remoteAPI(QString("http://47.112.198.206:8000/"));
@@ -138,7 +136,7 @@ void Homework::on_Setting_clicked()
     // generate a multiply input dialog
     QDialog dialog(this);
     QFormLayout form(&dialog);
-    form.addRow(new QLabel("Setting:"));
+	form.addRow(new QLabel("Setting: "));
 
     QString value1 = QString("Server IP: ");
     QLineEdit *ip_input = new QLineEdit(&dialog);
