@@ -1,8 +1,8 @@
 #include "homework.h"
 #include "ui_homework.h"
-#include <QDate>
-#include <QDebug>
-#include <QMainWindow>
+#include "checkitem.h"
+#include "ui_checkitem.h"
+#include "RemoteAPI.h"
 
 RemoteAPI remoteAPI(QString("http://47.112.198.206:8000/"));
 
@@ -60,7 +60,7 @@ void Homework::on_upload_clicked()
         QString StuName = setting.value("config/StuName").toString();
         QString StuNumber = setting.value("config/StuNumber").toString();
         QFile file(fileName);
-        QString reply = remoteAPI.uploadHomework(StuName, StuNumber, "test", file);
+        QString reply = remoteAPI.uploadHomework(StuName, StuNumber, "test", file).second;
         qDebug() << reply;
     }
 }

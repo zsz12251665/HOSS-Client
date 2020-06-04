@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QEventLoop>
 #include <QFile>
+#include <QPair>
 #include <QRandomGenerator>
 
 #include <QtNetwork/QNetworkAccessManager>
@@ -15,23 +16,21 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
-QJsonArray fetchRemoteToDos(QUrl remoteURL);
-QString uploadHomework(QUrl remoteURL, QString name, QString number,
-                       QString directory, QFile *homework);
-
 class RemoteAPI : public QObject
 {
+	Q_OBJECT
 	private:
 		static QString formBoundary;
 		QNetworkAccessManager *manager;
 		QEventLoop waitUntilFinished;
 		QUrl serverURL;
-		static QHttpPart makePart(const QString, const QString, const QString = "");
+		static QHttpPart makePart(const QString, const QString, const QString = QString());
 	public:
 		RemoteAPI(const QUrl = QString("/"));
 		~RemoteAPI();
 		QJsonArray fetchRemoteToDos();
-		QString uploadHomework(const QString, const QString, const QString, QFile&);
+		QPair<int, QByteArray> uploadHomework(const QString, const QString,
+											  const QString, QFile&);
 };
 
 #endif // NETWORK_H

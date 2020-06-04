@@ -3,12 +3,11 @@
 
 #include <QMainWindow>
 #include <QVector>
-#include "checkitem.h"
-#include "ui_checkitem.h"
-#include "remoteAPI.h"
 #include <QJsonArray>
 #include <QFileDialog>
 #include <QSettings>
+#include <QDate>
+#include <QDebug>
 
 namespace Ui {
 class Homework;

@@ -23,7 +23,7 @@ SOURCES += \
     choice.cpp \
     homework.cpp \
     main.cpp \
-    remoteAPI.cpp
+    RemoteAPI.cpp
 
 HEADERS += \
     airplanner.h \
@@ -31,7 +31,7 @@ HEADERS += \
     checkitem_editdialog.h \
     choice.h \
     homework.h \
-    remoteAPI.h
+    RemoteAPI.h
 
 FORMS += \
     airplanner.ui \
