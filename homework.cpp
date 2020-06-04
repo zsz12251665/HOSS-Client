@@ -21,8 +21,7 @@ Homework::Homework(QWidget *parent) :
     {
         setting.setArrayIndex(i);
         QString name = setting.value("name").toString();
-        QDate ddl;
-        ddl.fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
+        QDate ddl = QDate::fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
         CheckItem *item = new CheckItem(name, ddl);
         this->homework_list.append(item);
         ui->task_layout->addWidget(item);
