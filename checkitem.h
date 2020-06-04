@@ -20,16 +20,20 @@ class CheckItem : public QWidget
     Q_OBJECT
 
 public:
-    explicit CheckItem(QString name, QDate ddl, QWidget *parent = nullptr);
+    explicit CheckItem(QString name, QDate ddl, bool isRemote=false, QString directory="" ,QWidget *parent = nullptr);
     ~CheckItem();
 
     QString getName();
     QDate getDdl();
+    bool getIsRemote();
+    QString getDirectory();
 
 private:
     Ui::CheckItem *ui;
     QString name;
     QDate ddl;
+    bool isRemote = false;
+    QString directory = "";
 
 signals:
     void check_click(CheckItem *item);

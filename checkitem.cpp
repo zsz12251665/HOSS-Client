@@ -1,7 +1,7 @@
 #include "checkitem.h"
 #include "ui_checkitem.h"
 
-CheckItem::CheckItem(QString name, QDate ddl, QWidget *parent) :
+CheckItem::CheckItem(QString name, QDate ddl, bool isRemote, QString directory, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CheckItem)
 {
@@ -9,6 +9,8 @@ CheckItem::CheckItem(QString name, QDate ddl, QWidget *parent) :
 
     this->name = name;
     this->ddl = ddl;
+    this->isRemote = isRemote;
+    this->directory = directory;
 
     ui->checkBox->setText(name);
     ui->label->setText(ddl.toString("dd.MM.yyyy"));
@@ -64,4 +66,12 @@ QString CheckItem::getName()
 QDate CheckItem::getDdl()
 {
     return this->ddl;
+}
+bool CheckItem::getIsRemote()
+{
+    return this->isRemote;
+}
+QString CheckItem::getDirectory()
+{
+    return this->directory;
 }
