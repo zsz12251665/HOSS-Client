@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>412</width>
-    <height>100</height>
+    <width>400</width>
+    <height>75</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="maximumSize">
    <size>
@@ -18,6 +24,12 @@
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
@@ -46,12 +58,19 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="font">
+        <font>
+         <family>Verdana</family>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="styleSheet">
-        <string notr="true">font-family: &quot;Calibri&quot;, &quot;DengXian&quot;, &quot;Tahoma&quot;, &quot;Arial&quot;, &quot;黑体&quot;;
-font-size: 20pt;</string>
+        <string notr="true">font-family: &quot;Verdana&quot;, &quot;DengXian&quot;, &quot;Arial&quot;, &quot;SimHei&quot;;</string>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string>Title 标题</string>
        </property>
       </widget>
      </item>
@@ -63,8 +82,21 @@ font-size: 20pt;</string>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="font">
+        <font>
+         <family>Georgia</family>
+         <italic>true</italic>
+         <stylestrategy>PreferDefault</stylestrategy>
+        </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-family: &quot;Georgia&quot;, &quot;NSimSun&quot;, &quot;Times New Roman&quot;, &quot;SimSun&quot;;</string>
+       </property>
        <property name="text">
-        <string>Date</string>
+        <string>2020-12-31</string>
        </property>
       </widget>
      </item>
@@ -89,6 +121,9 @@ font-size: 20pt;</string>
        <width>41</width>
        <height>41</height>
       </size>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
       <string notr="true">border-image: url(:/new/icon/assets/delete.png);

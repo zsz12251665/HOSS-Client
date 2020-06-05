@@ -23,18 +23,20 @@ class CheckItem : public QWidget
 		QString name;
 		QDate deadline;
 		bool isRemote;
-        QString directory;
-		void mouseDoubleClickEvent(QMouseEvent *);
+		QString directory;
+		void enterEvent(QEvent *) override;
+		void leaveEvent(QEvent *) override;
+		void mouseDoubleClickEvent(QMouseEvent *) override;
 	public:
 		CheckItem(QString, QDate, bool = false, QString = QString(), QWidget* = nullptr);
 		~CheckItem();
-        QString getName();
-        QDate getDdl();
-        bool getIsRemote();
-        QString getDirectory();
+		QString getName();
+		QDate getDdl();
+		bool getIsRemote();
+		QString getDirectory();
 	signals:
 		void check_click(CheckItem*);
-        void edit_click();
+		void edit_click();
 //	private slots:
 //		void on_Edit_button_clicked();
 };

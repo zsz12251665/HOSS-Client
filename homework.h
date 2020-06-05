@@ -8,6 +8,7 @@
 #include <QSettings>
 #include <QDate>
 #include <QDebug>
+#include <QLabel>
 #include "checkitem.h"
 
 namespace Ui {
@@ -16,29 +17,29 @@ class Homework;
 
 class Homework : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit Homework(QWidget *parent = nullptr);
-    ~Homework();
+	explicit Homework(QWidget *parent = nullptr);
+	~Homework();
 
 public slots:
-    void removeTask(CheckItem *item);
-    void update_setting();
+	void removeTask(CheckItem *item);
+	void update_setting();
 
 private slots:
 
-    void on_input_task_returnPressed();
+	void on_input_task_returnPressed();
 
-    void on_update_clicked();
+	void on_update_clicked();
 
-    void on_upload_clicked();
+	void on_upload_clicked();
 
-    void on_Setting_clicked();
+	void on_Setting_clicked();
 
 private:
-    Ui::Homework *ui;
-    QVector<CheckItem*> homework_list;
+	Ui::Homework *ui;
+	QVector<CheckItem*> homework_list;
 };
 
 #endif // HOMEWORK_H

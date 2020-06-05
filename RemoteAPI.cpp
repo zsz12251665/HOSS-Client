@@ -1,4 +1,4 @@
-#include "remoteAPI.h"
+#include "RemoteAPI.h"
 
 QString RemoteAPI::formBoundary = QString("--%1_Boundary_%1--").arg(
 			QRandomGenerator::global()->generate64(), 16, 16, QLatin1Char('0'));

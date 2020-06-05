@@ -9,15 +9,32 @@ CheckItem::CheckItem(QString name, QDate deadline, bool isRemote, QString direct
 	ui->setupUi(this);
 	ui->label_title->setText(name);
 	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
+	setAutoFillBackground(true);
 	connect(ui->button_delete, &QPushButton::clicked, [this] {emit check_click(this);});
 }
 
 CheckItem::~CheckItem()
 {
-    delete ui;
+	delete ui;
 }
 
-void CheckItem::mouseDoubleClickEvent(QMouseEvent *event)
+void CheckItem::enterEvent(QEvent *)
+{
+	static QPalette pal;
+	pal.setColor(QPalette::Background,qRgb(135, 206, 250));
+	setPalette(pal);
+	qDebug() << name << " mouse in! " << endl;
+}
+
+
+void CheckItem::leaveEvent(QEvent *)
+{
+	setPalette(QPalette());
+//	setStyleSheet("");
+	qDebug() << name << " mouse out! " << endl;
+}
+
+void CheckItem::mouseDoubleClickEvent(QMouseEvent *)
 {
 	CheckItem_EditDialog editDialog(name, deadline);
 	if (editDialog.exec() == QDialog::Accepted)
@@ -32,7 +49,7 @@ void CheckItem::mouseDoubleClickEvent(QMouseEvent *event)
 
 QString CheckItem::getName()
 {
-    return this->name;
+	return this->name;
 }
 QDate CheckItem::getDdl()
 {
@@ -40,9 +57,9 @@ QDate CheckItem::getDdl()
 }
 bool CheckItem::getIsRemote()
 {
-    return this->isRemote;
+	return this->isRemote;
 }
 QString CheckItem::getDirectory()
 {
-    return this->directory;
+	return this->directory;
 }
