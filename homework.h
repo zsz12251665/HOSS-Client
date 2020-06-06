@@ -27,6 +27,7 @@ public slots:
 	void removeTask(CheckItem *item);
 	void update_setting();
     void upload_file(QString directory);
+    bool isDone(QString name);
 
 private slots:
 
@@ -41,6 +42,7 @@ private slots:
 private:
 	Ui::Homework *ui;
 	QVector<CheckItem*> homework_list;
+    QVector<CheckItem*> homework_done;
 };
 
 #endif // HOMEWORK_H

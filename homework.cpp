@@ -11,6 +11,20 @@ Homework::Homework(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->dateEdit->setDate(QDateTime::currentDateTime().date());
+    QSettings setting("setting.ini",QSettings::IniFormat);
+
+    // get the remote_done todos
+    int done_len = setting.beginReadArray("done");
+    for(int i=0;i<done_len;i++)
+    {
+        setting.setArrayIndex(i);
+        QString name = setting.value("name").toString();
+        QDate ddl = QDate::fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
+        QString directory = setting.value("directory").toString();
+        CheckItem *item = new CheckItem(name, ddl, true, directory);
+        this->homework_done.append(item);
+    }
+    setting.endArray();
 
     // get the remote todos
     QJsonArray json = QJsonArray(remoteAPI.fetchRemoteToDos());
@@ -19,12 +33,14 @@ Homework::Homework(QWidget *parent) :
         QString name = json.at(i)["title"].toString();
         QDate ddl = QDate::fromString(json.at(i)["deadline"].toString(), "yyyy-MM-dd");
         QString directory = json.at(i)["directory"].toString();
-        CheckItem *item = new CheckItem(name, ddl, true, directory);
-        this->homework_list.append(item);
+        if(ddl >= QDate::currentDate() && !isDone(name))
+        {
+            CheckItem *item = new CheckItem(name, ddl, true, directory);
+            this->homework_list.append(item);
+        }
     }
 
     // get local todos
-    QSettings setting("setting.ini",QSettings::IniFormat);
     int len = setting.beginReadArray("todos");
     for(int i=0;i<len;i++)
     {
@@ -104,9 +120,27 @@ void Homework::removeTask(CheckItem *item)
         update_setting();
     }
     else {
+        // upload the file to the server
         QString directory = item->getDirectory();
         upload_file(directory);
 
+        // add it to the homework_done
+        homework_done.append(item);
+        QSettings setting("setting.ini",QSettings::IniFormat);
+        setting.beginWriteArray("done");
+        for(int i=0;i<homework_done.size();i++)
+        {
+            QString name = homework_done.at(i)->getName();
+            QDate ddl = homework_done.at(i)->getDdl();
+            QString directory = homework_done.at(i)->getDirectory();
+            setting.setArrayIndex(i);
+            setting.setValue("name", name);
+            setting.setValue("ddl", ddl.toString("dd.MM.yyyy"));
+            setting.setValue("directory", directory);
+        }
+        setting.endArray();
+
+        // delete the item
         homework_list.removeOne(item);
         ui->task_layout->removeWidget(item);
         item->setParent(0);
@@ -192,4 +226,15 @@ void Homework::on_Setting_clicked()
         setting.setValue("config/StuNumber",number_input->text());
         setting.sync();
     }
+}
+
+bool Homework::isDone(QString name)
+{
+    int len = homework_done.size();
+    for(int i=0;i<len;i++)
+    {
+        if(name == homework_done.at(i)->getName())
+            return true;
+    }
+    return false;
 }
