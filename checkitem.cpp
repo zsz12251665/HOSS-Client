@@ -46,6 +46,7 @@ void CheckItem::mouseDoubleClickEvent(QMouseEvent *)
             qDebug() << name << " " << deadline << endl;
             ui->label_title->setText(name);
             ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
+            emit edit_click();
         }
     }
 }

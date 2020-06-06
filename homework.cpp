@@ -33,6 +33,7 @@ Homework::Homework(QWidget *parent) :
         QDate ddl = QDate::fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
         CheckItem *item = new CheckItem(name, ddl, false);
         this->homework_list.append(item);
+        connect(item, &CheckItem::edit_click, this, &Homework::update_setting);
     }
     setting.endArray();
 
