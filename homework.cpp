@@ -94,12 +94,24 @@ void Homework::on_input_task_returnPressed()
 
 void Homework::removeTask(CheckItem *item)
 {
-    homework_list.removeOne(item);
-    ui->task_layout->removeWidget(item);
-    item->setParent(0);
-    delete item;
+    if(item->getIsRemote() == false)
+    {
+        homework_list.removeOne(item);
+        ui->task_layout->removeWidget(item);
+        item->setParent(0);
+        delete item;
 
-    update_setting();
+        update_setting();
+    }
+    else {
+        QString directory = item->getDirectory();
+        upload_file(directory);
+
+        homework_list.removeOne(item);
+        ui->task_layout->removeWidget(item);
+        item->setParent(0);
+        delete item;
+    }
 }
 
 void Homework::on_update_clicked()
@@ -115,16 +127,20 @@ void Homework::on_update_clicked()
 
 void Homework::on_upload_clicked()
 {
+    upload_file("test");
+}
+void Homework::upload_file(QString directory)
+{
     QString fileName = QFileDialog::getOpenFileName(this,
-			tr("Open the file"), "C:/", tr("All files(*.*)"));
+            tr("Open the file"), "C:/", tr("All files(*.*)"));
 
     if (!fileName.isNull())
-	{
+    {
         QSettings setting("setting.ini",QSettings::IniFormat);
         QString StuName = setting.value("config/StuName").toString();
         QString StuNumber = setting.value("config/StuNumber").toString();
         QFile file(fileName);
-        QString reply = remoteAPI.uploadHomework(StuName, StuNumber, "test", file).second;
+        QString reply = remoteAPI.uploadHomework(StuName, StuNumber, directory, file).second;
         qDebug() << reply;
     }
 }
