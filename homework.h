@@ -26,7 +26,7 @@ public:
 public slots:
 	void removeTask(CheckItem *item);
 	void update_setting();
-    void upload_file(QString directory);
+    bool upload_file(QString directory);
     bool isDone(QString name);
 
 private slots:

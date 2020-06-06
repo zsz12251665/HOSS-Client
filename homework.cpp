@@ -122,29 +122,30 @@ void Homework::removeTask(CheckItem *item)
     else {
         // upload the file to the server
         QString directory = item->getDirectory();
-        upload_file(directory);
 
-        // add it to the homework_done
-        homework_done.append(item);
-        QSettings setting("setting.ini",QSettings::IniFormat);
-        setting.beginWriteArray("done");
-        for(int i=0;i<homework_done.size();i++)
-        {
-            QString name = homework_done.at(i)->getName();
-            QDate ddl = homework_done.at(i)->getDdl();
-            QString directory = homework_done.at(i)->getDirectory();
-            setting.setArrayIndex(i);
-            setting.setValue("name", name);
-            setting.setValue("ddl", ddl.toString("dd.MM.yyyy"));
-            setting.setValue("directory", directory);
+        if(upload_file(directory)){
+            // add it to the homework_done
+            homework_done.append(item);
+            QSettings setting("setting.ini",QSettings::IniFormat);
+            setting.beginWriteArray("done");
+            for(int i=0;i<homework_done.size();i++)
+            {
+                QString name = homework_done.at(i)->getName();
+                QDate ddl = homework_done.at(i)->getDdl();
+                QString directory = homework_done.at(i)->getDirectory();
+                setting.setArrayIndex(i);
+                setting.setValue("name", name);
+                setting.setValue("ddl", ddl.toString("dd.MM.yyyy"));
+                setting.setValue("directory", directory);
+            }
+            setting.endArray();
+
+            // delete the item
+            homework_list.removeOne(item);
+            ui->task_layout->removeWidget(item);
+            item->setParent(0);
+            delete item;
         }
-        setting.endArray();
-
-        // delete the item
-        homework_list.removeOne(item);
-        ui->task_layout->removeWidget(item);
-        item->setParent(0);
-        delete item;
     }
 }
 
@@ -163,7 +164,7 @@ void Homework::on_upload_clicked()
 {
     upload_file("test");
 }
-void Homework::upload_file(QString directory)
+bool Homework::upload_file(QString directory)
 {
     QString fileName = QFileDialog::getOpenFileName(this,
             tr("Open the file"), "C:/", tr("All files(*.*)"));
@@ -174,9 +175,10 @@ void Homework::upload_file(QString directory)
         QString StuName = setting.value("config/StuName").toString();
         QString StuNumber = setting.value("config/StuNumber").toString();
         QFile file(fileName);
-        QString reply = remoteAPI.uploadHomework(StuName, StuNumber, directory, file).second;
-        qDebug() << reply;
+        int reply = remoteAPI.uploadHomework(StuName, StuNumber, directory, file).first;
+        return reply == 200;
     }
+    return false;
 }
 
 void Homework::on_Setting_clicked()
