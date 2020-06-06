@@ -23,7 +23,7 @@ void CheckItem::enterEvent(QEvent *)
 	static QPalette pal;
 	pal.setColor(QPalette::Background,qRgb(135, 206, 250));
 	setPalette(pal);
-	qDebug() << name << " mouse in! " << endl;
+    qDebug() << name << isRemote << " mouse in! " << endl;
 }
 
 
@@ -36,15 +36,18 @@ void CheckItem::leaveEvent(QEvent *)
 
 void CheckItem::mouseDoubleClickEvent(QMouseEvent *)
 {
-	CheckItem_EditDialog editDialog(name, deadline);
-	if (editDialog.exec() == QDialog::Accepted)
-	{
-		name = editDialog.titleValue();
-		deadline = editDialog.deadlineValue();
-		qDebug() << name << " " << deadline << endl;
-		ui->label_title->setText(name);
-		ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
-	}
+    if(isRemote == false)
+    {
+        CheckItem_EditDialog editDialog(name, deadline);
+        if (editDialog.exec() == QDialog::Accepted)
+        {
+            name = editDialog.titleValue();
+            deadline = editDialog.deadlineValue();
+            qDebug() << name << " " << deadline << endl;
+            ui->label_title->setText(name);
+            ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
+        }
+    }
 }
 
 QString CheckItem::getName()

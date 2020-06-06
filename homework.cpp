@@ -31,7 +31,7 @@ Homework::Homework(QWidget *parent) :
         setting.setArrayIndex(i);
         QString name = setting.value("name").toString();
         QDate ddl = QDate::fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
-        CheckItem *item = new CheckItem(name, ddl, true);
+        CheckItem *item = new CheckItem(name, ddl, false);
         this->homework_list.append(item);
     }
     setting.endArray();
