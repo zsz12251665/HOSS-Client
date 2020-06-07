@@ -34,6 +34,7 @@ public slots:
     bool upload_file(QString directory);
     bool isDone(QString name);
     void clear_all_checkitems();
+    void initial_todos();
 
 private:
 	Ui::Homework *ui;

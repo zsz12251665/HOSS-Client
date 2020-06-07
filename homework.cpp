@@ -11,61 +11,62 @@ Homework::Homework(QWidget *parent) :
 {
 	ui->setupUi(this);
 	ui->dateEdit->setDate(QDateTime::currentDateTime().date());
-	QSettings setting("setting.ini",QSettings::IniFormat);
 
-	// get the remote_done todos
-	int done_len = setting.beginReadArray("done");
-	for(int i=0;i<done_len;i++)
-	{
-		setting.setArrayIndex(i);
-		QString name = setting.value("name").toString();
-		QDate ddl = QDate::fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
-		QString directory = setting.value("directory").toString();
-		CheckItem *item = new CheckItem(name, ddl, true, directory);
-		this->homework_done.append(item);
-	}
-	setting.endArray();
-
-	// get the remote todos
-	QJsonArray json = QJsonArray(remoteAPI.fetchRemoteToDos());
-	for (int i=0;i<json.size();i++) {
-		qDebug() << json.at(i)["deadline"].toString();
-		QString name = json.at(i)["title"].toString();
-		QDate ddl = QDate::fromString(json.at(i)["deadline"].toString(), "yyyy-MM-dd");
-		QString directory = json.at(i)["directory"].toString();
-		if(ddl >= QDate::currentDate() && !isDone(name))
-		{
-			CheckItem *item = new CheckItem(name, ddl, true, directory);
-			this->homework_list.append(item);
-		}
-	}
-
-	// get local todos
-	int len = setting.beginReadArray("todos");
-	for(int i=0;i<len;i++)
-	{
-		setting.setArrayIndex(i);
-		QString name = setting.value("name").toString();
-		QDate ddl = QDate::fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
-		CheckItem *item = new CheckItem(name, ddl, false);
-		this->homework_list.append(item);
-		connect(item, &CheckItem::editEvent, this, &Homework::update_setting);
-	}
-	setting.endArray();
+    // initial the todo list
+    initial_todos();
 
 	// add widgets
-	for(int i=0;i<homework_list.size();i++)
-	{
-		CheckItem *item = homework_list[i];
-		ui->task_layout->addWidget(item);
-		connect(item, &CheckItem::removeEvent, this, &Homework::removeTask);
-		connect(item, &CheckItem::editEvent, this, &Homework::update_setting);
-	}
+    on_all_clicked();
 }
 
 Homework::~Homework()
 {
 	delete ui;
+}
+
+void Homework::initial_todos()
+{
+    QSettings setting("setting.ini",QSettings::IniFormat);
+
+    // get the remote_done todos
+    int done_len = setting.beginReadArray("done");
+    for(int i=0;i<done_len;i++)
+    {
+        setting.setArrayIndex(i);
+        QString name = setting.value("name").toString();
+        QDate ddl = QDate::fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
+        QString directory = setting.value("directory").toString();
+        CheckItem *item = new CheckItem(name, ddl, true, directory);
+        this->homework_done.append(item);
+    }
+    setting.endArray();
+
+    // get the remote todos
+    QJsonArray json = QJsonArray(remoteAPI.fetchRemoteToDos());
+    for (int i=0;i<json.size();i++) {
+        qDebug() << json.at(i)["deadline"].toString();
+        QString name = json.at(i)["title"].toString();
+        QDate ddl = QDate::fromString(json.at(i)["deadline"].toString(), "yyyy-MM-dd");
+        QString directory = json.at(i)["directory"].toString();
+        if(ddl >= QDate::currentDate() && !isDone(name))
+        {
+            CheckItem *item = new CheckItem(name, ddl, true, directory);
+            this->homework_list.append(item);
+        }
+    }
+
+    // get local todos
+    int len = setting.beginReadArray("todos");
+    for(int i=0;i<len;i++)
+    {
+        setting.setArrayIndex(i);
+        QString name = setting.value("name").toString();
+        QDate ddl = QDate::fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
+        CheckItem *item = new CheckItem(name, ddl, false);
+        this->homework_list.append(item);
+        connect(item, &CheckItem::editEvent, this, &Homework::update_setting);
+    }
+    setting.endArray();
 }
 
 // only update local todos
