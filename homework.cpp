@@ -74,13 +74,14 @@ void Homework::update_setting()
     QSettings setting("setting.ini",QSettings::IniFormat);
     int len = homework_list.size();
     setting.beginWriteArray("todos");
+    int cnt=0;
     for(int i=0;i<len;i++)
     {
-        int cnt=0;
         if(homework_list[i]->getIsRemote() == false)
         {
             QString name = homework_list.at(i)->getName();
             QDate ddl = homework_list.at(i)->getDdl();
+            qDebug() << name << endl;
             setting.setArrayIndex(cnt);
             setting.setValue("name", name);
             setting.setValue("ddl", ddl.toString("dd.MM.yyyy"));
@@ -239,4 +240,82 @@ bool Homework::isDone(QString name)
             return true;
     }
     return false;
+}
+
+void Homework::clear_all_checkitems()
+{
+    QLayoutItem *child;
+     while ((child = ui->task_layout->takeAt(0)) != 0)
+     {
+            if(child->widget())
+            {
+                child->widget()->setParent(NULL);
+            }
+
+            delete child;
+     }
+}
+
+void Homework::on_all_clicked()
+{
+    // clear all the checkitems
+    clear_all_checkitems();
+
+    // add the required checkitems
+    for(int i=0;i<homework_list.size();i++)
+    {
+        CheckItem *item = homework_list[i];
+        ui->task_layout->addWidget(item);
+        connect(item, &CheckItem::check_click, this, &Homework::removeTask);
+        connect(item, &CheckItem::edit_click, this, &Homework::update_setting);
+    }
+}
+
+void Homework::on_homework_clicked()
+{
+    // clear all the checkitems
+    clear_all_checkitems();
+
+    // add the required checkitems
+    for(int i=0;i<homework_list.size();i++)
+    {
+        CheckItem *item = homework_list[i];
+        if(item->getIsRemote() == true) {
+            ui->task_layout->addWidget(item);
+            connect(item, &CheckItem::check_click, this, &Homework::removeTask);
+            connect(item, &CheckItem::edit_click, this, &Homework::update_setting);
+        }
+    }
+}
+
+void Homework::on_mine_clicked()
+{
+    // clear all the checkitems
+    clear_all_checkitems();
+
+    // add the required checkitems
+    for(int i=0;i<homework_list.size();i++)
+    {
+        CheckItem *item = homework_list[i];
+        if(item->getIsRemote() == false) {
+            ui->task_layout->addWidget(item);
+            connect(item, &CheckItem::check_click, this, &Homework::removeTask);
+            connect(item, &CheckItem::edit_click, this, &Homework::update_setting);
+        }
+    }
+}
+
+void Homework::on_HasSubmitted_clicked()
+{
+    // clear all the checkitems
+    clear_all_checkitems();
+
+    // add the required checkitems
+    for(int i=0;i<homework_done.size();i++)
+    {
+        CheckItem *item = homework_done[i];
+        ui->task_layout->addWidget(item);
+        connect(item, &CheckItem::check_click, this, &Homework::removeTask);
+        connect(item, &CheckItem::edit_click, this, &Homework::update_setting);
+    }
 }

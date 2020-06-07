@@ -28,6 +28,7 @@ public slots:
 	void update_setting();
     bool upload_file(QString directory);
     bool isDone(QString name);
+    void clear_all_checkitems();
 
 private slots:
 
@@ -38,6 +39,14 @@ private slots:
 	void on_upload_clicked();
 
 	void on_Setting_clicked();
+
+    void on_all_clicked();
+
+    void on_homework_clicked();
+
+    void on_mine_clicked();
+
+    void on_HasSubmitted_clicked();
 
 private:
 	Ui::Homework *ui;
