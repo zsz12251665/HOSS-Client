@@ -1,10 +1,10 @@
 #include <QApplication>
-#include "choice.h"
+#include "homework.h"
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-    Choice dlg;
-	dlg.show();
+	Homework homework;
+	homework.show();
 	return a.exec();
 }
