@@ -112,31 +112,41 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>41</width>
-       <height>41</height>
+       <width>48</width>
+       <height>48</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>41</width>
-       <height>41</height>
+       <width>48</width>
+       <height>48</height>
       </size>
      </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">border-image: url(:/new/icon/assets/delete.png);
-
-</string>
+      <string notr="true"/>
      </property>
-     <property name="text">
-      <string/>
+     <property name="icon">
+      <iconset resource="FontAwesome.qrc">
+       <normaloff>:/FontAwesome/svgs/solid/trash-alt.svg</normaloff>:/FontAwesome/svgs/solid/trash-alt.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>42</width>
+       <height>42</height>
+      </size>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="FontAwesome.qrc"/>
+ </resources>
  <connections/>
 </ui>

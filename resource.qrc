@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/new/icon">
-        <file>assets/delete.png</file>
-        <file>assets/edit.png</file>
-        <file>assets/exit.png</file>
-        <file>assets/logo.ico</file>
-    </qresource>
-</RCC>

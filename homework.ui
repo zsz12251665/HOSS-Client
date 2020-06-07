@@ -18,19 +18,75 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
+       <widget class="QPushButton" name="update">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="FontAwesome.qrc">
+          <normaloff>:/FontAwesome/svgs/solid/sync-alt.svg</normaloff>:/FontAwesome/svgs/solid/sync-alt.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="upload">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="FontAwesome.qrc">
+          <normaloff>:/FontAwesome/svgs/solid/file-upload.svg</normaloff>:/FontAwesome/svgs/solid/file-upload.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="Setting">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="FontAwesome.qrc">
+          <normaloff>:/FontAwesome/svgs/solid/cog.svg</normaloff>:/FontAwesome/svgs/solid/cog.svg</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
        <widget class="QPushButton" name="all">
         <property name="styleSheet">
          <string notr="true"/>
         </property>
         <property name="text">
          <string>ALL</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="homework">
-        <property name="text">
-         <string>Homework</string>
         </property>
        </widget>
       </item>
@@ -42,30 +98,16 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="homework">
+        <property name="text">
+         <string>Homework</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="HasSubmitted">
         <property name="text">
          <string>HasSubmitted</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="update">
-        <property name="text">
-         <string>update</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="upload">
-        <property name="text">
-         <string>upload</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="Setting">
-        <property name="text">
-         <string>⚙</string>
         </property>
        </widget>
       </item>
@@ -81,8 +123,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>726</width>
-         <height>657</height>
+         <width>730</width>
+         <height>646</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -129,11 +171,13 @@
      <x>0</x>
      <y>0</y>
      <width>750</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="FontAwesome.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -18,26 +18,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     checkitem.cpp \
-    checkitem_editdialog.cpp \
-    homework.cpp \
-    main.cpp \
-    RemoteAPI.cpp
+	checkitem_editdialog.cpp \
+	homework.cpp \
+	main.cpp \
+	RemoteAPI.cpp
 
 HEADERS += \
     checkitem.h \
-    checkitem_editdialog.h \
-    homework.h \
-    RemoteAPI.h
+	checkitem_editdialog.h \
+	homework.h \
+	RemoteAPI.h
 
 FORMS += \
     checkitem.ui \
-    checkitem_editdialog.ui \
-    homework.ui
+	checkitem_editdialog.ui \
+	homework.ui
 
 TRANSLATIONS += \
     Airplanner_en_US.ts
 
-RC_ICONS = assets/logo.ico
+RC_ICONS = logo.ico
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -45,4 +45,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    resource.qrc
+    FontAwesome.qrc \
+	logo.qrc
