@@ -1,6 +1,9 @@
 #include "checkitem.h"
 #include "ui_checkitem.h"
-#include "checkitem_editdialog.h"
+
+#include "CheckItem_EditDialog.h"
+
+#include <QDebug>
 
 CheckItem::CheckItem(QString name, QDate deadline, bool isRemote, QString directory,
 					 QWidget *parent) :
@@ -58,7 +61,7 @@ QString CheckItem::getName()
 {
 	return this->name;
 }
-QDate CheckItem::getDdl()
+QDate CheckItem::getDeadline()
 {
 	return this->deadline;
 }

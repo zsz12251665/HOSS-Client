@@ -2,7 +2,6 @@
 #define CHECKITEM_H
 
 #include <QDate>
-#include <QDebug>
 #include <QWidget>
 
 namespace Ui
@@ -27,7 +26,7 @@ public:
 	CheckItem(QString, QDate, bool = false, QString = QString(), QWidget* = nullptr);
 	~CheckItem();
 	QString getName();
-	QDate getDdl();
+	QDate getDeadline();
 	bool getIsRemote();
 	QString getDirectory();
 signals:

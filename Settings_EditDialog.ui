@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CheckItem_EditDialog</class>
- <widget class="QDialog" name="CheckItem_EditDialog">
+ <class>Settings_EditDialog</class>
+ <widget class="QDialog" name="Settings_EditDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>100</height>
+    <height>125</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,13 +17,13 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Edit</string>
+   <string>Settings</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_title">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_name">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -31,42 +31,44 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Title: </string>
+        <string>Student Name: </string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_number">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Student No. : </string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_server">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Server URL: </string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="edit_title"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_deadline">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Deadline: </string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="edit_server"/>
      </item>
      <item row="1" column="1">
-      <widget class="QDateEdit" name="edit_deadline">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="date">
-        <date>
-         <year>1926</year>
-         <month>8</month>
-         <day>17</day>
-        </date>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="edit_name"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="edit_number"/>
      </item>
     </layout>
    </item>
@@ -87,7 +89,7 @@
   <connection>
    <sender>dialogButtonBox</sender>
    <signal>accepted()</signal>
-   <receiver>CheckItem_EditDialog</receiver>
+   <receiver>Settings_EditDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -103,7 +105,7 @@
   <connection>
    <sender>dialogButtonBox</sender>
    <signal>rejected()</signal>
-   <receiver>CheckItem_EditDialog</receiver>
+   <receiver>Settings_EditDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

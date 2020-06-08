@@ -1,8 +1,8 @@
 #ifndef CHECKITEM_EDITDIALOG_H
 #define CHECKITEM_EDITDIALOG_H
 
-#include <QDialog>
 #include <QDate>
+#include <QDialog>
 
 namespace Ui
 {

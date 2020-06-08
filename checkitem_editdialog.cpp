@@ -1,5 +1,5 @@
-#include "checkitem_editdialog.h"
-#include "ui_checkitem_editdialog.h"
+#include "CheckItem_EditDialog.h"
+#include "ui_CheckItem_EditDialog.h"
 
 CheckItem_EditDialog::CheckItem_EditDialog(const QString title, const QDate deadline,
 										   QWidget *parent) :

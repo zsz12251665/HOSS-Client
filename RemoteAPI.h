@@ -1,18 +1,13 @@
-#ifndef NETWORK_H
-#define NETWORK_H
+#ifndef REMOTEAPI_H
+#define REMOTEAPI_H
 
 #include <QEventLoop>
 #include <QFile>
 #include <QHttpPart>
-#include <QHttpMultiPart>
-#include <QJsonDocument>
 #include <QJsonArray>
 #include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QObject>
 #include <QPair>
-#include <QRandomGenerator>
+// #include <QObject> // Included in other head files
 
 class RemoteAPI : public QObject
 {
@@ -30,4 +25,4 @@ public:
 	QPair<int, QByteArray> uploadHomework(const QString, const QString, const QString, QFile&);
 };
 
-#endif // NETWORK_H
+#endif // REMOTEAPI_H
