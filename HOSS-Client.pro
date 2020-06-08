@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
 	CheckItem_EditDialog.cpp \
+	Settings.cpp \
 	Settings_EditDialog.cpp \
 	RemoteAPI.cpp \
 	checkitem.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
 
 HEADERS += \
 	CheckItem_EditDialog.h \
+	Settings.h \
 	Settings_EditDialog.h \
 	RemoteAPI.h \
 	checkitem.h \

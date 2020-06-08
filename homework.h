@@ -20,13 +20,12 @@ private:
 	QVector<CheckItem*> homework_list;
 	QVector<CheckItem*> homework_done;
 private slots:
+	void on_button_settings_clicked();
+	void on_button_update_clicked();
+	void on_radio_all_clicked();
+	void on_radio_homework_clicked();
+	void on_radio_mine_clicked();
 	void on_input_task_returnPressed();
-	void on_update_clicked();
-	void on_upload_clicked();
-	void on_Setting_clicked();
-	void on_all_clicked();
-	void on_homework_clicked();
-	void on_mine_clicked();
 	void on_HasSubmitted_clicked();
 public:
 	Homework(QWidget *parent = nullptr);

@@ -1,34 +1,37 @@
 #include "RemoteAPI.h"
 
+#include <QDebug>
+#include <QFileDialog>
 #include <QHttpMultiPart>
+#include <QHttpPart>
 #include <QJsonDocument>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QRandomGenerator>
 
-QString RemoteAPI::formBoundary = QString("--%1_Boundary_%1--").arg(
-			QRandomGenerator::global()->generate64(), 16, 16, QLatin1Char('0'));
-
-RemoteAPI::RemoteAPI(const QUrl serverURL) :
-	serverURL(serverURL.adjusted(QUrl::NormalizePathSegments).adjusted(QUrl::RemoveFilename))
-{
-	manager = new QNetworkAccessManager;
-	connect(manager, &QNetworkAccessManager::finished, &waitUntilFinished, &QEventLoop::quit);
-}
-
-RemoteAPI::~RemoteAPI()
-{
-	delete manager;
-}
-
-QHttpPart RemoteAPI::makePart(const QString type, const QString disposition,
-							  const QString body)
+static QHttpPart makePart(const QString type, const QString disposition, const QString body)
 {
 	QHttpPart httpPart;
 	httpPart.setRawHeader("Content-Type", type.toUtf8());
 	httpPart.setRawHeader("Content-Disposition", disposition.toUtf8());
 	httpPart.setBody(body.toUtf8());
 	return httpPart;
+}
+
+const QString RemoteAPI::formBoundary = QString("--%1_Boundary_%1--").arg(
+			QRandomGenerator::global()->generate64(), 16, 16, QLatin1Char('0'));
+
+RemoteAPI::RemoteAPI(const QUrl serverURL) :
+	serverURL(serverURL.adjusted(QUrl::NormalizePathSegments).adjusted(QUrl::RemoveFilename))
+{
+	manager = new QNetworkAccessManager;
+	QObject::connect(manager, &QNetworkAccessManager::finished,
+					 &waitUntilFinished, &QEventLoop::quit);
+}
+
+RemoteAPI::~RemoteAPI()
+{
+	delete manager;
 }
 
 QJsonArray RemoteAPI::fetchRemoteToDos()
@@ -46,6 +49,15 @@ QJsonArray RemoteAPI::fetchRemoteToDos()
 }
 
 QPair<int, QByteArray> RemoteAPI::uploadHomework(const QString name, const QString number,
+								  const QString directory)
+{
+	QString fileName = QFileDialog::getOpenFileName(nullptr, "Open the file");
+	QFile homework(fileName);
+	return fileName.isNull() ? QPair<int, QByteArray>(-1, "No file selected") :
+		uploadHomework(name, number, directory, homework);
+}
+
+QPair<int, QByteArray> RemoteAPI::uploadHomework(const QString name, const QString number,
 								  const QString directory, QFile &homework)
 {
 	// Fulfill the form
@@ -59,7 +71,7 @@ QPair<int, QByteArray> RemoteAPI::uploadHomework(const QString name, const QStri
 	homework.open(QFile::ReadOnly);
 	QHttpPart filePart = makePart("application/octet-stream",
 								  "form-data; name=\"WorkFile\"; filename=\"" +
-								  homework.fileName() + "\"");
+								  homework.fileName() + "\"", QString());
 	filePart.setBodyDevice(&homework);
 	form->append(filePart);
 	// Send the request
@@ -70,9 +82,9 @@ QPair<int, QByteArray> RemoteAPI::uploadHomework(const QString name, const QStri
 	// Wait for the reply
 	waitUntilFinished.exec();
 	// Get the required information
-	int statusCode = reply->attribute(
-				QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	QByteArray replyMessage = reply->readAll();
+	qDebug() << statusCode << replyMessage;
 	// Close the objects & return
 	homework.close();
 	delete reply;

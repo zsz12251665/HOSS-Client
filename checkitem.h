@@ -23,7 +23,8 @@ private slots:
 	void leaveEvent(QEvent*);
 	void mouseDoubleClickEvent(QMouseEvent*);
 public:
-	CheckItem(QString, QDate, bool = false, QString = QString(), QWidget* = nullptr);
+	CheckItem(const QString = "标题 TITLE HERE", const QDate = QDate(),
+			  const QString = QString(), QWidget* = nullptr);
 	~CheckItem();
 	QString getName();
 	QDate getDeadline();

@@ -3,13 +3,14 @@
 
 #include "checkitem.h"
 #include "RemoteAPI.h"
-#include "Settings_EditDialog.h"
+#include "Settings.h"
 
 #include <QDebug>
-#include <QFileDialog>
 #include <QSettings>
 // #include <QDate> // Included in "checkitem.h"
 // #include <QJsonArray> // Included in "RemoteAPI.h"
+
+static Settings settings;
 
 static RemoteAPI remoteAPI(QString("http://47.112.198.206:8000/"));
 
@@ -20,7 +21,7 @@ Homework::Homework(QWidget *parent) : QMainWindow(parent), ui(new Ui::Homework)
 	// initial the todo list
 	initial_todos();
 	// add widgets
-	on_all_clicked();
+	on_radio_all_clicked();
 }
 
 Homework::~Homework()
@@ -28,9 +29,70 @@ Homework::~Homework()
 	delete ui;
 }
 
+void Homework::on_button_settings_clicked()
+{
+	settings.popEditDialog();
+}
+
+void Homework::on_button_update_clicked()
+{
+	QJsonArray json(remoteAPI.fetchRemoteToDos());
+	qDebug() << json.size();
+	for (int i=0;i<json.size();i++)
+		qDebug() << json.at(i)["deadline"].toString() << json.at(i)["title"].toString();
+}
+
+void Homework::on_radio_all_clicked()
+{
+	// clear all the checkitems
+	clear_all_checkitems();
+	// add the required checkitems
+	for(int i=0;i<homework_list.size();i++)
+	{
+		CheckItem *item = homework_list[i];
+		ui->task_layout->addWidget(item);
+		connect(item, &CheckItem::removeEvent, this, &Homework::removeTask);
+		connect(item, &CheckItem::editEvent, this, &Homework::update_setting);
+	}
+}
+
+void Homework::on_radio_homework_clicked()
+{
+	// clear all the checkitems
+	clear_all_checkitems();
+	// add the required checkitems
+	for(int i=0;i<homework_list.size();i++)
+	{
+		CheckItem *item = homework_list[i];
+		if(item->getIsRemote())
+		{
+			ui->task_layout->addWidget(item);
+			connect(item, &CheckItem::removeEvent, this, &Homework::removeTask);
+			connect(item, &CheckItem::editEvent, this, &Homework::update_setting);
+		}
+	}
+}
+
+void Homework::on_radio_mine_clicked()
+{
+	// clear all the checkitems
+	clear_all_checkitems();
+	// add the required checkitems
+	for(int i=0;i<homework_list.size();i++)
+	{
+		CheckItem *item = homework_list[i];
+		if(!item->getIsRemote())
+		{
+			ui->task_layout->addWidget(item);
+			connect(item, &CheckItem::removeEvent, this, &Homework::removeTask);
+			connect(item, &CheckItem::editEvent, this, &Homework::update_setting);
+		}
+	}
+}
+
 void Homework::initial_todos()
 {
-	QSettings setting("setting.ini",QSettings::IniFormat);
+	QSettings setting("setting.ini", QSettings::IniFormat);
 	// get the remote_done todos
 	int done_len = setting.beginReadArray("done");
 	for(int i=0;i<done_len;i++)
@@ -39,20 +101,21 @@ void Homework::initial_todos()
 		QString name = setting.value("name").toString();
 		QDate ddl = QDate::fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
 		QString directory = setting.value("directory").toString();
-		CheckItem *item = new CheckItem(name, ddl, true, directory);
+		CheckItem *item = new CheckItem(name, ddl, directory);
 		this->homework_done.append(item);
 	}
 	setting.endArray();
 	// get the remote todos
 	QJsonArray json = QJsonArray(remoteAPI.fetchRemoteToDos());
-	for (int i=0;i<json.size();i++) {
-		qDebug() << json.at(i)["deadline"].toString();
+	for (int i=0;i<json.size();i++)
+	{
+		qDebug() << json.at(i)["title"].toString() << json.at(i)["deadline"].toString();
 		QString name = json.at(i)["title"].toString();
 		QDate ddl = QDate::fromString(json.at(i)["deadline"].toString(), "yyyy-MM-dd");
 		QString directory = json.at(i)["directory"].toString();
 		if(ddl >= QDate::currentDate() && !isDone(name))
 		{
-			CheckItem *item = new CheckItem(name, ddl, true, directory);
+			CheckItem *item = new CheckItem(name, ddl, directory);
 			this->homework_list.append(item);
 		}
 	}
@@ -63,7 +126,8 @@ void Homework::initial_todos()
 		setting.setArrayIndex(i);
 		QString name = setting.value("name").toString();
 		QDate ddl = QDate::fromString(setting.value("ddl").toString(), "dd.MM.yyyy");
-		CheckItem *item = new CheckItem(name, ddl, false);
+		qDebug() << name << ddl;
+		CheckItem *item = new CheckItem(name, ddl);
 		this->homework_list.append(item);
 		connect(item, &CheckItem::editEvent, this, &Homework::update_setting);
 	}
@@ -73,7 +137,7 @@ void Homework::initial_todos()
 // only update local todos
 void Homework::update_setting()
 {
-	QSettings setting("setting.ini",QSettings::IniFormat);
+	QSettings setting("setting.ini", QSettings::IniFormat);
 	int len = homework_list.size();
 	setting.beginWriteArray("todos");
 	int cnt=0;
@@ -98,7 +162,7 @@ void Homework::on_input_task_returnPressed()
 	{
 		QString name = ui->input_task->text();
 		QDate ddl = ui->dateEdit->date();
-		CheckItem *item = new CheckItem(name, ddl, false);
+		CheckItem *item = new CheckItem(name, ddl);
 		this->homework_list.append(item);
 		ui->task_layout->addWidget(item);
 		connect(item, &CheckItem::removeEvent, this, &Homework::removeTask);
@@ -117,17 +181,17 @@ void Homework::removeTask(CheckItem *item)
 		ui->task_layout->removeWidget(item);
 		item->setParent(0);
 		delete item;
-
 		update_setting();
 	}
-	else {
+	else
+	{
 		// upload the file to the server
 		QString directory = item->getDirectory();
 
 		if(upload_file(directory)){
 			// add it to the homework_done
 			homework_done.append(item);
-			QSettings setting("setting.ini",QSettings::IniFormat);
+			QSettings setting("setting.ini", QSettings::IniFormat);
 			setting.beginWriteArray("done");
 			for(int i=0;i<homework_done.size();i++)
 			{
@@ -150,57 +214,10 @@ void Homework::removeTask(CheckItem *item)
 	}
 }
 
-void Homework::on_update_clicked()
-{
-	QJsonArray json = QJsonArray(remoteAPI.fetchRemoteToDos());
-	qDebug() << json.size();
-	for (int i=0;i<json.size();i++) {
-		qDebug() << json.at(i)["deadline"];
-		qDebug() << json.at(i)["title"].toString();
-	}
-
-}
-
-void Homework::on_upload_clicked()
-{
-	qDebug() << upload_file("test");
-}
 bool Homework::upload_file(QString directory)
 {
-	QString fileName = QFileDialog::getOpenFileName(this, "Open the file");
-
-	if (!fileName.isNull())
-	{
-		QSettings setting("setting.ini", QSettings::IniFormat);
-		QString StuName = setting.value("config/StuName").toString();
-		QString StuNumber = setting.value("config/StuNumber").toString();
-		QFile file(fileName);
-		int reply = remoteAPI.uploadHomework(StuName, StuNumber, directory, file).first;
-		return reply == 200;
-	}
-	return false;
-}
-
-void Homework::on_Setting_clicked()
-{
-	// declare the setting
-	QSettings setting("setting.ini",QSettings::IniFormat);
-	// Generate a multiply input dialog
-	QString server = setting.contains("config/ip") ?
-				setting.value("config/ip").toString() : QString();
-	QString name = setting.contains("config/StuName") ?
-				setting.value("config/StuName").toString() : QString();
-	QString number = setting.contains("config/StuNumber") ?
-				setting.value("config/StuNumber").toString() : QString();
-	Settings_EditDialog editDialog(server,name,number);
-	// Process if OK button is clicked
-	if (editDialog.exec() == QDialog::Accepted)
-	{
-		setting.setValue("config/ip",editDialog.serverValue());
-		setting.setValue("config/StuName",editDialog.nameValue());
-		setting.setValue("config/StuNumber",editDialog.numberValue());
-		setting.sync();
-	}
+	return remoteAPI.uploadHomework(settings.getName(), settings.getNumber(),directory).first
+			== 200;
 }
 
 bool Homework::isDone(QString name)
@@ -217,63 +234,13 @@ bool Homework::isDone(QString name)
 void Homework::clear_all_checkitems()
 {
 	QLayoutItem *child;
-	 while ((child = ui->task_layout->takeAt(0)) != 0)
-	 {
-			if(child->widget())
-			{
-				child->widget()->setParent(NULL);
-			}
-
-			delete child;
-	 }
-}
-
-void Homework::on_all_clicked()
-{
-	// clear all the checkitems
-	clear_all_checkitems();
-
-	// add the required checkitems
-	for(int i=0;i<homework_list.size();i++)
+	while ((child = ui->task_layout->takeAt(0)) != 0)
 	{
-		CheckItem *item = homework_list[i];
-		ui->task_layout->addWidget(item);
-		connect(item, &CheckItem::removeEvent, this, &Homework::removeTask);
-		connect(item, &CheckItem::editEvent, this, &Homework::update_setting);
-	}
-}
-
-void Homework::on_homework_clicked()
-{
-	// clear all the checkitems
-	clear_all_checkitems();
-
-	// add the required checkitems
-	for(int i=0;i<homework_list.size();i++)
-	{
-		CheckItem *item = homework_list[i];
-		if(item->getIsRemote() == true) {
-			ui->task_layout->addWidget(item);
-			connect(item, &CheckItem::removeEvent, this, &Homework::removeTask);
-			connect(item, &CheckItem::editEvent, this, &Homework::update_setting);
+		if(child->widget())
+		{
+			child->widget()->setParent(NULL);
 		}
-	}
-}
-
-void Homework::on_mine_clicked()
-{
-	// clear all the checkitems
-	clear_all_checkitems();
-
-	// add the required checkitems
-	for(int i=0;i<homework_list.size();i++)
-	{
-		CheckItem *item = homework_list[i];
-		if(item->getIsRemote() == false) {
-			ui->task_layout->addWidget(item);
-			connect(item, &CheckItem::removeEvent, this, &Homework::removeTask);
-			connect(item, &CheckItem::editEvent, this, &Homework::update_setting);
-		}
+		delete child;
 	}
 }
 
@@ -281,7 +248,6 @@ void Homework::on_HasSubmitted_clicked()
 {
 	// clear all the checkitems
 	clear_all_checkitems();
-
 	// add the required checkitems
 	for(int i=0;i<homework_done.size();i++)
 	{

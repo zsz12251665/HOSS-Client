@@ -18,7 +18,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="update">
+       <widget class="QPushButton" name="button_update">
         <property name="text">
          <string/>
         </property>
@@ -29,7 +29,7 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
+       <spacer name="horizontalSpacer_1">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -42,13 +42,13 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="upload">
+       <widget class="QPushButton" name="HasSubmitted">
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="FontAwesome.qrc">
-          <normaloff>:/FontAwesome/svgs/solid/file-upload.svg</normaloff>:/FontAwesome/svgs/solid/file-upload.svg</iconset>
+          <normaloff>:/FontAwesome/svgs/solid/check-circle.svg</normaloff>:/FontAwesome/svgs/solid/check-circle.svg</iconset>
         </property>
        </widget>
       </item>
@@ -66,7 +66,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="Setting">
+       <widget class="QPushButton" name="button_settings">
         <property name="text">
          <string/>
         </property>
@@ -79,37 +79,85 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="QPushButton" name="all">
-        <property name="styleSheet">
-         <string notr="true"/>
+       <spacer name="horizontalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radio_all">
         <property name="text">
-         <string>ALL</string>
+         <string>All</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="mine">
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radio_mine">
         <property name="text">
-         <string>mine</string>
+         <string>Mine</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="homework">
+       <spacer name="horizontalSpacer_7">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radio_homework">
         <property name="text">
          <string>Homework</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="HasSubmitted">
-        <property name="text">
-         <string>HasSubmitted</string>
+       <spacer name="horizontalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
-       </widget>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>
