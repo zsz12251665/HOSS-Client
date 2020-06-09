@@ -5,6 +5,7 @@
 #include <QHttpMultiPart>
 #include <QHttpPart>
 #include <QJsonDocument>
+#include <QMessageBox>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QRandomGenerator>
@@ -36,28 +37,32 @@ RemoteAPI::~RemoteAPI()
 
 QJsonArray RemoteAPI::fetchRemoteToDos()
 {
+	qDebug() << "RemoteAPI::fetchRemoteToDos() Starts";
 	// Send the request
 	QNetworkRequest request(QString(serverURL.toEncoded() + "homework.php"));
 	QNetworkReply *reply = manager->get(request);
 	// Wait for the reply
 	waitUntilFinished.exec();
 	// Transfer the response to an array
-	QJsonDocument responseJSON = QJsonDocument::fromJson(reply->readAll());
+	QJsonArray responseJSON = QJsonDocument::fromJson(reply->readAll()).array();
 	// Close the objects & return
 	delete reply;
-	return responseJSON.array();
+	qDebug() << responseJSON.size();
+	for (int i = 0; i < responseJSON.size(); ++i)
+		qDebug() << responseJSON.at(i)["title"].toString() << responseJSON.at(i)["deadline"].toString();
+	qDebug() << "RemoteAPI::fetchRemoteToDos() Ends" << endl;
+	return responseJSON;
 }
 
-QPair<int, QByteArray> RemoteAPI::uploadHomework(const QString name, const QString number,
+int RemoteAPI::uploadHomework(const QString name, const QString number,
 								  const QString directory)
 {
 	QString fileName = QFileDialog::getOpenFileName(nullptr, "Open the file");
 	QFile homework(fileName);
-	return fileName.isNull() ? QPair<int, QByteArray>(-1, "No file selected") :
-		uploadHomework(name, number, directory, homework);
+	return fileName.isEmpty() ? -1 : uploadHomework(name, number, directory, homework);
 }
 
-QPair<int, QByteArray> RemoteAPI::uploadHomework(const QString name, const QString number,
+int RemoteAPI::uploadHomework(const QString name, const QString number,
 								  const QString directory, QFile &homework)
 {
 	// Fulfill the form
@@ -84,9 +89,11 @@ QPair<int, QByteArray> RemoteAPI::uploadHomework(const QString name, const QStri
 	// Get the required information
 	int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	QByteArray replyMessage = reply->readAll();
-	qDebug() << statusCode << replyMessage;
 	// Close the objects & return
 	homework.close();
 	delete reply;
-	return QPair<int, QByteArray>(statusCode, replyMessage);
+	qDebug() << statusCode << replyMessage;
+	QMessageBox(QMessageBox::Icon::Information, QString("HTTP %1").arg(statusCode),
+				replyMessage, QMessageBox::Ok).exec();
+	return statusCode;
 }

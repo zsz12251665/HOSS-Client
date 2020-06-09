@@ -42,11 +42,13 @@ void Settings::popEditDialog()
 {
 	Settings_EditDialog editDialog(getServer(), getName(), getNumber());
 	// Process if OK button is clicked
-	if (editDialog.exec() == QDialog::Accepted)
-	{
-		config.setValue("config/server", editDialog.serverValue());
-		config.setValue("config/name", editDialog.nameValue());
-		config.setValue("config/number", editDialog.numberValue());
-		config.sync();
-	}
+	do
+		if (editDialog.exec() == QDialog::Accepted)
+		{
+			config.setValue("config/server", editDialog.serverValue());
+			config.setValue("config/name", editDialog.nameValue());
+			config.setValue("config/number", editDialog.numberValue());
+			config.sync();
+		}
+	while (getServer().isEmpty());
 }

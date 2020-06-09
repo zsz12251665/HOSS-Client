@@ -14,26 +14,30 @@ class CheckItem : public QWidget
 	Q_OBJECT
 private:
 	Ui::CheckItem *ui;
-	QString name;
+	int id;
+	QString title, directory;
 	QDate deadline;
-	bool isRemote;
-	QString directory;
+	bool isFinished;
 private slots:
 	void enterEvent(QEvent*);
 	void leaveEvent(QEvent*);
 	void mouseDoubleClickEvent(QMouseEvent*);
+	void on_checkBox_stateChanged(int);
 public:
-	CheckItem(const QString = "标题 TITLE HERE", const QDate = QDate(),
-			  const QString = QString(), QWidget* = nullptr);
+	CheckItem(const int, const QString = "标题 TITLE HERE", const QDate = QDate::currentDate(),
+			  const QString = QString(), const bool = false, QWidget* = nullptr);
 	~CheckItem();
-	QString getName();
+	int getId();
+	QString getTitle();
 	QDate getDeadline();
-	bool getIsRemote();
+	bool getIsFinished();
 	QString getDirectory();
+	bool isRemote();
+	bool isDeleted();
+public slots:
+	void on_button_delete_clicked();
 signals:
-	void checkEvent(CheckItem*);
 	void editEvent(CheckItem*);
-	void removeEvent(CheckItem*);
 };
 
 #endif // CHECKITEM_H

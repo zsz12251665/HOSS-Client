@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout_1">
       <item>
        <widget class="QPushButton" name="button_update">
         <property name="text">
@@ -33,22 +33,16 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="HasSubmitted">
+       <widget class="QPushButton" name="button_new">
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="FontAwesome.qrc">
-          <normaloff>:/FontAwesome/svgs/solid/check-circle.svg</normaloff>:/FontAwesome/svgs/solid/check-circle.svg</iconset>
+          <normaloff>:/FontAwesome/svgs/solid/plus.svg</normaloff>:/FontAwesome/svgs/solid/plus.svg</iconset>
         </property>
        </widget>
       </item>
@@ -56,12 +50,6 @@
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
         </property>
        </spacer>
       </item>
@@ -79,17 +67,11 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <spacer name="horizontalSpacer_5">
+       <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
         </property>
        </spacer>
       </item>
@@ -108,18 +90,12 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
        </spacer>
       </item>
       <item>
-       <widget class="QRadioButton" name="radio_mine">
+       <widget class="QRadioButton" name="radio_local">
         <property name="text">
-         <string>Mine</string>
+         <string>Local</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -127,22 +103,16 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_7">
+       <spacer name="horizontalSpacer_5">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
         </property>
        </spacer>
       </item>
       <item>
-       <widget class="QRadioButton" name="radio_homework">
+       <widget class="QRadioButton" name="radio_remote">
         <property name="text">
-         <string>Homework</string>
+         <string>Remote</string>
         </property>
        </widget>
       </item>
@@ -150,12 +120,6 @@
        <spacer name="horizontalSpacer_6">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
         </property>
        </spacer>
       </item>
@@ -172,23 +136,17 @@
          <x>0</x>
          <y>0</y>
          <width>730</width>
-         <height>646</height>
+         <height>648</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <layout class="QVBoxLayout" name="task_layout"/>
+         <layout class="QVBoxLayout" name="layout_todos"/>
         </item>
         <item>
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>645</height>
-           </size>
           </property>
          </spacer>
         </item>
@@ -197,23 +155,30 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QLineEdit" name="input_task">
+       <widget class="QLineEdit" name="edit_title">
         <property name="text">
          <string/>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QDateEdit" name="dateEdit"/>
+       <widget class="QDateEdit" name="edit_deadline"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_add">
+        <property name="text">
+         <string>Add</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>

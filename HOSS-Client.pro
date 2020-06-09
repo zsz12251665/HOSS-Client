@@ -17,30 +17,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000# disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+	CheckItem.cpp \
 	CheckItem_EditDialog.cpp \
 	Settings.cpp \
 	Settings_EditDialog.cpp \
 	RemoteAPI.cpp \
-	checkitem.cpp \
+	Storage.cpp \
 	homework.cpp \
 	main.cpp
 
 HEADERS += \
+	CheckItem.h \
 	CheckItem_EditDialog.h \
 	Settings.h \
 	Settings_EditDialog.h \
 	RemoteAPI.h \
-	checkitem.h \
+	Storage.h \
 	homework.h
 
 FORMS += \
+	CheckItem.ui \
 	CheckItem_EditDialog.ui \
 	Settings_EditDialog.ui \
-	checkitem.ui \
 	homework.ui
-
-TRANSLATIONS += \
-	Airplanner_en_US.ts
 
 RC_ICONS = logo.ico
 

@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>125</height>
+    <width>450</width>
+    <height>150</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Settings</string>
@@ -24,12 +18,6 @@
     <layout class="QGridLayout" name="gridLayout">
      <item row="1" column="0">
       <widget class="QLabel" name="label_name">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
        <property name="text">
         <string>Student Name: </string>
        </property>
@@ -37,12 +25,6 @@
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_number">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
        <property name="text">
         <string>Student No. : </string>
        </property>
@@ -50,12 +32,6 @@
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_server">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
        <property name="text">
         <string>Server URL: </string>
        </property>
@@ -74,9 +50,6 @@
    </item>
    <item>
     <widget class="QDialogButtonBox" name="dialogButtonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>

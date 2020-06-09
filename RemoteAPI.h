@@ -5,7 +5,6 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QNetworkAccessManager>
-#include <QPair>
 
 class RemoteAPI
 {
@@ -18,8 +17,8 @@ public:
 	RemoteAPI(const QUrl = QString("/"));
 	~RemoteAPI();
 	QJsonArray fetchRemoteToDos();
-	QPair<int, QByteArray> uploadHomework(const QString, const QString, const QString);
-	QPair<int, QByteArray> uploadHomework(const QString, const QString, const QString, QFile&);
+	int uploadHomework(const QString, const QString, const QString);
+	int uploadHomework(const QString, const QString, const QString, QFile&);
 };
 
 #endif // REMOTEAPI_H
