@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "homework.h"
+#include "Homework.h"
 
 int main(int argc, char *argv[])
 {

@@ -19,27 +19,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
 	CheckItem.cpp \
 	CheckItem_EditDialog.cpp \
+	Homework.cpp \
 	Settings.cpp \
 	Settings_EditDialog.cpp \
 	RemoteAPI.cpp \
 	Storage.cpp \
-	homework.cpp \
 	main.cpp
 
 HEADERS += \
 	CheckItem.h \
 	CheckItem_EditDialog.h \
+	Homework.h \
 	Settings.h \
 	Settings_EditDialog.h \
 	RemoteAPI.h \
-	Storage.h \
-	homework.h
+	Storage.h
 
 FORMS += \
 	CheckItem.ui \
 	CheckItem_EditDialog.ui \
-	Settings_EditDialog.ui \
-	homework.ui
+	Homework.ui \
+	Settings_EditDialog.ui
 
 RC_ICONS = logo.ico
 

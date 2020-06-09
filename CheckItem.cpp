@@ -7,6 +7,12 @@
 
 #include <QDebug>
 
+static inline QIcon getIcon(bool isFinished)
+{
+	QString filename = isFinished ? "check-circle.svg" : "circle.svg";
+	return QIcon(":/FontAwesome/svgs/regular/" + filename);
+}
+
 CheckItem::CheckItem(const int id, const QString title, const QDate deadline,
 					 const QString directory, const bool isFinished, QWidget *parent) :
 	QWidget(parent), ui(new Ui::CheckItem), id(id), title(title), directory(directory),
@@ -15,7 +21,7 @@ CheckItem::CheckItem(const int id, const QString title, const QDate deadline,
 	ui->setupUi(this);
 	ui->label_title->setText(title);
 	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
-	ui->checkBox->setCheckState(Qt::CheckState(2*isFinished));
+	ui->button_check->setIcon(getIcon(isFinished));
 	setAutoFillBackground(true);
 }
 
@@ -66,11 +72,12 @@ void CheckItem::on_button_delete_clicked()
 	emit editEvent(this);
 }
 
-void CheckItem::on_checkBox_stateChanged(int checkState)
+void CheckItem::on_button_check_clicked()
 {
 	if (!isRemote())
 	{
-		isFinished = checkState == Qt::CheckState::Checked;
+		isFinished = !isFinished;
+		ui->button_check->setIcon(getIcon(isFinished));
 		emit editEvent(this);
 		return;
 	}
@@ -78,11 +85,10 @@ void CheckItem::on_checkBox_stateChanged(int checkState)
 	int result = RemoteAPI(settings.getServer()).uploadHomework(settings.getName(),
 																settings.getNumber(),
 																directory);
-	ui->checkBox->setCheckState(result == 200 ? Qt::CheckState::Checked :
-												Qt::CheckState::Unchecked);
-	if (isFinished ^ (result == 200))
+	if (isFinished ^ (result == 200 || result == -1))
 	{
-		isFinished = result == 200;
+		isFinished = result == 200 || result == -1;
+		ui->button_check->setIcon(getIcon(isFinished));
 		emit editEvent(this);
 	}
 }

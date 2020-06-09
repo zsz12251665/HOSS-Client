@@ -1,4 +1,4 @@
-#include "homework.h"
+#include "Homework.h"
 #include "ui_homework.h"
 
 #include "CheckItem.h"

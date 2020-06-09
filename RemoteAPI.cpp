@@ -65,6 +65,7 @@ int RemoteAPI::uploadHomework(const QString name, const QString number,
 int RemoteAPI::uploadHomework(const QString name, const QString number,
 								  const QString directory, QFile &homework)
 {
+	qDebug() << "RemoteAPI::uploadHomework() Starts";
 	// Fulfill the form
 	QHttpMultiPart *form = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 	form->setBoundary(formBoundary.toUtf8());
@@ -95,5 +96,6 @@ int RemoteAPI::uploadHomework(const QString name, const QString number,
 	qDebug() << statusCode << replyMessage;
 	QMessageBox(QMessageBox::Icon::Information, QString("HTTP %1").arg(statusCode),
 				replyMessage, QMessageBox::Ok).exec();
+	qDebug() << "RemoteAPI::uploadHomework() Ends" << endl;
 	return statusCode;
 }
