@@ -17,7 +17,7 @@ static inline ShowState getState(CheckItem *item)
 }
 
 Homework::Homework(QWidget *parent) : QMainWindow(parent), ui(new Ui::Homework),
-	storage(&list)
+	storage(&list), currentState(ShowState::ALL)
 {
 	// Initialize the server URL
 	Settings settings;
@@ -32,7 +32,7 @@ Homework::Homework(QWidget *parent) : QMainWindow(parent), ui(new Ui::Homework),
 		ui->layout_todos->addWidget(list.at(i));
 	}
 	on_button_update_clicked();
-	// Connect singals and slots
+	on_radio_all_clicked();
 }
 
 Homework::~Homework()
@@ -74,6 +74,7 @@ void Homework::on_button_new_clicked()
 void Homework::on_button_settings_clicked()
 {
 	Settings().popEditDialog();
+	on_button_update_clicked();
 }
 
 void Homework::on_button_update_clicked()
@@ -105,10 +106,7 @@ void Homework::on_button_update_clicked()
 			}
 			// Remove the out-of-date ones in the local list
 			if (isOutOfDate)
-			{
-				list.at(i)->on_button_delete_clicked();
-				--i;
-			}
+				list.at(i)->deleteItem();
 		}
 	for (int i = 0; i < remoteList.size(); ++i)
 	{

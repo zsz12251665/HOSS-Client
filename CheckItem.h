@@ -35,7 +35,7 @@ public:
 	bool isRemote();
 	bool isDeleted();
 public slots:
-	void on_button_delete_clicked();
+	void deleteItem();
 signals:
 	void editEvent(CheckItem*);
 };

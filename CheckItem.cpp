@@ -23,6 +23,9 @@ CheckItem::CheckItem(const int id, const QString title, const QDate deadline,
 	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
 	ui->button_check->setIcon(getIcon(isFinished));
 	setAutoFillBackground(true);
+	// Remote homework could not be deleted
+	if (!isRemote())
+		connect(ui->button_delete, &QPushButton::clicked, this, &CheckItem::deleteItem);
 }
 
 CheckItem::~CheckItem()
@@ -62,11 +65,8 @@ void CheckItem::mouseDoubleClickEvent(QMouseEvent*)
 	}
 }
 
-void CheckItem::on_button_delete_clicked()
+void CheckItem::deleteItem()
 {
-	// Remote todos cannot be deleted
-	if (isRemote())
-		return;
 	this->hide();
 	id = ~id;
 	emit editEvent(this);
