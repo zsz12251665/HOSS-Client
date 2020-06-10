@@ -8,16 +8,8 @@
 
 #include <QDebug>
 
-static inline ShowState getState(CheckItem *item)
-{
-	return item->isDeleted() || (item->isRemote() && item->getDeadline() <
-								 QDate::currentDate()) ? ShowState::NONE
-													   : item->isRemote() ? ShowState::REMOTE
-																		  : ShowState::LOCAL;
-}
-
 Homework::Homework(QWidget *parent) : QMainWindow(parent), ui(new Ui::Homework),
-	storage(&list), currentState(ShowState::ALL)
+	currentState(ShowState::ALL)
 {
 	// Initialize the server URL
 	Settings settings;
@@ -43,10 +35,10 @@ Homework::~Homework()
 void Homework::addItem(CheckItem *item)
 {
 	list.push_back(item);
-	storage.refresh(item);
+	list.refresh(item);
 	connect(item, &CheckItem::editEvent, this, &Homework::refresh_storage);
 	ui->layout_todos->addWidget(item);
-	item->setVisible(currentState & getState(item));
+	item->setVisible(currentState & getShowStateOf(item));
 }
 
 void Homework::showItems(ShowState newState)
@@ -54,8 +46,16 @@ void Homework::showItems(ShowState newState)
 	currentState = newState;
 	for (int i = 0; i < list.size(); ++i)
 	{
-		list.at(i)->setVisible(currentState & getState(list.at(i)));
+		list.at(i)->setVisible(currentState & getShowStateOf(list.at(i)));
 	}
+}
+
+Homework::ShowState Homework::getShowStateOf(CheckItem *item)
+{
+	// Prevent deleted and out-of-date items from showing
+	if (item->isDeleted() || (item->isRemote() && item->getDeadline() < QDate::currentDate()))
+		return ShowState::NONE;
+	return item->isRemote() ? ShowState::REMOTE : ShowState::LOCAL;
 }
 
 void Homework::on_button_add_clicked()
@@ -106,7 +106,7 @@ void Homework::on_button_update_clicked()
 			}
 			// Remove the out-of-date ones in the local list
 			if (isOutOfDate)
-				list.at(i)->deleteItem();
+				list.at(i)->selfDelete();
 		}
 	for (int i = 0; i < remoteList.size(); ++i)
 	{
@@ -117,6 +117,18 @@ void Homework::on_button_update_clicked()
 		addItem(new CheckItem(list.size(), title, deadline, directory));
 	}
 	qDebug() << "Homework::on_button_update_clicked() Ends" << endl;
+}
+
+void Homework::on_edit_title_returnPressed()
+{
+	if (!ui->edit_title->text().isEmpty())
+	{
+		QString title = ui->edit_title->text();
+		QDate deadline = ui->edit_deadline->date();
+		addItem(new CheckItem(list.size(), title, deadline));
+		ui->edit_title->setText(QString());
+		ui->edit_deadline->setDate(QDate::currentDate());
+	}
 }
 
 void Homework::on_radio_all_clicked()
@@ -134,19 +146,7 @@ void Homework::on_radio_remote_clicked()
 	showItems(ShowState::REMOTE);
 }
 
-void Homework::on_edit_title_returnPressed()
-{
-	if (!ui->edit_title->text().isEmpty())
-	{
-		QString title = ui->edit_title->text();
-		QDate deadline = ui->edit_deadline->date();
-		addItem(new CheckItem(list.size(), title, deadline));
-		ui->edit_title->setText(QString());
-		ui->edit_deadline->setDate(QDate::currentDate());
-	}
-}
-
 void Homework::refresh_storage(CheckItem *item)
 {
-	storage.refresh(item);
+	list.refresh(item);
 }

@@ -10,24 +10,23 @@ namespace Ui
 	class Homework;
 }
 
-enum ShowState
-{
-	NONE = 0, // 00
-	LOCAL = 1, // 01
-	REMOTE = 2, // 10
-	ALL = 3 // 11
-};
-
 class Homework : public QMainWindow
 {
 	Q_OBJECT
 private:
+	enum ShowState
+	{
+		NONE = 0,	// 00
+		LOCAL = 1,	// 01
+		REMOTE = 2,	// 10
+		ALL = 3		// 11
+	};
 	Ui::Homework *ui;
-	QVector<CheckItem*> list;
-	Storage storage;
+	Storage list;
 	ShowState currentState;
 	void addItem(CheckItem*);
 	void showItems(ShowState);
+	ShowState getShowStateOf(CheckItem*);
 private slots:
 	void on_button_add_clicked();
 	void on_button_new_clicked();

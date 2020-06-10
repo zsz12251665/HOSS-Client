@@ -6,13 +6,13 @@
 
 class CheckItem;
 
-class Storage
+class Storage : public QVector<CheckItem*>
 {
 private:
 	QSettings storage;
-	QVector<CheckItem*>* list;
+	void backup();
 public:
-	Storage(QVector<CheckItem*>*, const QString = "storage");
+	Storage(const QString = "storage");
 	~Storage();
 	void refresh(CheckItem*);
 };
