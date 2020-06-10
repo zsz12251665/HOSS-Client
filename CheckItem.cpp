@@ -25,7 +25,7 @@ CheckItem::CheckItem(const int id, const QString title, const QDate deadline,
 	setAutoFillBackground(true);
 	// Remote homework could not be deleted
 	if (!isRemote())
-		connect(ui->button_delete, &QPushButton::clicked, this, &CheckItem::deleteItem);
+		connect(ui->button_delete, &QPushButton::clicked, this, &CheckItem::selfDelete);
 }
 
 CheckItem::~CheckItem()
@@ -65,32 +65,21 @@ void CheckItem::mouseDoubleClickEvent(QMouseEvent*)
 	}
 }
 
-void CheckItem::deleteItem()
-{
-	this->hide();
-	id = ~id;
-	emit editEvent(this);
-}
-
 void CheckItem::on_button_check_clicked()
 {
-	if (!isRemote())
+	if (isRemote())
 	{
-		isFinished = !isFinished;
-		ui->button_check->setIcon(getIcon(isFinished));
-		emit editEvent(this);
-		return;
+		Settings settings;
+		int result = RemoteAPI(settings.getServer()).uploadHomework(settings.getName(),
+																	settings.getNumber(),
+																	directory);
+		// Check state unchanged, no need to emit the edit event
+		if (isFinished == (result == 200 || result == -1))
+			return;
 	}
-	Settings settings;
-	int result = RemoteAPI(settings.getServer()).uploadHomework(settings.getName(),
-																settings.getNumber(),
-																directory);
-	if (isFinished ^ (result == 200 || result == -1))
-	{
-		isFinished = result == 200 || result == -1;
-		ui->button_check->setIcon(getIcon(isFinished));
-		emit editEvent(this);
-	}
+	isFinished = !isFinished;
+	ui->button_check->setIcon(getIcon(isFinished));
+	emit editEvent(this);
 }
 
 int CheckItem::getId()
@@ -126,4 +115,11 @@ bool CheckItem::isRemote()
 bool CheckItem::isDeleted()
 {
 	return id < 0;
+}
+
+void CheckItem::selfDelete()
+{
+	this->hide();
+	id = ~id;
+	emit editEvent(this);
 }

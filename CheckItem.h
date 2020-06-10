@@ -24,7 +24,7 @@ private slots:
 	void mouseDoubleClickEvent(QMouseEvent*);
 	void on_button_check_clicked();
 public:
-	CheckItem(const int, const QString = "标题 TITLE HERE", const QDate = QDate::currentDate(),
+	CheckItem(const int, const QString, const QDate,
 			  const QString = QString(), const bool = false, QWidget* = nullptr);
 	~CheckItem();
 	int getId();
@@ -35,7 +35,7 @@ public:
 	bool isRemote();
 	bool isDeleted();
 public slots:
-	void deleteItem();
+	void selfDelete();
 signals:
 	void editEvent(CheckItem*);
 };

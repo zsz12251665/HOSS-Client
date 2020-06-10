@@ -14,8 +14,7 @@ class Settings_EditDialog : public QDialog
 private:
 	Ui::Settings_EditDialog *ui;
 public:
-	Settings_EditDialog(const QString = QString(), const QString = QString(),
-						const QString = QString(), QWidget* = nullptr);
+	Settings_EditDialog(const QString, const QString, const QString, QWidget* = nullptr);
 	~Settings_EditDialog();
 	QString serverValue();
 	QString nameValue();

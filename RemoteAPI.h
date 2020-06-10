@@ -14,7 +14,7 @@ private:
 	QEventLoop waitUntilFinished;
 	QUrl serverURL;
 public:
-	RemoteAPI(const QUrl = QString("/"));
+	RemoteAPI(const QUrl);
 	~RemoteAPI();
 	QJsonArray fetchRemoteToDos();
 	int uploadHomework(const QString, const QString, const QString);

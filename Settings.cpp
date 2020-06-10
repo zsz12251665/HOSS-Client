@@ -29,7 +29,7 @@ QString Settings::getNumber()
 
 QVariant Settings::getConfig(const QString target)
 {
-	return config.value("config/" + target, QVariant());
+	return config.value("config/" + target);
 }
 
 void Settings::setConfig(const QString target, const QVariant value)
@@ -41,8 +41,8 @@ void Settings::setConfig(const QString target, const QVariant value)
 void Settings::popEditDialog()
 {
 	Settings_EditDialog editDialog(getServer(), getName(), getNumber());
-	// Process if OK button is clicked
 	do
+		// Process if OK button is clicked
 		if (editDialog.exec() == QDialog::Accepted)
 		{
 			config.setValue("config/server", editDialog.serverValue());
@@ -50,5 +50,6 @@ void Settings::popEditDialog()
 			config.setValue("config/number", editDialog.numberValue());
 			config.sync();
 		}
+	// Server URL must be set
 	while (getServer().isEmpty());
 }
