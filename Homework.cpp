@@ -18,13 +18,16 @@ Homework::Homework(QWidget *parent) : QMainWindow(parent), ui(new Ui::Homework),
 	// Initialize UI
 	ui->setupUi(this);
 	ui->edit_deadline->setDate(QDate::currentDate());
+	// Initialize the items
 	for (int i = 0; i < list.size(); ++i)
 	{
 		connect(list.at(i), &CheckItem::editEvent, this, &Homework::refresh_storage);
 		ui->layout_todos->addWidget(list.at(i));
 	}
+	// Sync the remote list
 	on_button_update_clicked();
-	on_radio_all_clicked();
+	// Show the items
+	showItems(currentState);
 }
 
 Homework::~Homework()
@@ -113,8 +116,10 @@ void Homework::on_button_update_clicked()
 		QString title = remoteList.at(i)["title"].toString();
 		QDate deadline = remoteList.at(i)["deadline"].toVariant().toDate();
 		QString directory = remoteList.at(i)["directory"].toString();
+		// Ask the server whether the homework is finished
+		bool isFinished = RemoteAPI::verifySubmission(new Settings(), directory);
 		qDebug() << title << deadline << directory;
-		addItem(new CheckItem(list.size(), title, deadline, directory));
+		addItem(new CheckItem(list.size(), title, deadline, directory, isFinished));
 	}
 	qDebug() << "Homework::on_button_update_clicked() Ends" << endl;
 }

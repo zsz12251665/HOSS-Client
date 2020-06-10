@@ -6,6 +6,8 @@
 #include <QJsonArray>
 #include <QNetworkAccessManager>
 
+class Settings;
+
 class RemoteAPI
 {
 private:
@@ -19,6 +21,10 @@ public:
 	QJsonArray fetchRemoteToDos();
 	int uploadHomework(const QString, const QString, const QString);
 	int uploadHomework(const QString, const QString, const QString, QFile&);
+	int verifySubmission(const QString, const QString, const QString);
+	static int uploadHomework(const Settings*, const QString);
+	static int uploadHomework(const Settings*, const QString, QFile&);
+	static int verifySubmission(const Settings*, const QString);
 };
 
 #endif // REMOTEAPI_H

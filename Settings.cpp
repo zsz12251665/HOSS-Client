@@ -12,22 +12,22 @@ Settings::~Settings()
 	config.sync();
 }
 
-QString Settings::getServer()
+QString Settings::getServer() const
 {
 	return getConfig("server").toString();
 }
 
-QString Settings::getName()
+QString Settings::getName() const
 {
 	return getConfig("name").toString();
 }
 
-QString Settings::getNumber()
+QString Settings::getNumber() const
 {
 	return getConfig("number").toString();
 }
 
-QVariant Settings::getConfig(const QString target)
+QVariant Settings::getConfig(const QString target) const
 {
 	return config.value("config/" + target);
 }

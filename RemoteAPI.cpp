@@ -1,5 +1,7 @@
 #include "RemoteAPI.h"
 
+#include "Settings.h"
+
 #include <QDebug>
 #include <QFileDialog>
 #include <QHttpMultiPart>
@@ -98,4 +100,51 @@ int RemoteAPI::uploadHomework(const QString name, const QString number,
 				replyMessage, QMessageBox::Ok).exec();
 	qDebug() << "RemoteAPI::uploadHomework() Ends" << endl;
 	return statusCode;
+}
+
+int RemoteAPI::verifySubmission(const QString name, const QString number,
+								  const QString directory)
+{
+	qDebug() << "RemoteAPI::verifySubmission() Starts";
+	// Fulfill the form
+	QHttpMultiPart *form = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+	form->setBoundary(formBoundary.toUtf8());
+	// Append the information
+	form->append(makePart("text/plain", "form-data; name=\"StuName\"", name));
+	form->append(makePart("text/plain", "form-data; name=\"StuNumber\"", number));
+	form->append(makePart("text/plain", "form-data; name=\"WorkTitle\"", directory));
+	// Send the request
+	QNetworkRequest request(QString(serverURL.toEncoded() + "verify.php"));
+	request.setRawHeader("Content-Type",
+						 ("multipart/form-data;boundary=" + formBoundary).toUtf8());
+	QNetworkReply *reply = manager->post(request, form);
+	// Wait for the reply
+	waitUntilFinished.exec();
+	// Get the required information
+	int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	qDebug() << statusCode << reply->readAll();
+	delete reply;
+	qDebug() << "RemoteAPI::verifySubmission() Ends" << endl;
+	return statusCode;
+}
+
+int RemoteAPI::uploadHomework(const Settings *settings, const QString directory)
+{
+	return RemoteAPI(settings->getServer()).uploadHomework(settings->getName(),
+														   settings->getNumber(), directory);
+}
+
+int RemoteAPI::uploadHomework(const Settings *settings, const QString directory,
+							  QFile &homework)
+{
+	return RemoteAPI(settings->getServer()).uploadHomework(settings->getName(),
+														   settings->getNumber(),
+														   directory, homework);
+}
+
+int RemoteAPI::verifySubmission(const Settings *settings, const QString directory)
+{
+	return RemoteAPI(settings->getServer()).verifySubmission(settings->getName(),
+															 settings->getNumber(),
+															 directory);
 }

@@ -27,13 +27,13 @@ public:
 	CheckItem(const int, const QString, const QDate,
 			  const QString = QString(), const bool = false, QWidget* = nullptr);
 	~CheckItem();
-	int getId();
-	QString getTitle();
-	QDate getDeadline();
-	bool getIsFinished();
-	QString getDirectory();
-	bool isRemote();
-	bool isDeleted();
+	int getId() const;
+	QString getTitle() const;
+	QDate getDeadline() const;
+	bool getIsFinished() const;
+	QString getDirectory() const;
+	bool isRemote() const;
+	bool isDeleted() const;
 public slots:
 	void selfDelete();
 signals:
