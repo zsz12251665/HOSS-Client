@@ -1,5 +1,5 @@
 #include "Homework.h"
-#include "ui_homework.h"
+#include "ui_Homework.h"
 
 #include "CheckItem.h"
 #include "CheckItem_EditDialog.h"
@@ -110,16 +110,18 @@ void Homework::on_button_update_clicked()
 			// Remove the out-of-date ones in the local list
 			if (isOutOfDate)
 				list.at(i)->selfDelete();
+			else
+				// Check the submission status of remote homework
+				if (list.at(i)->isRemote())
+					list.at(i)->on_button_check_clicked();
 		}
 	for (int i = 0; i < remoteList.size(); ++i)
 	{
 		QString title = remoteList.at(i)["title"].toString();
 		QDate deadline = remoteList.at(i)["deadline"].toVariant().toDate();
 		QString directory = remoteList.at(i)["directory"].toString();
-		// Ask the server whether the homework is finished
-		bool isFinished = RemoteAPI::verifySubmission(new Settings(), directory);
 		qDebug() << title << deadline << directory;
-		addItem(new CheckItem(list.size(), title, deadline, directory, isFinished));
+		addItem(new CheckItem(list.size(), title, deadline, directory));
 	}
 	qDebug() << "Homework::on_button_update_clicked() Ends" << endl;
 }
