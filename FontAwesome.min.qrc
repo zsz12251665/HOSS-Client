@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/FontAwesome/svgs/regular">
+        <file alias="check-circle.svg">Font-Awesome/svgs/regular/check-circle.svg</file>
+        <file alias="circle.svg">Font-Awesome/svgs/regular/circle.svg</file>
+    </qresource>
+    <qresource prefix="/FontAwesome/svgs/solid">
+        <file alias="cog.svg">Font-Awesome/svgs/solid/cog.svg</file>
+        <file alias="plus.svg">Font-Awesome/svgs/solid/plus.svg</file>
+        <file alias="sync-alt.svg">Font-Awesome/svgs/solid/sync-alt.svg</file>
+        <file alias="trash-alt.svg">Font-Awesome/svgs/solid/trash-alt.svg</file>
+    </qresource>
+</RCC>
