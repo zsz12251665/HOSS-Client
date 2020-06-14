@@ -2,54 +2,47 @@
 
 #include "Settings_EditDialog.h"
 
-Settings::Settings(QString filename) : config(filename + ".ini", QSettings::IniFormat)
+#include <QDebug>
+
+Settings::Settings(QString filename) : QSettings(filename + ".ini", QSettings::IniFormat)
 {
 	;
 }
 
 Settings::~Settings()
 {
-	config.sync();
+	sync();
 }
 
 QString Settings::getServer() const
 {
-	return getConfig("server").toString();
+	return value("config/server").toString();
 }
 
 QString Settings::getName() const
 {
-	return getConfig("name").toString();
+	return value("config/name").toString();
 }
 
 QString Settings::getNumber() const
 {
-	return getConfig("number").toString();
+	return value("config/number").toString();
 }
 
-QVariant Settings::getConfig(const QString target) const
-{
-	return config.value("config/" + target);
-}
-
-void Settings::setConfig(const QString target, const QVariant value)
-{
-	config.setValue("config/" + target, value);
-	config.sync();
-}
-
-void Settings::popEditDialog()
+bool Settings::popEditDialog()
 {
 	Settings_EditDialog editDialog(getServer(), getName(), getNumber());
-	do
-		// Process if OK button is clicked
-		if (editDialog.exec() == QDialog::Accepted)
-		{
-			config.setValue("config/server", editDialog.serverValue());
-			config.setValue("config/name", editDialog.nameValue());
-			config.setValue("config/number", editDialog.numberValue());
-			config.sync();
-		}
-	// Server URL must be set
-	while (getServer().isEmpty());
+	// Keep popping until the input is valid
+	for (int result = editDialog.exec(); result != QDialog::Accepted ||
+		 editDialog.serverValue().isEmpty(); result = editDialog.exec())
+	{
+		// Handle cancel event
+		if (result == QDialog::Rejected)
+			return false;
+	}
+	setValue("config/server", editDialog.serverValue());
+	setValue("config/name", editDialog.nameValue());
+	setValue("config/number", editDialog.numberValue());
+	sync();
+	return true;
 }

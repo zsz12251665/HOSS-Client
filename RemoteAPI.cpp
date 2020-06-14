@@ -57,15 +57,7 @@ QJsonArray RemoteAPI::fetchRemoteToDos()
 }
 
 int RemoteAPI::uploadHomework(const QString name, const QString number,
-								  const QString directory)
-{
-	QString fileName = QFileDialog::getOpenFileName(nullptr, "Open the file");
-	QFile homework(fileName);
-	return fileName.isEmpty() ? -1 : uploadHomework(name, number, directory, homework);
-}
-
-int RemoteAPI::uploadHomework(const QString name, const QString number,
-								  const QString directory, QFile &homework)
+								  const QString directory, const QString filename)
 {
 	qDebug() << "RemoteAPI::uploadHomework() Starts";
 	// Fulfill the form
@@ -76,6 +68,7 @@ int RemoteAPI::uploadHomework(const QString name, const QString number,
 	form->append(makePart("text/plain", "form-data; name=\"StuNumber\"", number));
 	form->append(makePart("text/plain", "form-data; name=\"WorkTitle\"", directory));
 	// Append the homework file
+	QFile homework(filename);
 	homework.open(QFile::ReadOnly);
 	QHttpPart filePart = makePart("application/octet-stream",
 								  "form-data; name=\"WorkFile\"; filename=\"" +
@@ -92,7 +85,7 @@ int RemoteAPI::uploadHomework(const QString name, const QString number,
 	// Get the required information
 	int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	QByteArray replyMessage = reply->readAll();
-	// Close the objects & return
+	// Close objects & return
 	homework.close();
 	delete reply;
 	qDebug() << statusCode << replyMessage;
@@ -128,23 +121,18 @@ int RemoteAPI::verifySubmission(const QString name, const QString number,
 	return statusCode;
 }
 
-int RemoteAPI::uploadHomework(const Settings *settings, const QString directory)
+int RemoteAPI::uploadHomework(const Settings &settings, const QString directory)
 {
-	return RemoteAPI(settings->getServer()).uploadHomework(settings->getName(),
-														   settings->getNumber(), directory);
+	QString filename = QFileDialog::getOpenFileName(nullptr, "Open the file");
+	if (filename.isEmpty())
+		return -1;
+	return RemoteAPI(settings.getServer()).uploadHomework(settings.getName(),
+														  settings.getNumber(),
+														  directory, filename);
 }
 
-int RemoteAPI::uploadHomework(const Settings *settings, const QString directory,
-							  QFile &homework)
+int RemoteAPI::verifySubmission(const Settings &settings, const QString directory)
 {
-	return RemoteAPI(settings->getServer()).uploadHomework(settings->getName(),
-														   settings->getNumber(),
-														   directory, homework);
-}
-
-int RemoteAPI::verifySubmission(const Settings *settings, const QString directory)
-{
-	return RemoteAPI(settings->getServer()).verifySubmission(settings->getName(),
-															 settings->getNumber(),
-															 directory);
+	return RemoteAPI(settings.getServer()).verifySubmission(settings.getName(),
+															 settings.getNumber(), directory);
 }

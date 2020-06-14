@@ -26,7 +26,7 @@ private:
 	ShowState currentState;
 	void addItem(CheckItem*);
 	void showItems(ShowState);
-	ShowState getShowStateOf(CheckItem*);
+	static ShowState getShowStateOf(CheckItem*);
 private slots:
 	void on_button_add_clicked();
 	void on_button_new_clicked();
@@ -38,7 +38,7 @@ private slots:
 	void on_radio_remote_clicked();
 	void refresh_storage(CheckItem*);
 public:
-	Homework(QWidget *parent = nullptr);
+	Homework(QWidget* = nullptr);
 	~Homework();
 };
 

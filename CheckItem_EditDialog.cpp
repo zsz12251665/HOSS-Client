@@ -15,12 +15,12 @@ CheckItem_EditDialog::~CheckItem_EditDialog()
 	delete ui;
 }
 
-QString CheckItem_EditDialog::titleValue()
+QString CheckItem_EditDialog::titleValue() const
 {
 	return ui->edit_title->text();
 }
 
-QDate CheckItem_EditDialog::deadlineValue()
+QDate CheckItem_EditDialog::deadlineValue() const
 {
 	return ui->edit_deadline->date();
 }

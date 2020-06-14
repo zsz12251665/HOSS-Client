@@ -13,8 +13,8 @@ Homework::Homework(QWidget *parent) : QMainWindow(parent), ui(new Ui::Homework),
 {
 	// Initialize the server URL
 	Settings settings;
-	if (settings.getServer().isEmpty())
-		settings.popEditDialog();
+	if (settings.getServer().isEmpty() && !settings.popEditDialog())
+		exit(0);
 	// Initialize UI
 	ui->setupUi(this);
 	ui->edit_deadline->setDate(QDate::currentDate());

@@ -17,7 +17,7 @@ private:
 	int id;
 	QString title, directory;
 	QDate deadline;
-	bool isFinished;
+	bool checked;
 private slots:
 	void enterEvent(QEvent*);
 	void leaveEvent(QEvent*);
@@ -29,8 +29,8 @@ public:
 	int getId() const;
 	QString getTitle() const;
 	QDate getDeadline() const;
-	bool getIsFinished() const;
 	QString getDirectory() const;
+	bool isFinished() const;
 	bool isRemote() const;
 	bool isDeleted() const;
 public slots:

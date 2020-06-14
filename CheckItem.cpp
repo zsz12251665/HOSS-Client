@@ -7,23 +7,23 @@
 
 #include <QDebug>
 
-static inline QIcon getIcon(bool isFinished)
+static inline QIcon getIcon(bool checked)
 {
-	QString filename = isFinished ? "check-circle.svg" : "circle.svg";
+	QString filename = checked ? "check-circle.svg" : "circle.svg";
 	return QIcon(":/FontAwesome/svgs/regular/" + filename);
 }
 
 CheckItem::CheckItem(const int id, const QString title, const QDate deadline,
-					 const QString directory, const bool isFinished, QWidget *parent) :
+					 const QString directory, const bool checked, QWidget *parent) :
 	QWidget(parent), ui(new Ui::CheckItem), id(id), title(title), directory(directory),
-	deadline(deadline), isFinished(isFinished)
+	deadline(deadline), checked(checked)
 {
 	ui->setupUi(this);
 	ui->label_title->setText(title);
 	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
 	if (isRemote())
-		this->isFinished = RemoteAPI::verifySubmission(new Settings(), directory) == 200;
-	ui->button_check->setIcon(getIcon(isFinished));
+		this->checked = RemoteAPI::verifySubmission(Settings(), directory) == 200;
+	ui->button_check->setIcon(getIcon(checked));
 	setAutoFillBackground(true);
 	// Remote homework could not be deleted
 	if (!isRemote())
@@ -71,14 +71,14 @@ void CheckItem::on_button_check_clicked(const bool needVerify)
 {
 	if (isRemote())
 	{
-		int result = needVerify ? RemoteAPI::verifySubmission(new Settings(), directory) :
-								  RemoteAPI::uploadHomework(new Settings(), directory);
+		int result = needVerify ? RemoteAPI::verifySubmission(Settings(), directory) :
+								  RemoteAPI::uploadHomework(Settings(), directory);
 		// Check state unchanged, no need to emit the edit event
-		if (result == -1 || isFinished == (result == 200))
+		if (result == -1 || checked == (result == 200))
 			return;
 	}
-	isFinished = !isFinished;
-	ui->button_check->setIcon(getIcon(isFinished));
+	checked = !checked;
+	ui->button_check->setIcon(getIcon(checked));
 	emit editEvent(this);
 }
 
@@ -97,14 +97,14 @@ QDate CheckItem::getDeadline() const
 	return deadline;
 }
 
-bool CheckItem::getIsFinished() const
-{
-	return isFinished;
-}
-
 QString CheckItem::getDirectory() const
 {
 	return directory;
+}
+
+bool CheckItem::isFinished() const
+{
+	return checked;
 }
 
 bool CheckItem::isRemote() const

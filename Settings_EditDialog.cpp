@@ -16,17 +16,17 @@ Settings_EditDialog::~Settings_EditDialog()
 	delete ui;
 }
 
-QString Settings_EditDialog::serverValue()
+QString Settings_EditDialog::serverValue() const
 {
 	return ui->edit_server->text();
 }
 
-QString Settings_EditDialog::nameValue()
+QString Settings_EditDialog::nameValue() const
 {
 	return ui->edit_name->text();
 }
 
-QString Settings_EditDialog::numberValue()
+QString Settings_EditDialog::numberValue() const
 {
 	return ui->edit_number->text();
 }

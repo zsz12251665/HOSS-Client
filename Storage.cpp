@@ -21,7 +21,7 @@ Storage::Storage(const QString filename) : storage(filename + ".ini", QSettings:
 		QString title = storage.value("title").toString();
 		QDate deadline = storage.value("deadline").toDate();
 		QString directory = storage.value("directory").toString();
-		bool isFinished = storage.value("isFinished").toBool();
+		bool isFinished = storage.value("checked").toBool();
 		qDebug() << title << deadline << directory << isFinished;
 		if (!title.isEmpty() && !deadline.isNull() && (directory.isEmpty() ||
 													  deadline >= QDate::currentDate()))
@@ -50,12 +50,12 @@ void Storage::backup()
 		if (!at(i)->isDeleted())
 		{
 			qDebug() << cnt << at(i)->getTitle() << at(i)->getDeadline()
-					 << at(i)->getDirectory() << at(i)->getIsFinished();
+					 << at(i)->getDirectory() << at(i)->isFinished();
 			storage.setArrayIndex(cnt++);
 			storage.setValue("title", at(i)->getTitle());
 			storage.setValue("deadline", at(i)->getDeadline());
 			storage.setValue("directory", at(i)->getDirectory());
-			storage.setValue("isFinished", at(i)->getIsFinished());
+			storage.setValue("checked", at(i)->isFinished());
 		}
 	storage.endArray();
 	storage.sync();
@@ -73,9 +73,8 @@ void Storage::refresh(CheckItem *item)
 		storage.setValue("title", item->getTitle());
 		storage.setValue("deadline", item->getDeadline());
 		storage.setValue("directory", item->getDirectory());
-		storage.setValue("isFinished", item->getIsFinished());
+		storage.setValue("checked", item->isFinished());
 	}
 	storage.endArray();
 	storage.sync();
 }
-

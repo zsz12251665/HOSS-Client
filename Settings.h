@@ -3,19 +3,15 @@
 
 #include <QSettings>
 
-class Settings
+class Settings : private QSettings
 {
-private:
-	QSettings config;
 public:
 	Settings(QString = "settings");
 	~Settings();
 	QString getServer() const;
 	QString getName() const;
 	QString getNumber() const;
-	QVariant getConfig(const QString) const;
-	void setConfig(const QString, const QVariant);
-	void popEditDialog();
+	bool popEditDialog();
 };
 
 #endif // SETTINGS_H
