@@ -14,15 +14,15 @@ static inline QIcon getIcon(bool checked)
 }
 
 CheckItem::CheckItem(const int id, const QString title, const QDate deadline,
-					 const QString directory, const bool checked, QWidget *parent) :
+					 const QString directory, const bool isFinished, QWidget *parent) :
 	QWidget(parent), ui(new Ui::CheckItem), id(id), title(title), directory(directory),
-	deadline(deadline), checked(checked)
+	deadline(deadline), checked(isFinished)
 {
 	ui->setupUi(this);
 	ui->label_title->setText(title);
 	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
 	if (isRemote())
-		this->checked = RemoteAPI::verifySubmission(Settings(), directory) == 200;
+		checked = RemoteAPI::verifySubmission(Settings(), directory) == 200;
 	ui->button_check->setIcon(getIcon(checked));
 	setAutoFillBackground(true);
 	// Remote homework could not be deleted
@@ -57,8 +57,8 @@ void CheckItem::mouseDoubleClickEvent(QMouseEvent*)
 		CheckItem_EditDialog editDialog(title, deadline);
 		if (editDialog.exec() == QDialog::Accepted)
 		{
-			title = editDialog.titleValue();
-			deadline = editDialog.deadlineValue();
+			title = editDialog.getTitle();
+			deadline = editDialog.getDeadline();
 			qDebug() << title << deadline;
 			ui->label_title->setText(title);
 			ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));

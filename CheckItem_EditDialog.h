@@ -18,8 +18,8 @@ public:
 	CheckItem_EditDialog(const QString = QString(), const QDate = QDate::currentDate(),
 						 QWidget* = nullptr);
 	~CheckItem_EditDialog();
-	QString titleValue() const;
-	QDate deadlineValue() const;
+	QString getTitle() const;
+	QDate getDeadline() const;
 };
 
 #endif // CHECKITEM_EDITDIALOG_H

@@ -32,17 +32,18 @@ QString Settings::getNumber() const
 bool Settings::popEditDialog()
 {
 	Settings_EditDialog editDialog(getServer(), getName(), getNumber());
-	// Keep popping until the input is valid
+	// Keep popping until the input is valid or cancelled
 	for (int result = editDialog.exec(); result != QDialog::Accepted ||
-		 editDialog.serverValue().isEmpty(); result = editDialog.exec())
+		 editDialog.getServer().isEmpty(); result = editDialog.exec())
 	{
 		// Handle cancel event
 		if (result == QDialog::Rejected)
 			return false;
 	}
-	setValue("config/server", editDialog.serverValue());
-	setValue("config/name", editDialog.nameValue());
-	setValue("config/number", editDialog.numberValue());
+	// Update the configuration
+	setValue("config/server", editDialog.getServer());
+	setValue("config/name", editDialog.getName());
+	setValue("config/number", editDialog.getNumber());
 	sync();
 	return true;
 }

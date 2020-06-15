@@ -69,9 +69,8 @@ void Homework::on_button_add_clicked()
 void Homework::on_button_new_clicked()
 {
 	CheckItem_EditDialog editDialog;
-	if (editDialog.exec() == QDialog::Accepted && !editDialog.titleValue().isEmpty())
-		addItem(new CheckItem(list.size(), editDialog.titleValue(),
-							  editDialog.deadlineValue()));
+	if (editDialog.exec() == QDialog::Accepted && !editDialog.getTitle().isEmpty())
+		addItem(new CheckItem(list.size(), editDialog.getTitle(), editDialog.getDeadline()));
 }
 
 void Homework::on_button_settings_clicked()
@@ -83,7 +82,7 @@ void Homework::on_button_settings_clicked()
 void Homework::on_button_update_clicked()
 {
 	qDebug() << "Homework::on_button_update_clicked() Starts";
-	QJsonArray remoteList = RemoteAPI(Settings().getServer()).fetchRemoteToDos();
+	QJsonArray remoteList = RemoteAPI::fetchRemoteToDos(Settings());
 	// Remove the out-of-date ones
 	for (int i = 0; i < remoteList.size(); ++i)
 		if (remoteList.at(i)["deadline"].toVariant().toDate() < QDate::currentDate())

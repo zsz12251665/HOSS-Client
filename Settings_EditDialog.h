@@ -16,9 +16,9 @@ private:
 public:
 	Settings_EditDialog(const QString, const QString, const QString, QWidget* = nullptr);
 	~Settings_EditDialog();
-	QString serverValue() const;
-	QString nameValue() const;
-	QString numberValue() const;
+	QString getServer() const;
+	QString getName() const;
+	QString getNumber() const;
 };
 
 #endif // SETTINGS_EDITDIALOG_H

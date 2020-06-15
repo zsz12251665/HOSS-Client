@@ -15,12 +15,13 @@ private:
 	QNetworkAccessManager *manager;
 	QEventLoop waitUntilFinished;
 	QUrl serverURL;
-public:
-	RemoteAPI(const QUrl);
-	~RemoteAPI();
 	QJsonArray fetchRemoteToDos();
 	int uploadHomework(const QString, const QString, const QString, const QString);
 	int verifySubmission(const QString, const QString, const QString);
+public:
+	RemoteAPI(const QUrl);
+	~RemoteAPI();
+	static QJsonArray fetchRemoteToDos(const Settings&);
 	static int uploadHomework(const Settings&, const QString);
 	static int verifySubmission(const Settings&, const QString);
 };

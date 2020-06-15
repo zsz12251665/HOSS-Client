@@ -13,9 +13,7 @@ Storage::Storage(const QString filename) : storage(filename + ".ini", QSettings:
 	}
 	clear();
 	// Import the todo list from local storage
-	int length = storage.beginReadArray("todos");
-	qDebug() << length;
-	for (int i = 0; i < length; ++i)
+	for (int i = 0, length = storage.beginReadArray("todos"); i < length; ++i)
 	{
 		storage.setArrayIndex(i);
 		QString title = storage.value("title").toString();
@@ -23,27 +21,32 @@ Storage::Storage(const QString filename) : storage(filename + ".ini", QSettings:
 		QString directory = storage.value("directory").toString();
 		bool isFinished = storage.value("checked").toBool();
 		qDebug() << title << deadline << directory << isFinished;
-		if (!title.isEmpty() && !deadline.isNull() && (directory.isEmpty() ||
-													  deadline >= QDate::currentDate()))
-		{
+		// Only local ones or unexpired ones can be added
+		if (directory.isEmpty() || deadline >= QDate::currentDate())
 			push_back(new CheckItem(size(), title, deadline, directory, isFinished));
-		}
 	}
 	storage.endArray();
-	// Sync the local storage with the vector list
+	// Sync local storage with vector list
 	backup();
 	qDebug() << "Storage::Storage() Ends" << endl;
 }
 
 Storage::~Storage()
 {
+	// Backup the list
 	backup();
+	// Free the memory space
+	while (!empty())
+	{
+		delete back();
+		pop_back();
+	}
 }
 
 void Storage::backup()
 {
+	// Export the todo list to local storage
 	qDebug() << "Storage::backup() Starts";
-	// Back up the todo list from local storage
 	storage.remove("todos");
 	storage.beginWriteArray("todos");
 	for (int i = 0, cnt = 0; i < size(); ++i)
@@ -64,9 +67,10 @@ void Storage::backup()
 
 void Storage::refresh(CheckItem *item)
 {
+	// Sync single item with local storage
 	storage.beginWriteArray("todos");
 	storage.setArrayIndex(item->getId());
-	if (!item->isDeleted())
+	if (item->isDeleted())
 		storage.remove("");
 	else
 	{

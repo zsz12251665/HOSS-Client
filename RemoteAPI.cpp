@@ -1,5 +1,6 @@
 #include "RemoteAPI.h"
 
+#include "RemoteAPI_ProgressDialog.h"
 #include "Settings.h"
 
 #include <QDebug>
@@ -80,8 +81,13 @@ int RemoteAPI::uploadHomework(const QString name, const QString number,
 	request.setRawHeader("Content-Type",
 						 ("multipart/form-data;boundary=" + formBoundary).toUtf8());
 	QNetworkReply *reply = manager->post(request, form);
-	// Wait for the reply
-	waitUntilFinished.exec();
+	RemoteAPI_ProgressDialog progress;
+	QObject::connect(reply, &QNetworkReply::uploadProgress, &progress,
+					 &RemoteAPI_ProgressDialog::updateProgress);
+	QObject::connect(manager, &QNetworkAccessManager::finished, &progress,
+					 &RemoteAPI_ProgressDialog::close);
+	// Show the progress dialog & wait for the reply
+	progress.exec();
 	// Get the required information
 	int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	QByteArray replyMessage = reply->readAll();
@@ -119,6 +125,11 @@ int RemoteAPI::verifySubmission(const QString name, const QString number,
 	delete reply;
 	qDebug() << "RemoteAPI::verifySubmission() Ends" << endl;
 	return statusCode;
+}
+
+QJsonArray RemoteAPI::fetchRemoteToDos(const Settings &settings)
+{
+	return RemoteAPI(settings.getServer()).fetchRemoteToDos();
 }
 
 int RemoteAPI::uploadHomework(const Settings &settings, const QString directory)
