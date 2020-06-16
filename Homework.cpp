@@ -18,12 +18,9 @@ Homework::Homework(QWidget *parent) : QMainWindow(parent), ui(new Ui::Homework),
 	// Initialize UI
 	ui->setupUi(this);
 	ui->edit_deadline->setDate(QDate::currentDate());
-	// Initialize the items
+	// Add items to layout
 	for (int i = 0; i < list.size(); ++i)
-	{
-		connect(list.at(i), &CheckItem::editEvent, this, &Homework::refresh_storage);
 		ui->layout_todos->addWidget(list.at(i));
-	}
 	// Sync the remote list
 	on_button_update_clicked();
 	// Show the items
@@ -39,37 +36,33 @@ void Homework::addItem(CheckItem *item)
 {
 	list.push_back(item);
 	list.refresh(item);
-	connect(item, &CheckItem::editEvent, this, &Homework::refresh_storage);
 	ui->layout_todos->addWidget(item);
-	item->setVisible(currentState & getShowStateOf(item));
+	item->setVisible(currentState & item->getShowState());
 }
 
-void Homework::showItems(ShowState newState)
+void Homework::showItems(const ShowState newState)
 {
 	currentState = newState;
 	for (int i = 0; i < list.size(); ++i)
-	{
-		list.at(i)->setVisible(currentState & getShowStateOf(list.at(i)));
-	}
-}
-
-Homework::ShowState Homework::getShowStateOf(CheckItem *item)
-{
-	// Prevent deleted and out-of-date items from showing
-	if (item->isDeleted() || (item->isRemote() && item->getDeadline() < QDate::currentDate()))
-		return ShowState::NONE;
-	return item->isRemote() ? ShowState::REMOTE : ShowState::LOCAL;
+		list.at(i)->setVisible(currentState & list.at(i)->getShowState());
 }
 
 void Homework::on_button_add_clicked()
 {
-	on_edit_title_returnPressed();
+	if (!ui->edit_title->text().isEmpty())
+	{
+		QString title = ui->edit_title->text();
+		QDate deadline = ui->edit_deadline->date();
+		addItem(new CheckItem(list.size(), title, deadline));
+		ui->edit_title->setText(QString());
+		ui->edit_deadline->setDate(QDate::currentDate());
+	}
 }
 
 void Homework::on_button_new_clicked()
 {
 	CheckItem_EditDialog editDialog;
-	if (editDialog.exec() == QDialog::Accepted && !editDialog.getTitle().isEmpty())
+	if (editDialog.exec() == QDialog::Accepted)
 		addItem(new CheckItem(list.size(), editDialog.getTitle(), editDialog.getDeadline()));
 }
 
@@ -127,14 +120,7 @@ void Homework::on_button_update_clicked()
 
 void Homework::on_edit_title_returnPressed()
 {
-	if (!ui->edit_title->text().isEmpty())
-	{
-		QString title = ui->edit_title->text();
-		QDate deadline = ui->edit_deadline->date();
-		addItem(new CheckItem(list.size(), title, deadline));
-		ui->edit_title->setText(QString());
-		ui->edit_deadline->setDate(QDate::currentDate());
-	}
+	on_button_add_clicked();
 }
 
 void Homework::on_radio_all_clicked()
@@ -150,9 +136,4 @@ void Homework::on_radio_local_clicked()
 void Homework::on_radio_remote_clicked()
 {
 	showItems(ShowState::REMOTE);
-}
-
-void Homework::refresh_storage(CheckItem *item)
-{
-	list.refresh(item);
 }

@@ -65,9 +65,17 @@ void Storage::backup()
 	qDebug() << "Storage::backup() Ends" << endl;
 }
 
+void Storage::push_back(CheckItem *item)
+{
+	QVector::push_back(item);
+	QObject::connect(item, &CheckItem::editEvent,
+					 [this](CheckItem *item){this->refresh(item);});
+}
+
 void Storage::refresh(CheckItem *item)
 {
 	// Sync single item with local storage
+	qDebug() << "Storage::refresh() Starts";
 	storage.beginWriteArray("todos");
 	storage.setArrayIndex(item->getId());
 	if (item->isDeleted())
@@ -81,4 +89,5 @@ void Storage::refresh(CheckItem *item)
 	}
 	storage.endArray();
 	storage.sync();
+	qDebug() << "Storage::refresh() Ends";
 }

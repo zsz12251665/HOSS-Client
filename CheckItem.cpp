@@ -102,6 +102,14 @@ QString CheckItem::getDirectory() const
 	return directory;
 }
 
+CheckItem::ShowState CheckItem::getShowState() const
+{
+	// Prevent deleted and out-of-date items from showing
+	if (isDeleted() || (isRemote() && getDeadline() < QDate::currentDate()))
+		return ShowState::NONE;
+	return isRemote() ? ShowState::REMOTE : ShowState::LOCAL;
+}
+
 bool CheckItem::isFinished() const
 {
 	return checked;

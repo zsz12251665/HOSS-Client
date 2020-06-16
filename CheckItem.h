@@ -23,6 +23,13 @@ private slots:
 	void leaveEvent(QEvent*);
 	void mouseDoubleClickEvent(QMouseEvent*);
 public:
+	enum ShowState
+	{
+		NONE = 0,	// 00
+		LOCAL = 1,	// 01
+		REMOTE = 2,	// 10
+		ALL = 3		// 11
+	};
 	CheckItem(const int, const QString, const QDate,
 			  const QString = QString(), const bool = false, QWidget* = nullptr);
 	~CheckItem();
@@ -30,6 +37,7 @@ public:
 	QString getTitle() const;
 	QDate getDeadline() const;
 	QString getDirectory() const;
+	ShowState getShowState() const;
 	bool isFinished() const;
 	bool isRemote() const;
 	bool isDeleted() const;

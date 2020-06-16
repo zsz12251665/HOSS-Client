@@ -14,6 +14,7 @@ private:
 public:
 	Storage(const QString = "storage");
 	~Storage();
+	void push_back(CheckItem*);
 	void refresh(CheckItem*);
 };
 
