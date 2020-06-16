@@ -22,6 +22,7 @@ private slots:
 	void enterEvent(QEvent*);
 	void leaveEvent(QEvent*);
 	void mouseDoubleClickEvent(QMouseEvent*);
+	void on_button_check_clicked();
 public:
 	enum ShowState
 	{
@@ -41,9 +42,9 @@ public:
 	bool isFinished() const;
 	bool isRemote() const;
 	bool isDeleted() const;
+	void setChecked(bool);
 public slots:
-	void on_button_check_clicked(const bool = true);
-	void selfDelete();
+	void remove();
 signals:
 	void editEvent(CheckItem*);
 };

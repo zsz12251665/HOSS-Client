@@ -21,13 +21,11 @@ CheckItem::CheckItem(const int id, const QString title, const QDate deadline,
 	ui->setupUi(this);
 	ui->label_title->setText(title);
 	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
-	if (isRemote())
-		checked = RemoteAPI::verifySubmission(Settings(), directory) == 200;
 	ui->button_check->setIcon(getIcon(checked));
 	setAutoFillBackground(true);
-	// Remote homework could not be deleted
+	// Only local homeworks could be deleted
 	if (!isRemote())
-		connect(ui->button_delete, &QPushButton::clicked, this, &CheckItem::selfDelete);
+		connect(ui->button_delete, &QPushButton::clicked, this, &CheckItem::remove);
 }
 
 CheckItem::~CheckItem()
@@ -67,19 +65,16 @@ void CheckItem::mouseDoubleClickEvent(QMouseEvent*)
 	}
 }
 
-void CheckItem::on_button_check_clicked(const bool needVerify)
+void CheckItem::on_button_check_clicked()
 {
 	if (isRemote())
 	{
-		int result = needVerify ? RemoteAPI::verifySubmission(Settings(), directory) :
-								  RemoteAPI::uploadHomework(Settings(), directory);
-		// Check state unchanged, no need to emit the edit event
-		if (result == -1 || checked == (result == 200))
-			return;
+		int result = RemoteAPI::uploadHomework(Settings(), directory);
+		if (result != -1)
+			setChecked(result == 200);
 	}
-	checked = !checked;
-	ui->button_check->setIcon(getIcon(checked));
-	emit editEvent(this);
+	else
+		setChecked(!checked);
 }
 
 int CheckItem::getId() const
@@ -104,8 +99,9 @@ QString CheckItem::getDirectory() const
 
 CheckItem::ShowState CheckItem::getShowState() const
 {
-	// Prevent deleted and out-of-date items from showing
-	if (isDeleted() || (isRemote() && getDeadline() < QDate::currentDate()))
+	// Prevent deleted, out-of-date remote items and unavailable remote items from showing
+	if (isDeleted() || (isRemote() && (getDeadline() < QDate::currentDate() ||
+									   !RemoteAPI::isOnline())))
 		return ShowState::NONE;
 	return isRemote() ? ShowState::REMOTE : ShowState::LOCAL;
 }
@@ -125,7 +121,17 @@ bool CheckItem::isDeleted() const
 	return id < 0;
 }
 
-void CheckItem::selfDelete()
+void CheckItem::setChecked(bool isFinished)
+{
+	if (checked != isFinished)
+	{
+		checked = isFinished;
+		ui->button_check->setIcon(getIcon(checked));
+		emit editEvent(this);
+	}
+}
+
+void CheckItem::remove()
 {
 	this->hide();
 	id = ~id;

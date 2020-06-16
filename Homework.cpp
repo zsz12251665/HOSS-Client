@@ -7,6 +7,7 @@
 #include "Settings.h"
 
 #include <QDebug>
+#include <QJsonArray>
 
 Homework::Homework(QWidget *parent) : QMainWindow(parent), ui(new Ui::Homework),
 	currentState(ShowState::ALL)
@@ -75,8 +76,16 @@ void Homework::on_button_settings_clicked()
 void Homework::on_button_update_clicked()
 {
 	qDebug() << "Homework::on_button_update_clicked() Starts";
-	QJsonArray remoteList = RemoteAPI::fetchRemoteToDos(Settings());
+	QPair<int, QJsonArray> fetchResult = RemoteAPI::fetchRemoteToDos(Settings());
+	// Check if offline
+	if (fetchResult.first != 200)
+	{
+		qDebug() << "Fail to fetch Remote Todos";
+		qDebug() << "Homework::on_button_update_clicked() Ends" << endl;
+		return;
+	}
 	// Remove the out-of-date ones
+	QJsonArray remoteList = fetchResult.second;
 	for (int i = 0; i < remoteList.size(); ++i)
 		if (remoteList.at(i)["deadline"].toVariant().toDate() < QDate::currentDate())
 		{
@@ -92,28 +101,28 @@ void Homework::on_button_update_clicked()
 				QString title = remoteList.at(j)["title"].toString();
 				QDate deadline = remoteList.at(j)["deadline"].toVariant().toDate();
 				QString directory = remoteList.at(j)["directory"].toString();
+				bool checked = remoteList.at(j)["checked"].toBool();
 				if (list.at(i)->getTitle() == title && list.at(i)->getDirectory() == directory
 					&& list.at(i)->getDeadline() == deadline)
 				{
 					isOutOfDate = false;
+					// Update the submission status of remote homework
+					list.at(i)->setChecked(checked);
 					remoteList.removeAt(j--);
 				}
 			}
 			// Remove the out-of-date ones in the local list
 			if (isOutOfDate)
-				list.at(i)->selfDelete();
-			else
-				// Check the submission status of remote homework
-				if (list.at(i)->isRemote())
-					list.at(i)->on_button_check_clicked();
+				list.at(i)->remove();
 		}
 	for (int i = 0; i < remoteList.size(); ++i)
 	{
 		QString title = remoteList.at(i)["title"].toString();
 		QDate deadline = remoteList.at(i)["deadline"].toVariant().toDate();
 		QString directory = remoteList.at(i)["directory"].toString();
-		qDebug() << title << deadline << directory;
-		addItem(new CheckItem(list.size(), title, deadline, directory));
+		bool checked = remoteList.at(i)["checked"].toBool();
+		qDebug() << title << deadline << directory << checked;
+		addItem(new CheckItem(list.size(), title, deadline, directory, checked));
 	}
 	qDebug() << "Homework::on_button_update_clicked() Ends" << endl;
 }
