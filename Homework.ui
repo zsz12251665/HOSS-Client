@@ -19,9 +19,6 @@
      <layout class="QHBoxLayout" name="horizontalLayout_1">
       <item>
        <widget class="QPushButton" name="button_update">
-        <property name="text">
-         <string/>
-        </property>
         <property name="icon">
          <iconset resource="FontAwesome.qrc">
           <normaloff>:/FontAwesome/svgs/solid/sync-alt.svg</normaloff>:/FontAwesome/svgs/solid/sync-alt.svg</iconset>
@@ -37,9 +34,6 @@
       </item>
       <item>
        <widget class="QPushButton" name="button_new">
-        <property name="text">
-         <string/>
-        </property>
         <property name="icon">
          <iconset resource="FontAwesome.qrc">
           <normaloff>:/FontAwesome/svgs/solid/plus.svg</normaloff>:/FontAwesome/svgs/solid/plus.svg</iconset>
@@ -55,12 +49,24 @@
       </item>
       <item>
        <widget class="QPushButton" name="button_settings">
-        <property name="text">
-         <string/>
-        </property>
         <property name="icon">
          <iconset resource="FontAwesome.qrc">
           <normaloff>:/FontAwesome/svgs/solid/cog.svg</normaloff>:/FontAwesome/svgs/solid/cog.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_help">
+        <property name="icon">
+         <iconset resource="FontAwesome.qrc">
+          <normaloff>:/FontAwesome/svgs/solid/info-circle.svg</normaloff>:/FontAwesome/svgs/solid/info-circle.svg</iconset>
         </property>
        </widget>
       </item>
@@ -69,7 +75,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <spacer name="horizontalSpacer_3">
+       <spacer name="horizontalSpacer_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -86,7 +92,7 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_4">
+       <spacer name="horizontalSpacer_5">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -103,7 +109,7 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_5">
+       <spacer name="horizontalSpacer_6">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -117,7 +123,7 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_6">
+       <spacer name="horizontalSpacer_7">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -157,11 +163,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QLineEdit" name="edit_title">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="edit_title"/>
       </item>
       <item>
        <widget class="QDateEdit" name="edit_deadline"/>

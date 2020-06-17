@@ -5,6 +5,7 @@
     </qresource>
     <qresource prefix="/FontAwesome/svgs/solid">
         <file alias="cog.svg">Font-Awesome/svgs/solid/cog.svg</file>
+        <file alias="info-circle.svg">Font-Awesome/svgs/solid/info-circle.svg</file>
         <file alias="plus.svg">Font-Awesome/svgs/solid/plus.svg</file>
         <file alias="sync-alt.svg">Font-Awesome/svgs/solid/sync-alt.svg</file>
         <file alias="trash-alt.svg">Font-Awesome/svgs/solid/trash-alt.svg</file>
