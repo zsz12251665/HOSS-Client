@@ -6,18 +6,16 @@
 #include "Settings.h"
 
 #include <QDebug>
+#include <QJsonValue>
 
-CheckItem::CheckItem(const int id, const QString title, const QDate deadline, const QString directory, const bool checked, QWidget *parent)
-	: QWidget(parent), ui(new Ui::CheckItem), id(id), title(title), directory(directory), deadline(deadline), checked(checked)
+CheckItem::CheckItem(const int id, const QString title, const QDate deadline, const bool checked, QWidget *parent)
+	: QWidget(parent), ui(new Ui::CheckItem), id(id), title(title), deadline(deadline), checked(checked)
 {
 	ui->setupUi(this);
 	setTitle(title);
 	setDeadline(deadline);
 	setChecked(checked);
 	setAutoFillBackground(true);
-	// Only local homeworks could be deleted
-	if (!isRemote())
-		connect(ui->button_delete, &QPushButton::clicked, this, &CheckItem::remove);
 }
 
 CheckItem::~CheckItem()
@@ -41,29 +39,7 @@ void CheckItem::leaveEvent(QEvent*)
 
 void CheckItem::mouseDoubleClickEvent(QMouseEvent*)
 {
-	if(!isRemote())
-	{
-		CheckItem_EditDialog editDialog(title, deadline);
-		if (editDialog.exec() == QDialog::Accepted)
-		{
-			setTitle(editDialog.getTitle());
-			setDeadline(editDialog.getDeadline());
-			qDebug() << title << deadline;
-			emit editEvent(this);
-		}
-	}
-}
-
-void CheckItem::on_button_check_clicked()
-{
-	if (isRemote())
-	{
-		int result = RemoteAPI::uploadHomework(Settings(), directory);
-		if (result != -1)
-			setChecked(result == 200);
-	}
-	else
-		setChecked(!checked);
+	;
 }
 
 int CheckItem::getId() const
@@ -81,32 +57,19 @@ QDate CheckItem::getDeadline() const
 	return deadline;
 }
 
-QString CheckItem::getDirectory() const
+bool CheckItem::isDeleted() const
 {
-	return directory;
+	return id < 0;
 }
 
-CheckItem::ShowState CheckItem::getShowState() const
+bool CheckItem::isExpired() const
 {
-	// Prevent deleted items, out-of-date remote items and unavailable remote items from showing
-	if (isDeleted() || (isRemote() && (getDeadline() < QDate::currentDate() || !RemoteAPI::isOnline())))
-		return ShowState::NONE;
-	return isRemote() ? ShowState::REMOTE : ShowState::LOCAL;
+	return deadline < QDate::currentDate();
 }
 
 bool CheckItem::isFinished() const
 {
 	return checked;
-}
-
-bool CheckItem::isRemote() const
-{
-	return !directory.isEmpty();
-}
-
-bool CheckItem::isDeleted() const
-{
-	return id < 0;
 }
 
 void CheckItem::setTitle(const QString value)
@@ -144,4 +107,83 @@ void CheckItem::remove()
 	this->hide();
 	id = ~id;
 	emit editEvent(this);
+}
+
+LocalCheckItem::LocalCheckItem(const int id, const QString title, const QDate deadline, const bool checked, QWidget *parent)
+	: CheckItem(id, title, deadline, checked, parent)
+{
+	// Only local homeworks could be deleted
+	connect(ui->button_delete, &QPushButton::clicked, this, &CheckItem::remove);
+}
+
+LocalCheckItem::~LocalCheckItem()
+{
+	;
+}
+
+void LocalCheckItem::mouseDoubleClickEvent(QMouseEvent*)
+{
+	CheckItem_EditDialog editDialog(getTitle(), getDeadline());
+	if (editDialog.exec() == QDialog::Accepted)
+	{
+		setTitle(editDialog.getTitle());
+		setDeadline(editDialog.getDeadline());
+		qDebug() << getTitle() << getDeadline();
+		emit editEvent(this);
+	}
+}
+
+void LocalCheckItem::on_button_check_clicked()
+{
+	setChecked(!isFinished());
+}
+
+CheckItem::ShowState LocalCheckItem::getShowState() const
+{
+	// Prevent deleted items from showing
+	return isDeleted() ? ShowState::NONE : ShowState::LOCAL;
+}
+
+bool LocalCheckItem::isRemote() const
+{
+	return false;
+}
+
+RemoteCheckItem::RemoteCheckItem(const int id, const QString title, const QDate deadline, const QString directory, const bool checked, QWidget *parent)
+	: CheckItem(id, title, deadline, checked, parent), directory(directory)
+{
+	;
+}
+
+RemoteCheckItem::~RemoteCheckItem()
+{
+	;
+}
+
+void RemoteCheckItem::on_button_check_clicked()
+{
+	int result = RemoteAPI::uploadHomework(Settings(), directory);
+	if (result != -1)
+		setChecked(result == 200);
+}
+
+QString RemoteCheckItem::getDirectory() const
+{
+	return directory;
+}
+
+CheckItem::ShowState RemoteCheckItem::getShowState() const
+{
+	// Prevent deleted items, expired items and unavailable items from showing
+	return isDeleted() || isExpired() || !RemoteAPI::isOnline() ? ShowState::NONE : ShowState::REMOTE;
+}
+
+bool RemoteCheckItem::isRemote() const
+{
+	return true;
+}
+
+bool RemoteCheckItem::isSame(QJsonValue target) const
+{
+	return target["title"].toString() == getTitle() && target["deadline"].toVariant().toDate() == getDeadline() && target["directory"].toString() == getDirectory();
 }

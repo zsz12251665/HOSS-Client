@@ -12,17 +12,18 @@ namespace Ui
 class CheckItem : public QWidget
 {
 	Q_OBJECT
-private:
+protected:
 	Ui::CheckItem *ui;
+private:
 	int id;
-	QString title, directory;
+	QString title;
 	QDate deadline;
 	bool checked;
 private slots:
 	void enterEvent(QEvent*);
 	void leaveEvent(QEvent*);
-	void mouseDoubleClickEvent(QMouseEvent*);
-	void on_button_check_clicked();
+	virtual void mouseDoubleClickEvent(QMouseEvent*);
+	virtual void on_button_check_clicked() = 0;
 public:
 	enum ShowState
 	{
@@ -31,23 +32,54 @@ public:
 		REMOTE = 2,	// 10
 		ALL = 3		// 11
 	};
-	CheckItem(int, QString, QDate, QString = QString(), bool = false, QWidget* = nullptr);
+	CheckItem(int, QString, QDate, bool = false, QWidget* = nullptr);
 	~CheckItem();
 	int getId() const;
 	QString getTitle() const;
 	QDate getDeadline() const;
-	QString getDirectory() const;
-	ShowState getShowState() const;
-	bool isFinished() const;
-	bool isRemote() const;
+	virtual ShowState getShowState() const = 0;
 	bool isDeleted() const;
-	void setTitle(QString);
-	void setDeadline(QDate);
+	bool isExpired() const;
+	bool isFinished() const;
+	virtual bool isRemote() const = 0;
 	void setChecked(bool);
+protected:
+	void setDeadline(QDate);
+	void setTitle(QString);
 public slots:
 	void remove();
 signals:
 	void editEvent(CheckItem*);
 };
+
+class LocalCheckItem : public CheckItem
+{
+	Q_OBJECT
+private slots:
+	void mouseDoubleClickEvent(QMouseEvent*) override;
+	void on_button_check_clicked() override;
+public:
+	LocalCheckItem(int, QString, QDate, bool = false, QWidget* = nullptr);
+	~LocalCheckItem();
+	ShowState getShowState() const override;
+	bool isRemote() const override;
+};
+
+class RemoteCheckItem : public CheckItem
+{
+	Q_OBJECT
+private:
+	QString directory;
+private slots:
+	void on_button_check_clicked() override;
+public:
+	RemoteCheckItem(int, QString, QDate, QString , bool = false, QWidget* = nullptr);
+	~RemoteCheckItem();
+	QString getDirectory() const;
+	ShowState getShowState() const override;
+	bool isRemote() const override;
+	bool isSame(QJsonValue) const;
+};
+
 
 #endif // CHECKITEM_H

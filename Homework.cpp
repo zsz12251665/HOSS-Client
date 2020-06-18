@@ -53,7 +53,7 @@ void Homework::on_button_add_clicked()
 	// Add a new item according the input
 	if (!ui->edit_title->text().isEmpty())
 	{
-		addItem(new CheckItem(list.size(), ui->edit_title->text(), ui->edit_deadline->date()));
+		addItem(new LocalCheckItem(list.size(), ui->edit_title->text(), ui->edit_deadline->date()));
 		// Reset the input
 		ui->edit_title->setText(QString());
 		ui->edit_deadline->setDate(QDate::currentDate());
@@ -65,7 +65,7 @@ void Homework::on_button_new_clicked()
 	// Pop a dialog to create a new item
 	CheckItem_EditDialog editDialog;
 	if (editDialog.exec() == QDialog::Accepted)
-		addItem(new CheckItem(list.size(), editDialog.getTitle(), editDialog.getDeadline()));
+		addItem(new LocalCheckItem(list.size(), editDialog.getTitle(), editDialog.getDeadline()));
 }
 
 void Homework::on_button_settings_clicked()
@@ -94,24 +94,19 @@ void Homework::on_button_update_clicked()
 		if (remoteList.at(i)["deadline"].toVariant().toDate() < QDate::currentDate())
 			remoteList.removeAt(i--);
 	for (int i = 0; i < list.size(); ++i)
-		if (!list.at(i)->isDeleted())
+		if (!list.at(i)->isDeleted() && list.at(i)->isRemote())
 		{
-			bool isOutOfDate = list.at(i)->isRemote();
+			bool isOutOfDate = true;
 			// Remove existing ones
 			for (int j = 0; j < remoteList.size(); ++j)
-			{
-				QString title = remoteList.at(j)["title"].toString();
-				QDate deadline = remoteList.at(j)["deadline"].toVariant().toDate();
-				QString directory = remoteList.at(j)["directory"].toString();
-				bool checked = remoteList.at(j)["checked"].toBool();
-				if (list.at(i)->getTitle() == title && list.at(i)->getDeadline() == deadline && list.at(i)->getDirectory() == directory)
+				if (static_cast<RemoteCheckItem*>(list.at(i))->isSame(remoteList.at(j)))
 				{
 					isOutOfDate = false;
 					// Update the submission status of remote homework
-					list.at(i)->setChecked(checked);
+					list.at(i)->setChecked(remoteList.at(j)["checked"].toBool());
 					remoteList.removeAt(j--);
+					break;
 				}
-			}
 			// Remove out-of-date ones in the local list
 			if (isOutOfDate)
 				list.at(i)->remove();
@@ -124,7 +119,7 @@ void Homework::on_button_update_clicked()
 		QString directory = remoteList.at(i)["directory"].toString();
 		bool checked = remoteList.at(i)["checked"].toBool();
 		qDebug() << title << deadline << directory << checked;
-		addItem(new CheckItem(list.size(), title, deadline, directory, checked));
+		addItem(new RemoteCheckItem(list.size(), title, deadline, directory, checked));
 	}
 	qDebug() << "Homework::on_button_update_clicked() Ends" << endl;
 }

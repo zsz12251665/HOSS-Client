@@ -21,8 +21,11 @@ Storage::Storage(const QString filename)
 		bool isFinished = storage.value("checked").toBool();
 		qDebug() << title << deadline << directory << isFinished;
 		// Only local ones or unexpired ones can be added
-		if (directory.isEmpty() || deadline >= QDate::currentDate())
-			push_back(new CheckItem(size(), title, deadline, directory, isFinished));
+		if (directory.isEmpty())
+			push_back(new LocalCheckItem(size(), title, deadline, isFinished));
+		else
+			if (deadline >= QDate::currentDate())
+				push_back(new RemoteCheckItem(size(), title, deadline, directory, isFinished));
 	}
 	storage.endArray();
 	// Sync local storage with vector list
@@ -53,14 +56,14 @@ void Storage::backup()
 		{
 			QString title = at(i)->getTitle();
 			QDate deadline = at(i)->getDeadline();
-			QString directory = at(i)->getDirectory();
 			bool checked = at(i)->isFinished();
-			qDebug() << cnt << title << deadline << directory << checked;
+			qDebug() << cnt << title << deadline << checked;
 			storage.setArrayIndex(cnt++);
 			storage.setValue("title", title);
 			storage.setValue("deadline", deadline);
-			storage.setValue("directory", checked);
 			storage.setValue("checked", checked);
+			if (at(i)->isRemote())
+				storage.setValue("directory", static_cast<RemoteCheckItem*>(at(i))->getDirectory());
 		}
 	storage.endArray();
 	storage.sync();
@@ -85,13 +88,13 @@ void Storage::refresh(const CheckItem *item)
 	{
 		QString title = item->getTitle();
 		QDate deadline = item->getDeadline();
-		QString directory = item->getDirectory();
 		bool checked = item->isFinished();
-		qDebug() << item->getId() << title << deadline << directory << checked;
+		qDebug() << item->getId() << title << deadline << checked;
 		storage.setValue("title", title);
 		storage.setValue("deadline", deadline);
-		storage.setValue("directory", checked);
 		storage.setValue("checked", checked);
+		if (item->isRemote())
+			storage.setValue("directory", static_cast<const RemoteCheckItem*>(item)->getDirectory());
 	}
 	storage.endArray();
 	storage.sync();
