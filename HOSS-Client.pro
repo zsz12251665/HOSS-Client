@@ -20,8 +20,8 @@ SOURCES += \
 	CheckItem.cpp \
 	CheckItem_EditDialog.cpp \
 	Homework.cpp \
-	RemoteAPI.cpp \
-	RemoteAPI_ProgressDialog.cpp \
+	NetworkAPI.cpp \
+	NetworkAPI_ProgressDialog.cpp \
 	Settings.cpp \
 	Settings_EditDialog.cpp \
 	Storage.cpp \
@@ -31,8 +31,8 @@ HEADERS += \
 	CheckItem.h \
 	CheckItem_EditDialog.h \
 	Homework.h \
-	RemoteAPI.h \
-	RemoteAPI_ProgressDialog.h \
+	NetworkAPI.h \
+	NetworkAPI_ProgressDialog.h \
 	Settings.h \
 	Settings_EditDialog.h \
 	Storage.h
@@ -41,7 +41,7 @@ FORMS += \
 	CheckItem.ui \
 	CheckItem_EditDialog.ui \
 	Homework.ui \
-	RemoteAPI_ProgressDialog.ui \
+	NetworkAPI_ProgressDialog.ui \
 	Settings_EditDialog.ui
 
 RC_ICONS = logo.ico

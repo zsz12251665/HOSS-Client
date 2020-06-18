@@ -1,6 +1,6 @@
-#include "RemoteAPI.h"
+#include "NetworkAPI.h"
 
-#include "RemoteAPI_ProgressDialog.h"
+#include "NetworkAPI_ProgressDialog.h"
 #include "Settings.h"
 
 #include <QDebug>
@@ -26,22 +26,22 @@ static void addPart(QHttpMultiPart *form, const QString type, const QString disp
 	form->append(httpPart);
 }
 
-const QString RemoteAPI::formBoundary = QString("--%1_Boundary_%1--").arg(QRandomGenerator::global()->generate64(), 16, 16, QLatin1Char('0'));
+const QString NetworkAPI::formBoundary = QString("--%1_Boundary_%1--").arg(QRandomGenerator::global()->generate64(), 16, 16, QLatin1Char('0'));
 
-RemoteAPI::RemoteAPI(const QUrl serverURL)
+NetworkAPI::NetworkAPI(const QUrl serverURL)
 	: serverURL(serverURL)
 {
 	;
 }
 
-RemoteAPI::~RemoteAPI()
+NetworkAPI::~NetworkAPI()
 {
 	;
 }
 
-QPair<int, QJsonArray> RemoteAPI::fetchRemoteToDos(QHttpMultiPart *form)
+QPair<int, QJsonArray> NetworkAPI::fetchRemoteToDos(QHttpMultiPart *form)
 {
-	qDebug() << "RemoteAPI::fetchRemoteToDos() Starts";
+	qDebug() << "NetworkAPI::fetchRemoteToDos() Starts";
 	// Send the request
 	QNetworkRequest request(serverURL.resolved(QUrl("homework.php")));
 	QNetworkReply *reply = post(request, form);
@@ -56,21 +56,21 @@ QPair<int, QJsonArray> RemoteAPI::fetchRemoteToDos(QHttpMultiPart *form)
 	for (int i = 0; i < responseJSON.size(); ++i)
 		qDebug() << responseJSON.at(i)["title"].toString() << responseJSON.at(i)["deadline"].toString() << responseJSON.at(i)["directory"].toString() << responseJSON.at(i)["checked"].toString();
 	delete reply;
-	qDebug() << "RemoteAPI::fetchRemoteToDos() Ends" << endl;
+	qDebug() << "NetworkAPI::fetchRemoteToDos() Ends" << endl;
 	return qMakePair(statusCode, responseJSON);
 }
 
-int RemoteAPI::uploadHomework(QHttpMultiPart *form)
+int NetworkAPI::uploadHomework(QHttpMultiPart *form)
 {
-	qDebug() << "RemoteAPI::uploadHomework() Starts";
+	qDebug() << "NetworkAPI::uploadHomework() Starts";
 	// Send the request
 	QNetworkRequest request(serverURL.resolved(QUrl("upload.php")));
 	request.setRawHeader("Content-Type", ("multipart/form-data;boundary=" + formBoundary).toUtf8());
 	QNetworkReply *reply = post(request, form);
 	// Set up the progress dialog & wait for the reply
-	RemoteAPI_ProgressDialog progress;
-	QObject::connect(reply, &QNetworkReply::uploadProgress, &progress, &RemoteAPI_ProgressDialog::updateProgress);
-	QObject::connect(this, &QNetworkAccessManager::finished, &progress, &RemoteAPI_ProgressDialog::close);
+	NetworkAPI_ProgressDialog progress;
+	QObject::connect(reply, &QNetworkReply::uploadProgress, &progress, &NetworkAPI_ProgressDialog::updateProgress);
+	QObject::connect(this, &QNetworkAccessManager::finished, &progress, &NetworkAPI_ProgressDialog::close);
 	progress.exec();
 	// Collect the required information
 	int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -78,11 +78,11 @@ int RemoteAPI::uploadHomework(QHttpMultiPart *form)
 	QMessageBox(QMessageBox::Icon::Information, QString("HTTP %1").arg(statusCode), replyMessage, QMessageBox::Ok).exec();
 	qDebug() << statusCode << replyMessage;
 	delete reply;
-	qDebug() << "RemoteAPI::uploadHomework() Ends" << endl;
+	qDebug() << "NetworkAPI::uploadHomework() Ends" << endl;
 	return statusCode;
 }
 
-QPair<int, QJsonArray> RemoteAPI::fetchRemoteToDos(const Settings &settings)
+QPair<int, QJsonArray> NetworkAPI::fetchRemoteToDos(const Settings &settings)
 {
 	// Check if offline
 	if (!isOnline())
@@ -94,10 +94,10 @@ QPair<int, QJsonArray> RemoteAPI::fetchRemoteToDos(const Settings &settings)
 	addPart(form, "text/plain", "form-data; name=\"StuName\"", settings.getName());
 	addPart(form, "text/plain", "form-data; name=\"StuNumber\"", settings.getNumber());
 	// Send the request & return
-	return RemoteAPI(settings.getServer()).fetchRemoteToDos(form);
+	return NetworkAPI(settings.getServer()).fetchRemoteToDos(form);
 }
 
-int RemoteAPI::uploadHomework(const Settings &settings, const QString directory)
+int NetworkAPI::uploadHomework(const Settings &settings, const QString directory)
 {
 	// Check if offline
 	if (!isOnline())
@@ -122,12 +122,12 @@ int RemoteAPI::uploadHomework(const Settings &settings, const QString directory)
 	filePart.setBodyDevice(&homework);
 	form->append(filePart);
 	// Send the request & return
-	int result = RemoteAPI(settings.getServer()).uploadHomework(form);
+	int result = NetworkAPI(settings.getServer()).uploadHomework(form);
 	homework.close();
 	return result;
 }
 
-bool RemoteAPI::isOnline()
+bool NetworkAPI::isOnline()
 {
 	return QNetworkConfigurationManager().isOnline();
 }

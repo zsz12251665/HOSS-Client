@@ -22,10 +22,10 @@ Storage::Storage(const QString filename)
 		qDebug() << title << deadline << directory << isFinished;
 		// Only local ones or unexpired ones can be added
 		if (directory.isEmpty())
-			push_back(new LocalCheckItem(size(), title, deadline, isFinished));
+			push_back(new LocalItem(size(), title, deadline, isFinished));
 		else
 			if (deadline >= QDate::currentDate())
-				push_back(new RemoteCheckItem(size(), title, deadline, directory, isFinished));
+				push_back(new RemoteItem(size(), title, deadline, directory, isFinished));
 	}
 	storage.endArray();
 	// Sync local storage with vector list
@@ -63,7 +63,7 @@ void Storage::backup()
 			storage.setValue("deadline", deadline);
 			storage.setValue("checked", checked);
 			if (at(i)->isRemote())
-				storage.setValue("directory", static_cast<RemoteCheckItem*>(at(i))->getDirectory());
+				storage.setValue("directory", static_cast<RemoteItem*>(at(i))->getDirectory());
 		}
 	storage.endArray();
 	storage.sync();
@@ -94,7 +94,7 @@ void Storage::refresh(const CheckItem *item)
 		storage.setValue("deadline", deadline);
 		storage.setValue("checked", checked);
 		if (item->isRemote())
-			storage.setValue("directory", static_cast<const RemoteCheckItem*>(item)->getDirectory());
+			storage.setValue("directory", static_cast<const RemoteItem*>(item)->getDirectory());
 	}
 	storage.endArray();
 	storage.sync();

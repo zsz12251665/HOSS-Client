@@ -52,20 +52,20 @@ signals:
 	void editEvent(CheckItem*);
 };
 
-class LocalCheckItem : public CheckItem
+class LocalItem : public CheckItem
 {
 	Q_OBJECT
 private slots:
 	void mouseDoubleClickEvent(QMouseEvent*) override;
 	void on_button_check_clicked() override;
 public:
-	LocalCheckItem(int, QString, QDate, bool = false, QWidget* = nullptr);
-	~LocalCheckItem();
+	LocalItem(int, QString, QDate, bool = false, QWidget* = nullptr);
+	~LocalItem();
 	ShowState getShowState() const override;
 	bool isRemote() const override;
 };
 
-class RemoteCheckItem : public CheckItem
+class RemoteItem : public CheckItem
 {
 	Q_OBJECT
 private:
@@ -73,8 +73,8 @@ private:
 private slots:
 	void on_button_check_clicked() override;
 public:
-	RemoteCheckItem(int, QString, QDate, QString , bool = false, QWidget* = nullptr);
-	~RemoteCheckItem();
+	RemoteItem(int, QString, QDate, QString , bool = false, QWidget* = nullptr);
+	~RemoteItem();
 	QString getDirectory() const;
 	ShowState getShowState() const override;
 	bool isRemote() const override;

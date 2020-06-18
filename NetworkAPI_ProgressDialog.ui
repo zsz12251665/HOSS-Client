@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RemoteAPI_ProgressDialog</class>
- <widget class="QDialog" name="RemoteAPI_ProgressDialog">
+ <class>NetworkAPI_ProgressDialog</class>
+ <widget class="QDialog" name="NetworkAPI_ProgressDialog">
   <property name="geometry">
    <rect>
     <x>0</x>

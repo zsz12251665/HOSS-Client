@@ -1,11 +1,11 @@
-#ifndef REMOTEAPI_H
-#define REMOTEAPI_H
+#ifndef NETWORKAPI_H
+#define NETWORKAPI_H
 
 #include <QNetworkAccessManager>
 
 class Settings;
 
-class RemoteAPI : private QNetworkAccessManager
+class NetworkAPI : private QNetworkAccessManager
 {
 private:
 	static const QString formBoundary;
@@ -13,11 +13,11 @@ private:
 	QPair<int, QJsonArray> fetchRemoteToDos(QHttpMultiPart*);
 	int uploadHomework(QHttpMultiPart*);
 public:
-	RemoteAPI(QUrl);
-	~RemoteAPI();
+	NetworkAPI(QUrl);
+	~NetworkAPI();
 	static QPair<int, QJsonArray> fetchRemoteToDos(const Settings&);
 	static int uploadHomework(const Settings&, QString);
 	static bool isOnline();
 };
 
-#endif // REMOTEAPI_H
+#endif // NETWORKAPI_H

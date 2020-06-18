@@ -2,7 +2,7 @@
 #include "ui_CheckItem.h"
 
 #include "CheckItem_EditDialog.h"
-#include "RemoteAPI.h"
+#include "NetworkAPI.h"
 #include "Settings.h"
 
 #include <QDebug>
@@ -109,19 +109,19 @@ void CheckItem::remove()
 	emit editEvent(this);
 }
 
-LocalCheckItem::LocalCheckItem(const int id, const QString title, const QDate deadline, const bool checked, QWidget *parent)
+LocalItem::LocalItem(const int id, const QString title, const QDate deadline, const bool checked, QWidget *parent)
 	: CheckItem(id, title, deadline, checked, parent)
 {
 	// Only local homeworks could be deleted
 	connect(ui->button_delete, &QPushButton::clicked, this, &CheckItem::remove);
 }
 
-LocalCheckItem::~LocalCheckItem()
+LocalItem::~LocalItem()
 {
 	;
 }
 
-void LocalCheckItem::mouseDoubleClickEvent(QMouseEvent*)
+void LocalItem::mouseDoubleClickEvent(QMouseEvent*)
 {
 	CheckItem_EditDialog editDialog(getTitle(), getDeadline());
 	if (editDialog.exec() == QDialog::Accepted)
@@ -133,57 +133,57 @@ void LocalCheckItem::mouseDoubleClickEvent(QMouseEvent*)
 	}
 }
 
-void LocalCheckItem::on_button_check_clicked()
+void LocalItem::on_button_check_clicked()
 {
 	setChecked(!isFinished());
 }
 
-CheckItem::ShowState LocalCheckItem::getShowState() const
+CheckItem::ShowState LocalItem::getShowState() const
 {
 	// Prevent deleted items from showing
 	return isDeleted() ? ShowState::NONE : ShowState::LOCAL;
 }
 
-bool LocalCheckItem::isRemote() const
+bool LocalItem::isRemote() const
 {
 	return false;
 }
 
-RemoteCheckItem::RemoteCheckItem(const int id, const QString title, const QDate deadline, const QString directory, const bool checked, QWidget *parent)
+RemoteItem::RemoteItem(const int id, const QString title, const QDate deadline, const QString directory, const bool checked, QWidget *parent)
 	: CheckItem(id, title, deadline, checked, parent), directory(directory)
 {
 	;
 }
 
-RemoteCheckItem::~RemoteCheckItem()
+RemoteItem::~RemoteItem()
 {
 	;
 }
 
-void RemoteCheckItem::on_button_check_clicked()
+void RemoteItem::on_button_check_clicked()
 {
-	int result = RemoteAPI::uploadHomework(Settings(), directory);
+	int result = NetworkAPI::uploadHomework(Settings(), directory);
 	if (result != -1)
 		setChecked(result == 200);
 }
 
-QString RemoteCheckItem::getDirectory() const
+QString RemoteItem::getDirectory() const
 {
 	return directory;
 }
 
-CheckItem::ShowState RemoteCheckItem::getShowState() const
+CheckItem::ShowState RemoteItem::getShowState() const
 {
 	// Prevent deleted items, expired items and unavailable items from showing
-	return isDeleted() || isExpired() || !RemoteAPI::isOnline() ? ShowState::NONE : ShowState::REMOTE;
+	return isDeleted() || isExpired() || !NetworkAPI::isOnline() ? ShowState::NONE : ShowState::REMOTE;
 }
 
-bool RemoteCheckItem::isRemote() const
+bool RemoteItem::isRemote() const
 {
 	return true;
 }
 
-bool RemoteCheckItem::isSame(QJsonValue target) const
+bool RemoteItem::isSame(QJsonValue target) const
 {
 	return target["title"].toString() == getTitle() && target["deadline"].toVariant().toDate() == getDeadline() && target["directory"].toString() == getDirectory();
 }

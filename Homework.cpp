@@ -3,7 +3,7 @@
 
 #include "CheckItem.h"
 #include "CheckItem_EditDialog.h"
-#include "RemoteAPI.h"
+#include "NetworkAPI.h"
 #include "Settings.h"
 
 #include <QDebug>
@@ -53,7 +53,7 @@ void Homework::on_button_add_clicked()
 	// Add a new item according the input
 	if (!ui->edit_title->text().isEmpty())
 	{
-		addItem(new LocalCheckItem(list.size(), ui->edit_title->text(), ui->edit_deadline->date()));
+		addItem(new LocalItem(list.size(), ui->edit_title->text(), ui->edit_deadline->date()));
 		// Reset the input
 		ui->edit_title->setText(QString());
 		ui->edit_deadline->setDate(QDate::currentDate());
@@ -65,7 +65,7 @@ void Homework::on_button_new_clicked()
 	// Pop a dialog to create a new item
 	CheckItem_EditDialog editDialog;
 	if (editDialog.exec() == QDialog::Accepted)
-		addItem(new LocalCheckItem(list.size(), editDialog.getTitle(), editDialog.getDeadline()));
+		addItem(new LocalItem(list.size(), editDialog.getTitle(), editDialog.getDeadline()));
 }
 
 void Homework::on_button_settings_clicked()
@@ -80,7 +80,7 @@ void Homework::on_button_update_clicked()
 {
 	// Sync remote items with server
 	qDebug() << "Homework::on_button_update_clicked() Starts";
-	QPair<int, QJsonArray> fetchResult = RemoteAPI::fetchRemoteToDos(Settings());
+	QPair<int, QJsonArray> fetchResult = NetworkAPI::fetchRemoteToDos(Settings());
 	// Check if offline
 	if (fetchResult.first != 200)
 	{
@@ -99,7 +99,7 @@ void Homework::on_button_update_clicked()
 			bool isOutOfDate = true;
 			// Remove existing ones
 			for (int j = 0; j < remoteList.size(); ++j)
-				if (static_cast<RemoteCheckItem*>(list.at(i))->isSame(remoteList.at(j)))
+				if (static_cast<RemoteItem*>(list.at(i))->isSame(remoteList.at(j)))
 				{
 					isOutOfDate = false;
 					// Update the submission status of remote homework
@@ -119,7 +119,7 @@ void Homework::on_button_update_clicked()
 		QString directory = remoteList.at(i)["directory"].toString();
 		bool checked = remoteList.at(i)["checked"].toBool();
 		qDebug() << title << deadline << directory << checked;
-		addItem(new RemoteCheckItem(list.size(), title, deadline, directory, checked));
+		addItem(new RemoteItem(list.size(), title, deadline, directory, checked));
 	}
 	qDebug() << "Homework::on_button_update_clicked() Ends" << endl;
 }
