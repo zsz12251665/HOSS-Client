@@ -9,10 +9,10 @@
 #include <QDebug>
 #include <QJsonArray>
 
-Homework::Homework(QWidget *parent) : QMainWindow(parent), ui(new Ui::Homework),
-	currentState(ShowState::ALL)
+Homework::Homework(QWidget *parent)
+	: QMainWindow(parent), ui(new Ui::Homework), currentState(ShowState::ALL)
 {
-	// Initialize the server URL
+	// Initialize server URL if none
 	Settings settings;
 	if (settings.getServer().isEmpty() && !settings.popEditDialog())
 		exit(0);
@@ -50,11 +50,11 @@ void Homework::showItems(const ShowState newState)
 
 void Homework::on_button_add_clicked()
 {
+	// Add a new item according the input
 	if (!ui->edit_title->text().isEmpty())
 	{
-		QString title = ui->edit_title->text();
-		QDate deadline = ui->edit_deadline->date();
-		addItem(new CheckItem(list.size(), title, deadline));
+		addItem(new CheckItem(list.size(), ui->edit_title->text(), ui->edit_deadline->date()));
+		// Reset the input
 		ui->edit_title->setText(QString());
 		ui->edit_deadline->setDate(QDate::currentDate());
 	}
@@ -62,6 +62,7 @@ void Homework::on_button_add_clicked()
 
 void Homework::on_button_new_clicked()
 {
+	// Pop a dialog to create a new item
 	CheckItem_EditDialog editDialog;
 	if (editDialog.exec() == QDialog::Accepted)
 		addItem(new CheckItem(list.size(), editDialog.getTitle(), editDialog.getDeadline()));
@@ -69,12 +70,15 @@ void Homework::on_button_new_clicked()
 
 void Homework::on_button_settings_clicked()
 {
+	// Pop a dialog to edit configurations
 	Settings().popEditDialog();
+	// Update according to new settings
 	on_button_update_clicked();
 }
 
 void Homework::on_button_update_clicked()
 {
+	// Sync remote items with server
 	qDebug() << "Homework::on_button_update_clicked() Starts";
 	QPair<int, QJsonArray> fetchResult = RemoteAPI::fetchRemoteToDos(Settings());
 	// Check if offline
@@ -84,26 +88,23 @@ void Homework::on_button_update_clicked()
 		qDebug() << "Homework::on_button_update_clicked() Ends" << endl;
 		return;
 	}
-	// Remove the out-of-date ones
+	// Remove out-of-date ones
 	QJsonArray remoteList = fetchResult.second;
 	for (int i = 0; i < remoteList.size(); ++i)
 		if (remoteList.at(i)["deadline"].toVariant().toDate() < QDate::currentDate())
-		{
 			remoteList.removeAt(i--);
-		}
 	for (int i = 0; i < list.size(); ++i)
 		if (!list.at(i)->isDeleted())
 		{
 			bool isOutOfDate = list.at(i)->isRemote();
-			// Remove the existing ones
+			// Remove existing ones
 			for (int j = 0; j < remoteList.size(); ++j)
 			{
 				QString title = remoteList.at(j)["title"].toString();
 				QDate deadline = remoteList.at(j)["deadline"].toVariant().toDate();
 				QString directory = remoteList.at(j)["directory"].toString();
 				bool checked = remoteList.at(j)["checked"].toBool();
-				if (list.at(i)->getTitle() == title && list.at(i)->getDirectory() == directory
-					&& list.at(i)->getDeadline() == deadline)
+				if (list.at(i)->getTitle() == title && list.at(i)->getDeadline() == deadline && list.at(i)->getDirectory() == directory)
 				{
 					isOutOfDate = false;
 					// Update the submission status of remote homework
@@ -111,10 +112,11 @@ void Homework::on_button_update_clicked()
 					remoteList.removeAt(j--);
 				}
 			}
-			// Remove the out-of-date ones in the local list
+			// Remove out-of-date ones in the local list
 			if (isOutOfDate)
 				list.at(i)->remove();
 		}
+	// Add new ones
 	for (int i = 0; i < remoteList.size(); ++i)
 	{
 		QString title = remoteList.at(i)["title"].toString();

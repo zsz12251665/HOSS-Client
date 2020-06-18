@@ -31,8 +31,7 @@ public:
 		REMOTE = 2,	// 10
 		ALL = 3		// 11
 	};
-	CheckItem(const int, const QString, const QDate,
-			  const QString = QString(), const bool = false, QWidget* = nullptr);
+	CheckItem(int, QString, QDate, QString = QString(), bool = false, QWidget* = nullptr);
 	~CheckItem();
 	int getId() const;
 	QString getTitle() const;
@@ -42,6 +41,8 @@ public:
 	bool isFinished() const;
 	bool isRemote() const;
 	bool isDeleted() const;
+	void setTitle(QString);
+	void setDeadline(QDate);
 	void setChecked(bool);
 public slots:
 	void remove();

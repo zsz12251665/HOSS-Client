@@ -12,10 +12,10 @@ private:
 	QSettings storage;
 	void backup();
 public:
-	Storage(const QString = "storage");
+	Storage(QString = "storage");
 	~Storage();
 	void push_back(CheckItem*);
-	void refresh(CheckItem*);
+	void refresh(const CheckItem*);
 };
 
 #endif // STORAGE_H

@@ -4,7 +4,8 @@
 
 #include <QDebug>
 
-Settings::Settings(QString filename) : QSettings(filename + ".ini", QSettings::IniFormat)
+Settings::Settings(const QString filename)
+	: QSettings(filename + ".ini", QSettings::IniFormat)
 {
 	;
 }

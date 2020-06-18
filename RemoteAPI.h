@@ -5,19 +5,18 @@
 
 class Settings;
 
-class RemoteAPI
+class RemoteAPI : private QNetworkAccessManager
 {
 private:
 	static const QString formBoundary;
-	QNetworkAccessManager *manager;
 	QUrl serverURL;
 	QPair<int, QJsonArray> fetchRemoteToDos(QHttpMultiPart*);
 	int uploadHomework(QHttpMultiPart*);
 public:
-	RemoteAPI(const QUrl);
+	RemoteAPI(QUrl);
 	~RemoteAPI();
 	static QPair<int, QJsonArray> fetchRemoteToDos(const Settings&);
-	static int uploadHomework(const Settings&, const QString);
+	static int uploadHomework(const Settings&, QString);
 	static bool isOnline();
 };
 

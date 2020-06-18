@@ -7,21 +7,13 @@
 
 #include <QDebug>
 
-static inline QIcon getIcon(bool checked)
-{
-	QString filename = checked ? "check-circle.svg" : "circle.svg";
-	return QIcon(":/FontAwesome/svgs/regular/" + filename);
-}
-
-CheckItem::CheckItem(const int id, const QString title, const QDate deadline,
-					 const QString directory, const bool isFinished, QWidget *parent) :
-	QWidget(parent), ui(new Ui::CheckItem), id(id), title(title), directory(directory),
-	deadline(deadline), checked(isFinished)
+CheckItem::CheckItem(const int id, const QString title, const QDate deadline, const QString directory, const bool checked, QWidget *parent)
+	: QWidget(parent), ui(new Ui::CheckItem), id(id), title(title), directory(directory), deadline(deadline), checked(checked)
 {
 	ui->setupUi(this);
-	ui->label_title->setText(title);
-	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
-	ui->button_check->setIcon(getIcon(checked));
+	setTitle(title);
+	setDeadline(deadline);
+	setChecked(checked);
 	setAutoFillBackground(true);
 	// Only local homeworks could be deleted
 	if (!isRemote())
@@ -35,15 +27,14 @@ CheckItem::~CheckItem()
 
 void CheckItem::enterEvent(QEvent*)
 {
-	static QPalette pal;
-	pal.setColor(QPalette::Background, QColor(135, 206, 250, 127));
-	setPalette(pal);
+	// Set the background as light blue
+	setPalette(QColor(135, 206, 250, 127));
 	qDebug() << title << "mouse in! isRemote:" << isRemote();
 }
 
-
 void CheckItem::leaveEvent(QEvent*)
 {
+	// Restore the background
 	setPalette(QPalette());
 	qDebug() << title << "mouse out!" << endl;
 }
@@ -55,11 +46,9 @@ void CheckItem::mouseDoubleClickEvent(QMouseEvent*)
 		CheckItem_EditDialog editDialog(title, deadline);
 		if (editDialog.exec() == QDialog::Accepted)
 		{
-			title = editDialog.getTitle();
-			deadline = editDialog.getDeadline();
+			setTitle(editDialog.getTitle());
+			setDeadline(editDialog.getDeadline());
 			qDebug() << title << deadline;
-			ui->label_title->setText(title);
-			ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
 			emit editEvent(this);
 		}
 	}
@@ -99,9 +88,8 @@ QString CheckItem::getDirectory() const
 
 CheckItem::ShowState CheckItem::getShowState() const
 {
-	// Prevent deleted, out-of-date remote items and unavailable remote items from showing
-	if (isDeleted() || (isRemote() && (getDeadline() < QDate::currentDate() ||
-									   !RemoteAPI::isOnline())))
+	// Prevent deleted items, out-of-date remote items and unavailable remote items from showing
+	if (isDeleted() || (isRemote() && (getDeadline() < QDate::currentDate() || !RemoteAPI::isOnline())))
 		return ShowState::NONE;
 	return isRemote() ? ShowState::REMOTE : ShowState::LOCAL;
 }
@@ -121,14 +109,34 @@ bool CheckItem::isDeleted() const
 	return id < 0;
 }
 
-void CheckItem::setChecked(bool isFinished)
+void CheckItem::setTitle(const QString value)
 {
-	if (checked != isFinished)
+	if (title != value)
 	{
-		checked = isFinished;
-		ui->button_check->setIcon(getIcon(checked));
+		title = value;
 		emit editEvent(this);
 	}
+	ui->label_title->setText(title);
+}
+
+void CheckItem::setDeadline(const QDate value)
+{
+	if (deadline != value)
+	{
+		deadline = value;
+		emit editEvent(this);
+	}
+	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
+}
+
+void CheckItem::setChecked(const bool value)
+{
+	if (checked != value)
+	{
+		checked = value;
+		emit editEvent(this);
+	}
+	ui->button_check->setIcon(QIcon(checked ? ":/FontAwesome/svgs/regular/check-circle.svg" : ":/FontAwesome/svgs/regular/circle.svg"));
 }
 
 void CheckItem::remove()

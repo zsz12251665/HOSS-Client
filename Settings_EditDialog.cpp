@@ -1,9 +1,8 @@
 #include "Settings_EditDialog.h"
 #include "ui_Settings_EditDialog.h"
 
-Settings_EditDialog::Settings_EditDialog(const QString server, const QString name,
-										 const QString number, QWidget *parent) :
-	QDialog(parent), ui(new Ui::Settings_EditDialog)
+Settings_EditDialog::Settings_EditDialog(const QString server, const QString name, const QString number, QWidget *parent)
+	: QDialog(parent), ui(new Ui::Settings_EditDialog)
 {
 	ui->setupUi(this);
 	ui->edit_server->setText(server);

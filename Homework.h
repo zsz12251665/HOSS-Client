@@ -25,7 +25,7 @@ private:
 	Storage list;
 	ShowState currentState;
 	void addItem(CheckItem*);
-	void showItems(const ShowState);
+	void showItems(ShowState);
 private slots:
 	void on_button_add_clicked();
 	void on_button_new_clicked();

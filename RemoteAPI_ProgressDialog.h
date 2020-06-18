@@ -1,7 +1,7 @@
 #ifndef REMOTEAPI_PROGRESSDIALOG_H
 #define REMOTEAPI_PROGRESSDIALOG_H
 
-#include <QProgressDialog>
+#include <QDialog>
 
 namespace Ui
 {
@@ -14,7 +14,7 @@ class RemoteAPI_ProgressDialog : public QDialog
 private:
 	Ui::RemoteAPI_ProgressDialog *ui;
 public:
-	RemoteAPI_ProgressDialog(QWidget *parent = nullptr);
+	RemoteAPI_ProgressDialog(QWidget* = nullptr);
 	~RemoteAPI_ProgressDialog();
 public slots:
 	void updateProgress(int, int);

@@ -4,13 +4,12 @@
 
 #include <QDebug>
 
-Storage::Storage(const QString filename) : storage(filename + ".ini", QSettings::IniFormat)
+Storage::Storage(const QString filename)
+	: storage(filename + ".ini", QSettings::IniFormat)
 {
 	qDebug() << "Storage::Storage() Starts";
 	if (filename.isEmpty())
-	{
 		return;
-	}
 	clear();
 	// Import the todo list from local storage
 	for (int i = 0, length = storage.beginReadArray("todos"); i < length; ++i)
@@ -35,7 +34,7 @@ Storage::~Storage()
 {
 	// Backup the list
 	backup();
-	// Free the memory space
+	// Free memory space
 	while (!empty())
 	{
 		delete back();
@@ -52,13 +51,16 @@ void Storage::backup()
 	for (int i = 0, cnt = 0; i < size(); ++i)
 		if (!at(i)->isDeleted())
 		{
-			qDebug() << cnt << at(i)->getTitle() << at(i)->getDeadline()
-					 << at(i)->getDirectory() << at(i)->isFinished();
+			QString title = at(i)->getTitle();
+			QDate deadline = at(i)->getDeadline();
+			QString directory = at(i)->getDirectory();
+			bool checked = at(i)->isFinished();
+			qDebug() << cnt << title << deadline << directory << checked;
 			storage.setArrayIndex(cnt++);
-			storage.setValue("title", at(i)->getTitle());
-			storage.setValue("deadline", at(i)->getDeadline());
-			storage.setValue("directory", at(i)->getDirectory());
-			storage.setValue("checked", at(i)->isFinished());
+			storage.setValue("title", title);
+			storage.setValue("deadline", deadline);
+			storage.setValue("directory", checked);
+			storage.setValue("checked", checked);
 		}
 	storage.endArray();
 	storage.sync();
@@ -68,11 +70,10 @@ void Storage::backup()
 void Storage::push_back(CheckItem *item)
 {
 	QVector::push_back(item);
-	QObject::connect(item, &CheckItem::editEvent,
-					 [this](CheckItem *item){this->refresh(item);});
+	QObject::connect(item, &CheckItem::editEvent, [this](CheckItem *item){this->refresh(item);});
 }
 
-void Storage::refresh(CheckItem *item)
+void Storage::refresh(const CheckItem *item)
 {
 	// Sync single item with local storage
 	qDebug() << "Storage::refresh() Starts";
@@ -82,10 +83,15 @@ void Storage::refresh(CheckItem *item)
 		storage.remove("");
 	else
 	{
-		storage.setValue("title", item->getTitle());
-		storage.setValue("deadline", item->getDeadline());
-		storage.setValue("directory", item->getDirectory());
-		storage.setValue("checked", item->isFinished());
+		QString title = item->getTitle();
+		QDate deadline = item->getDeadline();
+		QString directory = item->getDirectory();
+		bool checked = item->isFinished();
+		qDebug() << item->getId() << title << deadline << directory << checked;
+		storage.setValue("title", title);
+		storage.setValue("deadline", deadline);
+		storage.setValue("directory", checked);
+		storage.setValue("checked", checked);
 	}
 	storage.endArray();
 	storage.sync();
