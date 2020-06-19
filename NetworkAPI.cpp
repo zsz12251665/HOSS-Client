@@ -86,7 +86,10 @@ QPair<int, QJsonArray> NetworkAPI::fetchRemoteToDos(const Settings &settings)
 {
 	// Check if offline
 	if (!isOnline())
+	{
+		QMessageBox(QMessageBox::Icon::Warning, "No Internet", "Your computer is offline now. Please check your connection and try agagin later. ", QMessageBox::Ok).exec();
 		return qMakePair(0, QJsonArray());
+	}
 	// Fulfill the form
 	QHttpMultiPart *form = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 	form->setBoundary(formBoundary.toUtf8());
@@ -101,9 +104,13 @@ int NetworkAPI::uploadHomework(const Settings &settings, const QString directory
 {
 	// Check if offline
 	if (!isOnline())
+	{
+		QMessageBox(QMessageBox::Icon::Warning, "No Internet", "Your computer is offline now. Please check your connection and try agagin later. ", QMessageBox::Ok).exec();
 		return 0;
+	}
 	// Get the file
 	QString filename = QFileDialog::getOpenFileName(nullptr, "Open the file");
+	// If no file selected or cancelled
 	if (filename.isEmpty())
 		return -1;
 	// Fulfill the form

@@ -37,11 +37,6 @@ void CheckItem::leaveEvent(QEvent*)
 	qDebug() << title << "mouse out!" << endl;
 }
 
-void CheckItem::mouseDoubleClickEvent(QMouseEvent*)
-{
-	;
-}
-
 int CheckItem::getId() const
 {
 	return id < 0 ? ~id : id;
@@ -79,7 +74,7 @@ void CheckItem::setTitle(const QString value)
 		title = value;
 		emit editEvent(this);
 	}
-	ui->label_title->setText(title);
+	ui->label_title->setText(title.isEmpty() ? "(No Title)" : title);
 }
 
 void CheckItem::setDeadline(const QDate value)
@@ -112,7 +107,7 @@ void CheckItem::remove()
 LocalItem::LocalItem(const int id, const QString title, const QDate deadline, const bool checked, QWidget *parent)
 	: CheckItem(id, title, deadline, checked, parent)
 {
-	// Only local homeworks could be deleted
+	// Only local items could be deleted
 	connect(ui->button_delete, &QPushButton::clicked, this, &CheckItem::remove);
 }
 
@@ -123,6 +118,7 @@ LocalItem::~LocalItem()
 
 void LocalItem::mouseDoubleClickEvent(QMouseEvent*)
 {
+	// Only local items can be modified
 	CheckItem_EditDialog editDialog(getTitle(), getDeadline());
 	if (editDialog.exec() == QDialog::Accepted)
 	{

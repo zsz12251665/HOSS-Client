@@ -20,9 +20,8 @@ private:
 	QDate deadline;
 	bool checked;
 private slots:
-	void enterEvent(QEvent*);
-	void leaveEvent(QEvent*);
-	virtual void mouseDoubleClickEvent(QMouseEvent*);
+	void enterEvent(QEvent*) override;
+	void leaveEvent(QEvent*) override;
 	virtual void on_button_check_clicked() = 0;
 public:
 	enum ShowState
@@ -32,7 +31,7 @@ public:
 		REMOTE = 2,	// 10
 		ALL = 3		// 11
 	};
-	CheckItem(int, QString, QDate, bool = false, QWidget* = nullptr);
+	CheckItem(int, QString, QDate, bool, QWidget* = nullptr);
 	~CheckItem();
 	int getId() const;
 	QString getTitle() const;
@@ -73,7 +72,7 @@ private:
 private slots:
 	void on_button_check_clicked() override;
 public:
-	RemoteItem(int, QString, QDate, QString , bool = false, QWidget* = nullptr);
+	RemoteItem(int, QString, QDate, QString, bool, QWidget* = nullptr);
 	~RemoteItem();
 	QString getDirectory() const;
 	ShowState getShowState() const override;

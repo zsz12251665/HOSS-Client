@@ -18,14 +18,14 @@ Storage::Storage(const QString filename)
 		QString title = storage.value("title").toString();
 		QDate deadline = storage.value("deadline").toDate();
 		QString directory = storage.value("directory").toString();
-		bool isFinished = storage.value("checked").toBool();
-		qDebug() << title << deadline << directory << isFinished;
+		bool checked = storage.value("checked").toBool();
+		qDebug() << title << deadline << directory << checked;
 		// Only local ones or unexpired ones can be added
 		if (directory.isEmpty())
-			push_back(new LocalItem(size(), title, deadline, isFinished));
+			push_back(new LocalItem(size(), title, deadline, checked));
 		else
 			if (deadline >= QDate::currentDate())
-				push_back(new RemoteItem(size(), title, deadline, directory, isFinished));
+				push_back(new RemoteItem(size(), title, deadline, directory, checked));
 	}
 	storage.endArray();
 	// Sync local storage with vector list
