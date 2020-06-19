@@ -94,8 +94,8 @@ QPair<int, QJsonArray> NetworkAPI::fetchRemoteToDos(const Settings &settings)
 	QHttpMultiPart *form = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 	form->setBoundary(formBoundary.toUtf8());
 	// Append the information
-	addPart(form, "text/plain", "form-data; name=\"StuName\"", settings.getName());
-	addPart(form, "text/plain", "form-data; name=\"StuNumber\"", settings.getNumber());
+	addPart(form, "text/plain", "form-data; name=\"Name\"", settings.getName());
+	addPart(form, "text/plain", "form-data; name=\"Number\"", settings.getNumber());
 	// Send the request & return
 	return NetworkAPI(settings.getServer()).fetchRemoteToDos(form);
 }
@@ -117,15 +117,15 @@ int NetworkAPI::uploadHomework(const Settings &settings, const QString directory
 	QHttpMultiPart *form = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 	form->setBoundary(formBoundary.toUtf8());
 	// Append the information
-	addPart(form, "text/plain", "form-data; name=\"StuName\"", settings.getName());
-	addPart(form, "text/plain", "form-data; name=\"StuNumber\"", settings.getNumber());
-	addPart(form, "text/plain", "form-data; name=\"WorkTitle\"", directory);
+	addPart(form, "text/plain", "form-data; name=\"Name\"", settings.getName());
+	addPart(form, "text/plain", "form-data; name=\"Number\"", settings.getNumber());
+	addPart(form, "text/plain", "form-data; name=\"Directory\"", directory);
 	// Append the homework file
 	QFile homework(filename);
 	homework.open(QFile::ReadOnly);
 	QHttpPart filePart;
 	filePart.setRawHeader("Content-Type", "application/octet-stream");
-	filePart.setRawHeader("Content-Disposition", "form-data; name=\"WorkFile\"; filename=\"" + homework.fileName().toUtf8() + "\"");
+	filePart.setRawHeader("Content-Disposition", "form-data; name=\"File\"; filename=\"" + homework.fileName().toUtf8() + "\"");
 	filePart.setBodyDevice(&homework);
 	form->append(filePart);
 	// Send the request & return
