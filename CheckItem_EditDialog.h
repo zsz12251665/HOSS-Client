@@ -12,7 +12,7 @@ namespace Ui
 class CheckItem_EditDialog : public QDialog
 {
 	Q_OBJECT
-private:
+protected:
 	Ui::CheckItem_EditDialog *ui;
 public:
 	CheckItem_EditDialog(QString = QString(), QDate = QDate::currentDate(), QWidget* = nullptr);

@@ -13,6 +13,8 @@ namespace Ui
 class Homework : public QMainWindow
 {
 	Q_OBJECT
+protected:
+	Ui::Homework *ui;
 private:
 	enum ShowState
 	{
@@ -21,7 +23,6 @@ private:
 		REMOTE = 2,	// 10
 		ALL = 3		// 11
 	};
-	Ui::Homework *ui;
 	Storage list;
 	ShowState currentState;
 	void addItem(CheckItem*);

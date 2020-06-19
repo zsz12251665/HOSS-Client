@@ -11,7 +11,7 @@ namespace Ui
 class Settings_EditDialog : public QDialog
 {
 	Q_OBJECT
-private:
+protected:
 	Ui::Settings_EditDialog *ui;
 public:
 	Settings_EditDialog(QString, QString, QString, QWidget* = nullptr);

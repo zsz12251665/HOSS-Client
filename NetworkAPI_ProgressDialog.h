@@ -11,7 +11,7 @@ namespace Ui
 class NetworkAPI_ProgressDialog : public QDialog
 {
 	Q_OBJECT
-private:
+protected:
 	Ui::NetworkAPI_ProgressDialog *ui;
 public:
 	NetworkAPI_ProgressDialog(QWidget* = nullptr);
