@@ -30,9 +30,14 @@ QString Settings::getNumber() const
 	return value("config/number").toString();
 }
 
+QString Settings::getBackground() const
+{
+    return value("config/background").toString();
+}
+
 bool Settings::popEditDialog()
 {
-	Settings_EditDialog editDialog(getServer(), getName(), getNumber());
+    Settings_EditDialog editDialog(getServer(), getName(), getNumber(), getBackground());
 	// Keep popping until the input is valid or cancelled
 	for (int result = editDialog.exec(); result != QDialog::Accepted ||
 		 editDialog.getServer().isEmpty(); result = editDialog.exec())
@@ -45,6 +50,7 @@ bool Settings::popEditDialog()
 	setValue("config/server", editDialog.getServer());
 	setValue("config/name", editDialog.getName());
 	setValue("config/number", editDialog.getNumber());
+    setValue("config/background", editDialog.getBackground());
 	sync();
 	return true;
 }

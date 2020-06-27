@@ -122,6 +122,17 @@ void Homework::on_button_update_clicked()
 		addItem(new RemoteItem(list.size(), title, deadline, directory, checked));
 	}
 	qDebug() << "Homework::on_button_update_clicked() Ends" << endl;
+    // reset the background
+    Settings settings;
+    if(!settings.getBackground().isEmpty()) {
+        // TODO: save the background picture in the build folder
+        // set the background picture
+        QPalette PAllbackground = this->palette();
+        QImage ImgAllbackground(settings.getBackground());
+        QImage fitimgpic=ImgAllbackground.scaled(this->width(),this->height(), Qt::IgnoreAspectRatio);
+        PAllbackground.setBrush(QPalette::Window, QBrush(fitimgpic));
+        this->setPalette(PAllbackground);
+    }
 }
 
 void Homework::on_edit_title_returnPressed()
@@ -142,4 +153,24 @@ void Homework::on_radio_local_clicked()
 void Homework::on_radio_remote_clicked()
 {
 	showItems(ShowState::REMOTE);
+}
+
+void Homework::on_button_help_clicked()
+{
+
+}
+
+void Homework::resizeEvent(QResizeEvent *)
+{
+    // reset the background
+    Settings settings;
+    if(!settings.getBackground().isEmpty()) {
+        // TODO: save the background picture in the build folder
+        // set the background picture
+        QPalette PAllbackground = this->palette();
+        QImage ImgAllbackground(settings.getBackground());
+        QImage fitimgpic=ImgAllbackground.scaled(this->width(),this->height(), Qt::IgnoreAspectRatio);
+        PAllbackground.setBrush(QPalette::Window, QBrush(fitimgpic));
+        this->setPalette(PAllbackground);
+    }
 }

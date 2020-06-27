@@ -20,7 +20,7 @@
       <item>
        <widget class="QPushButton" name="button_update">
         <property name="icon">
-         <iconset resource="FontAwesome.qrc">
+         <iconset resource="FontAwesome.min.qrc">
           <normaloff>:/FontAwesome/svgs/solid/sync-alt.svg</normaloff>:/FontAwesome/svgs/solid/sync-alt.svg</iconset>
         </property>
        </widget>
@@ -30,12 +30,18 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
        </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="button_new">
         <property name="icon">
-         <iconset resource="FontAwesome.qrc">
+         <iconset resource="FontAwesome.min.qrc">
           <normaloff>:/FontAwesome/svgs/solid/plus.svg</normaloff>:/FontAwesome/svgs/solid/plus.svg</iconset>
         </property>
        </widget>
@@ -45,12 +51,18 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
        </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="button_settings">
         <property name="icon">
-         <iconset resource="FontAwesome.qrc">
+         <iconset resource="FontAwesome.min.qrc">
           <normaloff>:/FontAwesome/svgs/solid/cog.svg</normaloff>:/FontAwesome/svgs/solid/cog.svg</iconset>
         </property>
        </widget>
@@ -60,12 +72,18 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
        </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="button_help">
         <property name="icon">
-         <iconset resource="FontAwesome.qrc">
+         <iconset resource="FontAwesome.min.qrc">
           <normaloff>:/FontAwesome/svgs/solid/info-circle.svg</normaloff>:/FontAwesome/svgs/solid/info-circle.svg</iconset>
         </property>
        </widget>
@@ -78,6 +96,12 @@
        <spacer name="horizontalSpacer_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
         </property>
        </spacer>
       </item>
@@ -96,6 +120,12 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
        </spacer>
       </item>
       <item>
@@ -113,6 +143,12 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
        </spacer>
       </item>
       <item>
@@ -126,6 +162,12 @@
        <spacer name="horizontalSpacer_7">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
         </property>
        </spacer>
       </item>
@@ -153,6 +195,12 @@
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
          </spacer>
         </item>
@@ -186,13 +234,13 @@
      <x>0</x>
      <y>0</y>
      <width>750</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
  </widget>
  <resources>
-  <include location="FontAwesome.qrc"/>
+  <include location="FontAwesome.min.qrc"/>
  </resources>
  <connections/>
 </ui>

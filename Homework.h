@@ -27,6 +27,7 @@ private:
 	ShowState currentState;
 	void addItem(CheckItem*);
 	void showItems(ShowState);
+    void resizeEvent(QResizeEvent *);
 private slots:
 	void on_button_add_clicked();
 	void on_button_new_clicked();
@@ -36,6 +37,8 @@ private slots:
 	void on_radio_all_clicked();
 	void on_radio_local_clicked();
 	void on_radio_remote_clicked();
+    void on_button_help_clicked();
+
 public:
 	Homework(QWidget* = nullptr);
 	~Homework();
