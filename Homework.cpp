@@ -161,11 +161,13 @@ void Homework::on_radio_remote_clicked()
 
 void Homework::on_button_help_clicked()
 {
-    QTextBrowser *browser=new QTextBrowser;
+    QTextBrowser*Browser=new QTextBrowser;
     QFile file(":/help/help.txt");
+    if(!file.open(QFile::ReadOnly|QFile::Text))
+    qDebug() << "Can not open";
     QTextStream in(&file);
-    browser->setText(in.readAll());
-    browser->show();
+    Browser->setText(in.readAll());
+    Browser->show();
 }
 
 void Homework::resizeEvent(QResizeEvent *)
