@@ -8,6 +8,10 @@
 
 #include <QDebug>
 #include <QJsonArray>
+#include <QCoreApplication>
+#include <QDesktopServices>
+#include <QTextBrowser>
+#include <QFile>
 
 Homework::Homework(QWidget *parent)
 	: QMainWindow(parent), ui(new Ui::Homework), currentState(ShowState::ALL)
@@ -157,7 +161,11 @@ void Homework::on_radio_remote_clicked()
 
 void Homework::on_button_help_clicked()
 {
-
+    QTextBrowser *browser=new QTextBrowser;
+    QFile file(":/help/help.txt");
+    QTextStream in(&file);
+    browser->setText(in.readAll());
+    browser->show();
 }
 
 void Homework::resizeEvent(QResizeEvent *)
@@ -166,7 +174,6 @@ void Homework::resizeEvent(QResizeEvent *)
     Settings settings;
     if(!settings.getBackground().isEmpty()) {
         // TODO: save the background picture in the build folder
-        // set the background picture
         QPalette PAllbackground = this->palette();
         QImage ImgAllbackground(settings.getBackground());
         QImage fitimgpic=ImgAllbackground.scaled(this->width(),this->height(), Qt::IgnoreAspectRatio);

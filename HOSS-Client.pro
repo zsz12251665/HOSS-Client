@@ -53,4 +53,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
 	FontAwesome.min.qrc \
-	logo.qrc
+        logo.qrc \
+        help.qrc
