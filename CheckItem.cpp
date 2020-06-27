@@ -16,6 +16,7 @@ CheckItem::CheckItem(const int id, const QString title, const QDate deadline, co
 	setDeadline(deadline);
 	setChecked(checked);
 	setAutoFillBackground(true);
+    setPalette(QColor(244,244,244,2));
 }
 
 CheckItem::~CheckItem()
@@ -33,7 +34,7 @@ void CheckItem::enterEvent(QEvent*)
 void CheckItem::leaveEvent(QEvent*)
 {
 	// Restore the background
-	setPalette(QPalette());
+    setPalette(QColor(244,244,244,2));
 	qDebug() << title << "mouse out!" << endl;
 }
 
