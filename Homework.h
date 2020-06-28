@@ -26,7 +26,6 @@ private:
 	Storage list;
 	ShowState currentState;
 	void addItem(CheckItem*);
-	void setBackground(QImage);
 	void showItems(ShowState);
 private slots:
 	void on_button_add_clicked();
@@ -38,7 +37,6 @@ private slots:
 	void on_radio_local_clicked();
 	void on_radio_remote_clicked();
 	void on_button_help_clicked();
-	void resizeEvent(QResizeEvent*);
 public:
 	Homework(QWidget* = nullptr);
 	~Homework();

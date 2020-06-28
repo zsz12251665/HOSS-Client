@@ -15,7 +15,6 @@ CheckItem::CheckItem(const int id, const QString title, const QDate deadline, co
 	setTitle(title);
 	setDeadline(deadline);
 	setChecked(checked);
-	setAutoFillBackground(true);
 	setPalette(QColor(0, 0, 0, 0));
 }
 
@@ -86,8 +85,7 @@ void CheckItem::setDeadline(const QDate value)
 		emit editEvent(this);
 	}
 	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
-	if(value < QDate::currentDate() && !checked)
-		ui->label_deadline->setStyleSheet("color: red");
+	ui->label_deadline->setStyleSheet(!checked && deadline < QDate::currentDate() ? "color: red;" : "color: grey;");
 }
 
 void CheckItem::setChecked(const bool value)
@@ -97,19 +95,9 @@ void CheckItem::setChecked(const bool value)
 		checked = value;
 		emit editEvent(this);
 	}
-	if(checked)
-	{
-		ui->label_title->setStyleSheet("text-decoration: line-through;color: #919191;");
-		ui->button_check->setIcon(QIcon(":/FontAwesome/svgs/regular/check-circle.svg"));
-		ui->label_deadline->setStyleSheet("color: #919191;");
-	}
-	else
-	{
-		ui->label_title->setStyleSheet("text-decoration: unset;color: unset;");
-		ui->button_check->setIcon(QIcon( ":/FontAwesome/svgs/regular/circle.svg"));
-		if(deadline < QDate::currentDate())
-			ui->label_deadline->setStyleSheet("color: red;");
-	}
+	ui->button_check->setIcon(QIcon(checked ? ":/FontAwesome/svgs/regular/check-circle.svg" : ":/FontAwesome/svgs/regular/circle.svg"));
+	ui->label_title->setStyleSheet(checked ? "text-decoration: line-through;color: grey;" : "text-decoration: unset;color: unset;");
+	ui->label_deadline->setStyleSheet(!checked && deadline < QDate::currentDate() ? "color: red;" : "color: grey;");
 }
 
 void CheckItem::remove()

@@ -37,13 +37,17 @@ QString Settings::getBackground() const
 
 bool Settings::popEditDialog()
 {
+	qDebug() << "Settings::popEditDialog() Starts";
 	Settings_EditDialog editDialog(getServer(), getName(), getNumber(), getBackground());
 	// Keep popping until the input is valid or cancelled
 	for (int result = editDialog.exec(); result != QDialog::Accepted || editDialog.getServer().isEmpty(); result = editDialog.exec())
 	{
 		// Handle cancel event
 		if (result == QDialog::Rejected)
+		{
+			qDebug() << "Settings::popEditDialog() Ends" << endl;
 			return false;
+		}
 	}
 	// Update the configuration
 	setValue("config/server", editDialog.getServer());
@@ -51,5 +55,7 @@ bool Settings::popEditDialog()
 	setValue("config/number", editDialog.getNumber());
 	setValue("config/background", editDialog.getBackground());
 	sync();
+	qDebug() << getServer() << getName() << getNumber() << getBackground();
+	qDebug() << "Settings::popEditDialog() Ends" << endl;
 	return true;
 }

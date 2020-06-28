@@ -28,6 +28,8 @@ Homework::Homework(QWidget *parent)
 	on_button_update_clicked();
 	// Show the items
 	showItems(currentState);
+	// Set the background
+	setStyleSheet(settings.getBackground().isEmpty() ? QString() : QString("#Homework {background: %1;}").arg(settings.getBackground()));
 }
 
 Homework::~Homework()
@@ -41,14 +43,6 @@ void Homework::addItem(CheckItem *item)
 	list.refresh(item);
 	ui->layout_todos->addWidget(item);
 	item->setVisible(currentState & item->getShowState());
-}
-
-void Homework::setBackground(const QImage image)
-{
-	// Set the background picture
-	QPalette background = this->palette();
-	background.setBrush(QPalette::Window, QBrush(image.scaled(this->width(),this->height(), Qt::IgnoreAspectRatio)));
-	this->setPalette(background);
 }
 
 void Homework::showItems(const ShowState newState)
@@ -84,14 +78,11 @@ void Homework::on_button_settings_clicked()
 	// Pop a dialog to edit configurations
 	if (!settings.popEditDialog())
 		return;
-	// Update list according to new settings
+	// Update item list according to new settings
 	on_button_update_clicked();
-	// Reset the background
-	if(!settings.getBackground().isEmpty())
-	{
-		// TODO: save the background picture in the build folder
-		setBackground(QImage(settings.getBackground()));
-	}
+	// Set the background
+	// TODO: Save the background picture in the build folder
+	setStyleSheet(settings.getBackground().isEmpty() ? QString() : QString("#Homework {background: %1;}").arg(settings.getBackground()));
 }
 
 void Homework::on_button_update_clicked()
@@ -164,23 +155,12 @@ void Homework::on_radio_remote_clicked()
 
 void Homework::on_button_help_clicked()
 {
-	qDebug() << "Homework::on_button_help_clicked() Starts" << endl;
+	qDebug() << "Homework::on_button_help_clicked() Starts";
 	QTextBrowser* browser=new QTextBrowser;
 	QFile file(":/help/help.txt");
 	if(!file.open(QFile::ReadOnly | QFile::Text))
-	qDebug() << "Can not open help manual";
+		qDebug() << "Can not open help manual";
 	browser->setText(QTextStream(&file).readAll());
 	browser->show();
 	qDebug() << "Homework::on_button_help_clicked() Ends" << endl;
-}
-
-void Homework::resizeEvent(QResizeEvent*)
-{
-	// Reset the background
-	Settings settings;
-	if(!settings.getBackground().isEmpty())
-	{
-		// TODO: save the background picture in the build folder
-		setBackground(QImage(settings.getBackground()));
-	}
 }

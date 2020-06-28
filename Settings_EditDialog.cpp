@@ -22,11 +22,11 @@ Settings_EditDialog::~Settings_EditDialog()
 void Settings_EditDialog::on_button_background_clicked()
 {
 	// Get the background picture from local file
-	QString background = QFileDialog::getOpenFileName(this, "Choose the background picture", ".", "Image (*.png *.jpg *.bmp)");
-	if (background.isEmpty())
+	QString imageURL = QFileDialog::getOpenFileName(this, "Choose the background picture", ".", "Image (*.png *.jpg *.bmp)");
+	if (imageURL.isEmpty())
 		return;
 	// Set the background path
-	ui->edit_background->setText(background);
+	ui->edit_background->setText(QString("url(\"%1\")").arg(imageURL));
 }
 
 QString Settings_EditDialog::getServer() const

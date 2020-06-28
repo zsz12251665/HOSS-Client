@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>HOSS-Client</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -133,6 +136,9 @@
     </item>
     <item>
      <widget class="QScrollArea" name="scrollArea">
+      <property name="styleSheet">
+       <string notr="true">QScrollArea, QScrollArea &gt; * &gt; * {background: transparent;}</string>
+      </property>
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
