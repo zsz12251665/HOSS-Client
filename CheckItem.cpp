@@ -95,7 +95,15 @@ void CheckItem::setChecked(const bool value)
 		checked = value;
 		emit editEvent(this);
 	}
-	ui->button_check->setIcon(QIcon(checked ? ":/FontAwesome/svgs/regular/check-circle.svg" : ":/FontAwesome/svgs/regular/circle.svg"));
+    if(checked) {
+        ui->label_title->setStyleSheet("text-decoration:line-through;color:rgb(145,145,145)");
+        ui->label_deadline->setStyleSheet("color:rgb(145,145,145)");
+        ui->button_check->setIcon(QIcon(":/FontAwesome/svgs/regular/check-circle.svg"));
+    } else {
+        ui->label_title->setStyleSheet("text-decoration:unset;color:unset");
+        ui->label_deadline->setStyleSheet("color:unset");
+        ui->button_check->setIcon(QIcon( ":/FontAwesome/svgs/regular/circle.svg"));
+    }
 }
 
 void CheckItem::remove()
