@@ -7,11 +7,9 @@
 #include "Settings.h"
 
 #include <QDebug>
-#include <QJsonArray>
-#include <QCoreApplication>
-#include <QDesktopServices>
-#include <QTextBrowser>
 #include <QFile>
+#include <QJsonArray>
+#include <QTextBrowser>
 
 Homework::Homework(QWidget *parent)
 	: QMainWindow(parent), ui(new Ui::Homework), currentState(ShowState::ALL)
@@ -45,6 +43,14 @@ void Homework::addItem(CheckItem *item)
 	item->setVisible(currentState & item->getShowState());
 }
 
+void Homework::setBackground(const QImage image)
+{
+	// Set the background picture
+	QPalette background = this->palette();
+	background.setBrush(QPalette::Window, QBrush(image.scaled(this->width(),this->height(), Qt::IgnoreAspectRatio)));
+	this->setPalette(background);
+}
+
 void Homework::showItems(const ShowState newState)
 {
 	currentState = newState;
@@ -74,10 +80,18 @@ void Homework::on_button_new_clicked()
 
 void Homework::on_button_settings_clicked()
 {
+	Settings settings;
 	// Pop a dialog to edit configurations
-	Settings().popEditDialog();
-	// Update according to new settings
+	if (!settings.popEditDialog())
+		return;
+	// Update list according to new settings
 	on_button_update_clicked();
+	// Reset the background
+	if(!settings.getBackground().isEmpty())
+	{
+		// TODO: save the background picture in the build folder
+		setBackground(QImage(settings.getBackground()));
+	}
 }
 
 void Homework::on_button_update_clicked()
@@ -126,17 +140,6 @@ void Homework::on_button_update_clicked()
 		addItem(new RemoteItem(list.size(), title, deadline, directory, checked));
 	}
 	qDebug() << "Homework::on_button_update_clicked() Ends" << endl;
-    // reset the background
-    Settings settings;
-    if(!settings.getBackground().isEmpty()) {
-        // TODO: save the background picture in the build folder
-        // set the background picture
-        QPalette PAllbackground = this->palette();
-        QImage ImgAllbackground(settings.getBackground());
-        QImage fitimgpic=ImgAllbackground.scaled(this->width(),this->height(), Qt::IgnoreAspectRatio);
-        PAllbackground.setBrush(QPalette::Window, QBrush(fitimgpic));
-        this->setPalette(PAllbackground);
-    }
 }
 
 void Homework::on_edit_title_returnPressed()
@@ -161,25 +164,23 @@ void Homework::on_radio_remote_clicked()
 
 void Homework::on_button_help_clicked()
 {
-    QTextBrowser*Browser=new QTextBrowser;
-    QFile file(":/help/help.txt");
-    if(!file.open(QFile::ReadOnly|QFile::Text))
-    qDebug() << "Can not open";
-    QTextStream in(&file);
-    Browser->setText(in.readAll());
-    Browser->show();
+	qDebug() << "Homework::on_button_help_clicked() Starts" << endl;
+	QTextBrowser* browser=new QTextBrowser;
+	QFile file(":/help/help.txt");
+	if(!file.open(QFile::ReadOnly | QFile::Text))
+	qDebug() << "Can not open help manual";
+	browser->setText(QTextStream(&file).readAll());
+	browser->show();
+	qDebug() << "Homework::on_button_help_clicked() Ends" << endl;
 }
 
-void Homework::resizeEvent(QResizeEvent *)
+void Homework::resizeEvent(QResizeEvent*)
 {
-    // reset the background
-    Settings settings;
-    if(!settings.getBackground().isEmpty()) {
-        // TODO: save the background picture in the build folder
-        QPalette PAllbackground = this->palette();
-        QImage ImgAllbackground(settings.getBackground());
-        QImage fitimgpic=ImgAllbackground.scaled(this->width(),this->height(), Qt::IgnoreAspectRatio);
-        PAllbackground.setBrush(QPalette::Window, QBrush(fitimgpic));
-        this->setPalette(PAllbackground);
-    }
+	// Reset the background
+	Settings settings;
+	if(!settings.getBackground().isEmpty())
+	{
+		// TODO: save the background picture in the build folder
+		setBackground(QImage(settings.getBackground()));
+	}
 }

@@ -16,7 +16,7 @@ CheckItem::CheckItem(const int id, const QString title, const QDate deadline, co
 	setDeadline(deadline);
 	setChecked(checked);
 	setAutoFillBackground(true);
-    setPalette(QColor(244,244,244,2));
+	setPalette(QColor(0, 0, 0, 0));
 }
 
 CheckItem::~CheckItem()
@@ -34,7 +34,7 @@ void CheckItem::enterEvent(QEvent*)
 void CheckItem::leaveEvent(QEvent*)
 {
 	// Restore the background
-    setPalette(QColor(244,244,244,2));
+	setPalette(QColor(0, 0, 0, 0));
 	qDebug() << title << "mouse out!" << endl;
 }
 
@@ -86,9 +86,8 @@ void CheckItem::setDeadline(const QDate value)
 		emit editEvent(this);
 	}
 	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
-    if(value < QDate::currentDate() && !checked) {
-        ui->label_deadline->setStyleSheet("color: red");
-    }
+	if(value < QDate::currentDate() && !checked)
+		ui->label_deadline->setStyleSheet("color: red");
 }
 
 void CheckItem::setChecked(const bool value)
@@ -98,17 +97,19 @@ void CheckItem::setChecked(const bool value)
 		checked = value;
 		emit editEvent(this);
 	}
-    if(checked) {
-        ui->label_title->setStyleSheet("text-decoration:line-through;color:rgb(145,145,145)");
-        ui->button_check->setIcon(QIcon(":/FontAwesome/svgs/regular/check-circle.svg"));
-        ui->label_deadline->setStyleSheet("color:rgb(145,145,145)");
-    } else {
-        ui->label_title->setStyleSheet("text-decoration:unset;color:unset");
-        ui->button_check->setIcon(QIcon( ":/FontAwesome/svgs/regular/circle.svg"));
-        if(deadline < QDate::currentDate()) {
-            ui->label_deadline->setStyleSheet("color: red");
-        }
-    }
+	if(checked)
+	{
+		ui->label_title->setStyleSheet("text-decoration: line-through;color: #919191;");
+		ui->button_check->setIcon(QIcon(":/FontAwesome/svgs/regular/check-circle.svg"));
+		ui->label_deadline->setStyleSheet("color: #919191;");
+	}
+	else
+	{
+		ui->label_title->setStyleSheet("text-decoration: unset;color: unset;");
+		ui->button_check->setIcon(QIcon( ":/FontAwesome/svgs/regular/circle.svg"));
+		if(deadline < QDate::currentDate())
+			ui->label_deadline->setStyleSheet("color: red;");
+	}
 }
 
 void CheckItem::remove()

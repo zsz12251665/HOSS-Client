@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>374</width>
+    <width>600</width>
     <height>75</height>
    </rect>
   </property>
@@ -16,51 +16,11 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>374</width>
-    <height>0</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>100</height>
-   </size>
-  </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
-  <property name="autoFillBackground">
-   <bool>false</bool>
-  </property>
-  <property name="styleSheet">
-   <string notr="true">background-image: unset;
-border-image: unset;</string>
-  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QPushButton" name="button_check">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>48</width>
-       <height>48</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>48</width>
-       <height>48</height>
-      </size>
-     </property>
      <property name="cursor">
-      <cursorShape>ArrowCursor</cursorShape>
+      <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="icon">
       <iconset resource="FontAwesome.min.qrc">
@@ -68,8 +28,8 @@ border-image: unset;</string>
      </property>
      <property name="iconSize">
       <size>
-       <width>26</width>
-       <height>26</height>
+       <width>30</width>
+       <height>30</height>
       </size>
      </property>
      <property name="flat">
@@ -89,15 +49,14 @@ border-image: unset;</string>
        </property>
        <property name="font">
         <font>
-         <family>Microsoft YaHei UI</family>
+         <family>Tahoma</family>
          <pointsize>16</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
+         <weight>75</weight>
+         <bold>true</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 16pt &quot;Microsoft YaHei UI&quot;;</string>
+        <string notr="true">font-family: &quot;Tahoma&quot;, &quot;DengXian&quot;, &quot;Arial&quot;, &quot;SimHei&quot;;</string>
        </property>
        <property name="text">
         <string>Title 标题</string>
@@ -119,8 +78,8 @@ border-image: unset;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">font-family: &quot;Georgia&quot;, &quot;NSimSun&quot;, &quot;Times New Roman&quot;, &quot;SimSun&quot;;
-color: rgb(145,145,145);</string>
+        <string notr="true">color: #919191;
+font-family: &quot;Georgia&quot;, &quot;NSimSun&quot;, &quot;Times New Roman&quot;, &quot;SimSun&quot;;</string>
        </property>
        <property name="text">
         <string>1926-08-17</string>
@@ -131,24 +90,6 @@ color: rgb(145,145,145);</string>
    </item>
    <item>
     <widget class="QPushButton" name="button_delete">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>48</width>
-       <height>48</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>48</width>
-       <height>48</height>
-      </size>
-     </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
@@ -158,8 +99,8 @@ color: rgb(145,145,145);</string>
      </property>
      <property name="iconSize">
       <size>
-       <width>26</width>
-       <height>26</height>
+       <width>30</width>
+       <height>30</height>
       </size>
      </property>
      <property name="flat">

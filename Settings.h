@@ -11,7 +11,7 @@ public:
 	QString getServer() const;
 	QString getName() const;
 	QString getNumber() const;
-    QString getBackground() const;
+	QString getBackground() const;
 	bool popEditDialog();
 };
 
