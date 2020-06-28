@@ -86,6 +86,9 @@ void CheckItem::setDeadline(const QDate value)
 		emit editEvent(this);
 	}
 	ui->label_deadline->setText(deadline.toString("yyyy-MM-dd"));
+    if(value < QDate::currentDate() && !checked) {
+        ui->label_deadline->setStyleSheet("color: red");
+    }
 }
 
 void CheckItem::setChecked(const bool value)
@@ -97,12 +100,14 @@ void CheckItem::setChecked(const bool value)
 	}
     if(checked) {
         ui->label_title->setStyleSheet("text-decoration:line-through;color:rgb(145,145,145)");
-        ui->label_deadline->setStyleSheet("color:rgb(145,145,145)");
         ui->button_check->setIcon(QIcon(":/FontAwesome/svgs/regular/check-circle.svg"));
+        ui->label_deadline->setStyleSheet("color:rgb(145,145,145)");
     } else {
         ui->label_title->setStyleSheet("text-decoration:unset;color:unset");
-        ui->label_deadline->setStyleSheet("color:unset");
         ui->button_check->setIcon(QIcon( ":/FontAwesome/svgs/regular/circle.svg"));
+        if(deadline < QDate::currentDate()) {
+            ui->label_deadline->setStyleSheet("color: red");
+        }
     }
 }
 

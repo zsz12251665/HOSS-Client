@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
+    <width>651</width>
     <height>800</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>HOSS-Client</string>
@@ -183,7 +189,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>730</width>
+         <width>631</width>
          <height>648</height>
         </rect>
        </property>
@@ -233,7 +239,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>750</width>
+     <width>651</width>
      <height>23</height>
     </rect>
    </property>
