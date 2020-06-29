@@ -6,10 +6,10 @@
 #include "NetworkAPI.h"
 #include "Settings.h"
 
+#include <QCoreApplication>
 #include <QDebug>
-#include <QFile>
+#include <QDesktopServices>
 #include <QJsonArray>
-#include <QTextBrowser>
 
 Homework::Homework(QWidget *parent)
 	: QMainWindow(parent), ui(new Ui::Homework), currentState(ShowState::ALL)
@@ -155,12 +155,9 @@ void Homework::on_radio_remote_clicked()
 
 void Homework::on_button_help_clicked()
 {
+	// Open the manual file "manual.pdf" in the same directory as the application
 	qDebug() << "Homework::on_button_help_clicked() Starts";
-	QTextBrowser* browser=new QTextBrowser;
-	QFile file(":/help/help.txt");
-	if(!file.open(QFile::ReadOnly | QFile::Text))
-		qDebug() << "Can not open help manual";
-	browser->setText(QTextStream(&file).readAll());
-	browser->show();
+	qDebug() << QCoreApplication::applicationDirPath();
+	QDesktopServices::openUrl(QUrl(QCoreApplication::applicationDirPath()).resolved(QUrl("manual.pdf")));
 	qDebug() << "Homework::on_button_help_clicked() Ends" << endl;
 }
