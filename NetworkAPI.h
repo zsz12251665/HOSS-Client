@@ -8,7 +8,7 @@ class Settings;
 class NetworkAPI : private QNetworkAccessManager
 {
 private:
-	static const QString formBoundary;
+	static const QString FORM_BOUNDARY;
 	QUrl serverURL;
 	QPair<int, QJsonArray> fetchRemoteToDos(QHttpMultiPart*);
 	int uploadHomework(QHttpMultiPart*);

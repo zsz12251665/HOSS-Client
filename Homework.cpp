@@ -64,6 +64,15 @@ void Homework::on_button_add_clicked()
 	}
 }
 
+void Homework::on_button_help_clicked()
+{
+	// Open the manual file "manual.pdf" in the same directory as the application
+	qDebug() << "Homework::on_button_help_clicked() Starts";
+	qDebug() << QCoreApplication::applicationDirPath();
+	QDesktopServices::openUrl(QUrl(QCoreApplication::applicationDirPath()).resolved(QUrl("manual.pdf")));
+	qDebug() << "Homework::on_button_help_clicked() Ends" << endl;
+}
+
 void Homework::on_button_new_clicked()
 {
 	// Pop a dialog to create a new item
@@ -151,13 +160,4 @@ void Homework::on_radio_local_clicked()
 void Homework::on_radio_remote_clicked()
 {
 	showItems(ShowState::REMOTE);
-}
-
-void Homework::on_button_help_clicked()
-{
-	// Open the manual file "manual.pdf" in the same directory as the application
-	qDebug() << "Homework::on_button_help_clicked() Starts";
-	qDebug() << QCoreApplication::applicationDirPath();
-	QDesktopServices::openUrl(QUrl(QCoreApplication::applicationDirPath()).resolved(QUrl("manual.pdf")));
-	qDebug() << "Homework::on_button_help_clicked() Ends" << endl;
 }

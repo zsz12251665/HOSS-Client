@@ -26,7 +26,7 @@ static void addPart(QHttpMultiPart *form, const QString type, const QString disp
 	form->append(httpPart);
 }
 
-const QString NetworkAPI::formBoundary = QString("--%1_Boundary_%1--").arg(QRandomGenerator::global()->generate64(), 16, 16, QLatin1Char('0'));
+const QString NetworkAPI::FORM_BOUNDARY = QString("--%1_Boundary_%1--").arg(QRandomGenerator::global()->generate64(), 16, 16, QLatin1Char('0'));
 
 NetworkAPI::NetworkAPI(const QUrl serverURL)
 	: serverURL(serverURL)
@@ -65,7 +65,7 @@ int NetworkAPI::uploadHomework(QHttpMultiPart *form)
 	qDebug() << "NetworkAPI::uploadHomework() Starts";
 	// Send the request
 	QNetworkRequest request(serverURL.resolved(QUrl("upload.php")));
-	request.setRawHeader("Content-Type", ("multipart/form-data;boundary=" + formBoundary).toUtf8());
+	request.setRawHeader("Content-Type", ("multipart/form-data;boundary=" + FORM_BOUNDARY).toUtf8());
 	QNetworkReply *reply = post(request, form);
 	// Set up the progress dialog & wait for the reply
 	NetworkAPI_ProgressDialog progress;
@@ -92,7 +92,7 @@ QPair<int, QJsonArray> NetworkAPI::fetchRemoteToDos(const Settings &settings)
 	}
 	// Fulfill the form
 	QHttpMultiPart *form = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-	form->setBoundary(formBoundary.toUtf8());
+	form->setBoundary(FORM_BOUNDARY.toUtf8());
 	// Append the information
 	addPart(form, "text/plain", "form-data; name=\"Name\"", settings.getName());
 	addPart(form, "text/plain", "form-data; name=\"Number\"", settings.getNumber());
@@ -115,7 +115,7 @@ int NetworkAPI::uploadHomework(const Settings &settings, const QString directory
 		return -1;
 	// Fulfill the form
 	QHttpMultiPart *form = new QHttpMultiPart(QHttpMultiPart::FormDataType);
-	form->setBoundary(formBoundary.toUtf8());
+	form->setBoundary(FORM_BOUNDARY.toUtf8());
 	// Append the information
 	addPart(form, "text/plain", "form-data; name=\"Name\"", settings.getName());
 	addPart(form, "text/plain", "form-data; name=\"Number\"", settings.getNumber());

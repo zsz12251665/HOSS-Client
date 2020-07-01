@@ -29,6 +29,7 @@ private:
 	void showItems(ShowState);
 private slots:
 	void on_button_add_clicked();
+	void on_button_help_clicked();
 	void on_button_new_clicked();
 	void on_button_settings_clicked();
 	void on_button_update_clicked();
@@ -36,7 +37,6 @@ private slots:
 	void on_radio_all_clicked();
 	void on_radio_local_clicked();
 	void on_radio_remote_clicked();
-	void on_button_help_clicked();
 public:
 	Homework(QWidget* = nullptr);
 	~Homework();
