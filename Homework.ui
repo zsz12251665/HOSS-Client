@@ -169,7 +169,11 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QLineEdit" name="edit_title"/>
+       <widget class="QLineEdit" name="edit_title">
+        <property name="placeholderText">
+         <string>Title Here</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QDateEdit" name="edit_deadline"/>
