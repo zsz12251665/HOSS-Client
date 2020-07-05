@@ -44,6 +44,10 @@ FORMS += \
 	NetworkAPI_ProgressDialog.ui \
 	Settings_EditDialog.ui
 
+TRANSLATIONS += \
+	Translation_CHS.ts \
+	Translation_ENG.ts
+
 RC_ICONS = logo.ico
 
 # Default rules for deployment.
@@ -53,4 +57,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
 	FontAwesome.min.qrc \
-	logo.qrc
+	logo.qrc \
+	translations.qrc

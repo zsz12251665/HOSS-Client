@@ -16,12 +16,13 @@ protected:
 private slots:
 	void on_button_background_clicked();
 public:
-	Settings_EditDialog(QString, QString, QString, QString, QWidget* = nullptr);
+	Settings_EditDialog(QString, QString, QString, QString, QString, QWidget* = nullptr);
 	~Settings_EditDialog();
 	QString getServer() const;
 	QString getName() const;
 	QString getNumber() const;
 	QString getBackground() const;
+	QString getLanguage() const;
 };
 
 #endif // SETTINGS_EDITDIALOG_H

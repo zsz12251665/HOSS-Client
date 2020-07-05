@@ -47,7 +47,7 @@ QPair<int, QJsonArray> NetworkAPI::fetchRemoteToDos(QHttpMultiPart *form)
 	QNetworkReply *reply = post(request, form);
 	// Set up the event loop & wait for the reply
 	QEventLoop waitUntilFinished;
-	QObject::connect(this, &QNetworkAccessManager::finished, &waitUntilFinished, &QEventLoop::quit);
+	connect(this, &QNetworkAccessManager::finished, &waitUntilFinished, &QEventLoop::quit);
 	waitUntilFinished.exec();
 	// Collect the required information
 	int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -69,8 +69,8 @@ int NetworkAPI::uploadHomework(QHttpMultiPart *form)
 	QNetworkReply *reply = post(request, form);
 	// Set up the progress dialog & wait for the reply
 	NetworkAPI_ProgressDialog progress;
-	QObject::connect(reply, &QNetworkReply::uploadProgress, &progress, &NetworkAPI_ProgressDialog::updateProgress);
-	QObject::connect(this, &QNetworkAccessManager::finished, &progress, &NetworkAPI_ProgressDialog::close);
+	connect(reply, &QNetworkReply::uploadProgress, &progress, &NetworkAPI_ProgressDialog::updateProgress);
+	connect(this, &QNetworkAccessManager::finished, &progress, &NetworkAPI_ProgressDialog::close);
 	progress.exec();
 	// Collect the required information
 	int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -87,7 +87,7 @@ QPair<int, QJsonArray> NetworkAPI::fetchRemoteToDos(const Settings &settings)
 	// Check if offline
 	if (!isOnline())
 	{
-		QMessageBox(QMessageBox::Icon::Warning, "No Internet", "Your computer is offline now. Please check your connection and try agagin later. ", QMessageBox::Ok).exec();
+		QMessageBox(QMessageBox::Icon::Warning, tr("No Internet"), tr("Your computer is offline now. Please check your connection and try agagin later. "), QMessageBox::Ok).exec();
 		return qMakePair(0, QJsonArray());
 	}
 	// Fulfill the form
@@ -105,7 +105,7 @@ int NetworkAPI::uploadHomework(const Settings &settings, const QString directory
 	// Check if offline
 	if (!isOnline())
 	{
-		QMessageBox(QMessageBox::Icon::Warning, "No Internet", "Your computer is offline now. Please check your connection and try agagin later. ", QMessageBox::Ok).exec();
+		QMessageBox(QMessageBox::Icon::Warning, tr("No Internet"), tr("Your computer is offline now. Please check your connection and try agagin later. "), QMessageBox::Ok).exec();
 		return 0;
 	}
 	// Get the file

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>HOSS-Client</string>
+   <string notr="true">HOSS-Client</string>
   </property>
   <property name="autoFillBackground">
    <bool>true</bool>

@@ -14,10 +14,6 @@
 Homework::Homework(QWidget *parent)
 	: QMainWindow(parent), ui(new Ui::Homework), currentState(ShowState::ALL)
 {
-	// Initialize server URL if none
-	Settings settings;
-	if (settings.getServer().isEmpty() && !settings.popEditDialog())
-		exit(0);
 	// Initialize UI
 	ui->setupUi(this);
 	ui->edit_deadline->setDate(QDate::currentDate());
@@ -29,7 +25,8 @@ Homework::Homework(QWidget *parent)
 	// Show the items
 	showItems(currentState);
 	// Set the background
-	setStyleSheet(settings.getBackground().isEmpty() ? QString() : QString("#Homework {background: %1;}").arg(settings.getBackground()));
+	QString background = Settings().getBackground();
+	setStyleSheet(background.isEmpty() ? QString() : QString("#Homework {background: %1;}").arg(background));
 }
 
 Homework::~Homework()
@@ -64,6 +61,18 @@ void Homework::on_button_add_clicked()
 	}
 }
 
+void Homework::changeEvent(QEvent *e)
+{
+	switch (e->type())
+	{
+	case QEvent::LanguageChange:
+		ui->retranslateUi(this);
+		break;
+	default:
+		break;
+	}
+}
+
 void Homework::on_button_help_clicked()
 {
 	// Open the manual file "manual.pdf" in the same directory as the application
@@ -92,6 +101,8 @@ void Homework::on_button_settings_clicked()
 	// Set the background
 	// TODO: Save the background picture in the build folder
 	setStyleSheet(settings.getBackground().isEmpty() ? QString() : QString("#Homework {background: %1;}").arg(settings.getBackground()));
+	// Set the language
+	changeLanguage(settings.getLanguage());
 }
 
 void Homework::on_button_update_clicked()

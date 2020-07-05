@@ -12,6 +12,7 @@ public:
 	QString getName() const;
 	QString getNumber() const;
 	QString getBackground() const;
+	QString getLanguage() const;
 	bool popEditDialog();
 };
 

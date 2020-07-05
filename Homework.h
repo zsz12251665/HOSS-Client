@@ -5,6 +5,8 @@
 
 #include "Storage.h"
 
+void changeLanguage(QString);
+
 namespace Ui
 {
 	class Homework;
@@ -28,6 +30,7 @@ private:
 	void addItem(CheckItem*);
 	void showItems(ShowState);
 private slots:
+	void changeEvent(QEvent*) override;
 	void on_button_add_clicked();
 	void on_button_help_clicked();
 	void on_button_new_clicked();

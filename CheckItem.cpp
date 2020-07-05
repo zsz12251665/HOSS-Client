@@ -74,7 +74,7 @@ void CheckItem::setTitle(const QString value)
 		title = value;
 		emit editEvent(this);
 	}
-	ui->label_title->setText(title.isEmpty() ? "(No Title)" : title);
+	ui->label_title->setText(title.isEmpty() ? tr("(No Title)") : title);
 }
 
 void CheckItem::setDeadline(const QDate value)

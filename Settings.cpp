@@ -35,10 +35,15 @@ QString Settings::getBackground() const
 	return value("config/background").toString();
 }
 
+QString Settings::getLanguage() const
+{
+	return value("config/language", "ENG").toString();
+}
+
 bool Settings::popEditDialog()
 {
 	qDebug() << "Settings::popEditDialog() Starts";
-	Settings_EditDialog editDialog(getServer(), getName(), getNumber(), getBackground());
+	Settings_EditDialog editDialog(getServer(), getName(), getNumber(), getBackground(), getLanguage());
 	// Keep popping until the input is valid or cancelled
 	for (int result = editDialog.exec(); result != QDialog::Accepted || editDialog.getServer().isEmpty(); result = editDialog.exec())
 	{
@@ -54,8 +59,9 @@ bool Settings::popEditDialog()
 	setValue("config/name", editDialog.getName());
 	setValue("config/number", editDialog.getNumber());
 	setValue("config/background", editDialog.getBackground());
+	setValue("config/language", editDialog.getLanguage());
 	sync();
-	qDebug() << getServer() << getName() << getNumber() << getBackground();
+	qDebug() << getServer() << getName() << getNumber() << getBackground() << getLanguage();
 	qDebug() << "Settings::popEditDialog() Ends" << endl;
 	return true;
 }

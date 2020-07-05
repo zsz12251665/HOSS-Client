@@ -3,7 +3,7 @@
 
 #include <QFileDialog>
 
-Settings_EditDialog::Settings_EditDialog(const QString server, const QString name, const QString number, const QString background, QWidget *parent)
+Settings_EditDialog::Settings_EditDialog(const QString server, const QString name, const QString number, const QString background, const QString language, QWidget *parent)
 	: QDialog(parent), ui(new Ui::Settings_EditDialog)
 {
 	ui->setupUi(this);
@@ -11,6 +11,10 @@ Settings_EditDialog::Settings_EditDialog(const QString server, const QString nam
 	ui->edit_name->setText(name);
 	ui->edit_number->setText(number);
 	ui->edit_background->setText(background);
+	if(language == "CHS")
+		ui->radio_CHS->setChecked(true);
+	else
+		ui->radio_ENG->setChecked(true);
 	setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 }
 
@@ -47,4 +51,13 @@ QString Settings_EditDialog::getNumber() const
 QString Settings_EditDialog::getBackground() const
 {
 	return ui->edit_background->text();
+}
+
+QString Settings_EditDialog::getLanguage() const
+{
+	if (ui->radio_CHS->isChecked())
+		return "CHS";
+	if (ui->radio_ENG->isChecked())
+		return "ENG";
+	return QString();
 }

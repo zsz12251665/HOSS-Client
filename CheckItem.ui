@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>75</height>
+    <height>80</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -61,7 +61,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Title 标题</string>
+        <string notr="true">Title 标题</string>
        </property>
       </widget>
      </item>
@@ -83,7 +83,7 @@
         <string notr="true">color: grey;</string>
        </property>
        <property name="text">
-        <string>1926-08-17</string>
+        <string notr="true">1926-08-17</string>
        </property>
       </widget>
      </item>
