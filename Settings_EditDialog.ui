@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>450</width>
-    <height>160</height>
+    <height>180</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -104,6 +104,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>edit_server</tabstop>
+  <tabstop>edit_name</tabstop>
+  <tabstop>edit_number</tabstop>
+  <tabstop>edit_background</tabstop>
+  <tabstop>button_background</tabstop>
+  <tabstop>radio_ENG</tabstop>
+  <tabstop>radio_CHS</tabstop>
+ </tabstops>
  <resources>
   <include location="FontAwesome.min.qrc"/>
  </resources>

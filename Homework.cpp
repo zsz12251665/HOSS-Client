@@ -77,8 +77,8 @@ void Homework::on_button_help_clicked()
 {
 	// Open the manual file "manual.pdf" in the same directory as the application
 	qDebug() << "Homework::on_button_help_clicked() Starts";
-	qDebug() << QCoreApplication::applicationDirPath();
-	QDesktopServices::openUrl(QUrl(QCoreApplication::applicationDirPath()).resolved(QUrl("manual.pdf")));
+	qDebug() << QCoreApplication::applicationFilePath();
+	QDesktopServices::openUrl(QUrl(QCoreApplication::applicationFilePath()).resolved(QUrl("./manual.pdf")));
 	qDebug() << "Homework::on_button_help_clicked() Ends" << endl;
 }
 
